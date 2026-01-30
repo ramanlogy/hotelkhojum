@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Together - Couples Daycation & Staycation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray: #757575;
+            --light-gray: #f5f5f5;
+            --accent: #ff6b6b;
+            --border: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Archivo', sans-serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Header/Logo */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--black);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo:hover {
+            opacity: 0.7;
+        }
+
+        .header-contact {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .header-phone {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--black);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .header-phone:hover {
+            color: var(--accent);
+        }
+
+        .header-cta {
+            font-size: 14px;
+            color: var(--white);
+            background: var(--black);
+            text-decoration: none;
+            padding: 12px 28px;
+            border: 2px solid var(--black);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 4px;
+        }
+
+        .header-cta:hover {
+            background: var(--white);
+            color: var(--black);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 24px 40px;
+            position: relative;
+            background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+        }
+
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .hero-tag {
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(48px, 10vw, 110px);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 28px;
+            letter-spacing: -0.02em;
+            color: var(--black);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(16px, 2.5vw, 22px);
+            color: var(--gray);
+            margin-bottom: 40px;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            color: var(--gray);
+        }
+
+        .info-icon {
+            font-size: 20px;
+        }
+
+        .cta-primary {
+            display: inline-block;
+            background: var(--black);
+            color: var(--white);
+            padding: 18px 50px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--black);
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-primary:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Quick Info Bar */
+        .quick-info {
+            padding: 30px 24px;
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .quick-info-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .quick-info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quick-info-icon {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .quick-info-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        .quick-info-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Value Props */
+        .value-section {
+            padding: 100px 24px;
+            background: var(--white);
+        }
+
+        .value-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 60px;
+        }
+
+        .value-item {
+            text-align: center;
+            padding: 30px 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .value-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .value-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        .value-text {
+            color: var(--gray);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* Hotels Section */
+        .hotels-section {
+            padding: 100px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--light-gray);
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: -0.02em;
+        }
+
+        .hotels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hotel-card {
+            position: relative;
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hotel-card:hover {
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+        }
+
+        .hotel-image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 66.67%;
+            overflow: hidden;
+            background: var(--light-gray);
+        }
+
+        .hotel-images-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hotel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        .hotel-image.active {
+            opacity: 1;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.2);
+        }
+
+        .dot.active {
+            background: white;
+            width: 24px;
+            border-radius: 10px;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 10;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .hotel-card:hover .slider-btn {
+            opacity: 1;
+        }
+
+        .slider-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slider-btn.prev {
+            left: 15px;
+        }
+
+        .slider-btn.next {
+            right: 15px;
+        }
+
+        .hotel-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+        }
+
+        .hotel-content {
+            padding: 32px 28px;
+        }
+
+        .hotel-header {
+            margin-bottom: 20px;
+        }
+
+        .hotel-type {
+            display: inline-block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .hotel-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .hotel-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .price-tag {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .price-label {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .hotel-description {
+            color: var(--gray);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .hotel-amenities {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: var(--light-gray);
+            border-radius: 8px;
+        }
+
+        .amenity-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--black);
+        }
+
+        .amenity-icon {
+            font-size: 16px;
+            color: var(--accent);
+        }
+
+        .hotel-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .feature-tag {
+            font-size: 12px;
+            padding: 8px 14px;
+            background: var(--light-gray);
+            color: var(--black);
+            font-weight: 500;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .book-button {
+            display: block;
+            width: 100%;
+            background: var(--black);
+            color: var(--white);
+            padding: 18px;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            border: 2px solid var(--black);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-radius: 6px;
+        }
+
+        .book-button:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 120px 24px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(36px, 7vw, 70px);
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-secondary {
+            display: inline-block;
+            background: transparent;
+            color: var(--white);
+            padding: 18px 50px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid var(--white);
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-secondary:hover {
+            background: var(--white);
+            color: var(--black);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 70px 24px 30px;
+            background: var(--white);
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-section h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--gray);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            color: var(--gray);
+            font-size: 13px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 16px 20px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .header-phone {
+                display: none;
+            }
+
+            .header-cta {
+                font-size: 12px;
+                padding: 10px 20px;
+            }
+
+            .hero {
+                padding: 80px 20px 40px;
+                min-height: 90vh;
+            }
+
+            .hero-info {
+                gap: 20px;
+            }
+
+            .info-item {
+                font-size: 13px;
+            }
+
+            .quick-info {
+                padding: 24px 20px;
+            }
+
+            .quick-info-container {
+                gap: 20px;
+                grid-template-columns: 1fr;
+            }
+
+            .value-section {
+                padding: 60px 20px;
+            }
+
+            .value-container {
+                gap: 40px;
+                grid-template-columns: 1fr;
+            }
+
+            .hotels-section {
+                padding: 60px 20px;
+            }
+
+            .section-title {
+                margin-bottom: 40px;
+            }
+
+            .hotels-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .hotel-content {
+                padding: 24px 20px;
+            }
+
+            .hotel-name {
+                font-size: 28px;
+            }
+
+            .hotel-amenities {
+                grid-template-columns: 1fr;
+            }
+
+            .slider-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+
+            .slider-btn.prev {
+                left: 10px;
+            }
+
+            .slider-btn.next {
+                right: 10px;
+            }
+
+            .cta-section {
+                padding: 80px 20px;
+            }
+
+            .footer {
+                padding: 50px 20px 24px;
+            }
+
+            .footer-content {
+                gap: 35px;
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .price {
+                font-size: 30px;
+            }
+
+            .hotel-badge {
+                font-size: 10px;
+                padding: 6px 12px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="/" class="logo">khojum.com</a>
+        <div class="header-contact">
+            <a href="tel:+919876543210" class="header-phone">
+                <span>📞</span>
+                <span>+91 98765 43210</span>
+            </a>
+            <a href="#hotels" class="header-cta">BOOK NOW</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content fade-in">
+            <div class="hero-tag">For Couples</div>
+            <h1>Escape<br>Together</h1>
+            <p class="hero-subtitle">Affordable daycations and staycations designed for couples seeking unforgettable moments in the heart of Kathmandu</p>
+            <div class="hero-info">
+                
+            </div>
+            <a href="#hotels" class="cta-primary">Explore Stays</a>
+        </div>
+    </section>
+
+    <!-- Quick Info Bar -->
+    <section class="quick-info">
+        <div class="quick-info-container">
+            <div class="quick-info-item">
+                <div class="quick-info-icon">🏨</div>
+                <div class="quick-info-title">Total Rooms</div>
+                <div class="quick-info-value">15+ Rooms</div>
+            </div>
+            <div class="quick-info-item">
+                <div class="quick-info-icon">💰</div>
+                <div class="quick-info-title">Starting From</div>
+                <div class="quick-info-value">Rs 499</div>
+            </div>
+            <div class="quick-info-item">
+                <div class="quick-info-icon">🅿️</div>
+                <div class="quick-info-title">Parking</div>
+                <div class="quick-info-value">Free & Secure</div>
+            </div>
+            <div class="quick-info-item">
+                <div class="quick-info-icon">📞</div>
+                <div class="quick-info-title">Contact</div>
+                <div class="quick-info-value">+91 98765 43210</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Props -->
+    <section class="value-section">
+        <div class="value-container">
+            <div class="value-item">
+                <span class="value-icon">♡</span>
+                <h3 class="value-title">Couples First</h3>
+                <p class="value-text">Every detail curated for romantic getaways and intimate moments</p>
+            </div>
+            <div class="value-item">
+                <span class="value-icon">✦</span>
+                <h3 class="value-title">Worth Every Rupee</h3>
+                <p class="value-text">Premium experiences at prices that won't break the bank</p>
+            </div>
+            <div class="value-item">
+                <span class="value-icon">⌛</span>
+                <h3 class="value-title">Day or Night</h3>
+                <p class="value-text">Flexible options for quick daycations or extended staycations</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hotels Section -->
+    <section class="hotels-section" id="hotels">
+        <h2 class="section-title">Choose Your Escape</h2>
+        
+        <div class="hotels-grid">
+            <!-- Divine Guest House -->
+            <div class="hotel-card">
+                <div class="hotel-image-wrapper">
+                    <div class="hotel-badge">Popular</div>
+                    <div class="hotel-images-slider">
+                        <img src="assets/cozy-mini.png" alt="Divine Guest House - Room View" class="hotel-image active">
+                        <img src="assets/convenient-queen.png" alt="Divine Guest House - Garden" class="hotel-image">
+                        <img src="assets/compact-twin.png" alt="Divine Guest House - Exterior" class="hotel-image">
+                    </div>
+                    <div class="slider-dots">
+                        <span class="dot active" onclick="showImage(this, 0)"></span>
+                        <span class="dot" onclick="showImage(this, 1)"></span>
+                        <span class="dot" onclick="showImage(this, 2)"></span>
+                    </div>
+                    <button class="slider-btn prev" onclick="changeImage(this, -1)">❮</button>
+                    <button class="slider-btn next" onclick="changeImage(this, 1)">❯</button>
+                </div>
+                <div class="hotel-content">
+                    <div class="hotel-header">
+                        <div class="hotel-type">Intimate Retreat</div>
+                        <h3 class="hotel-name">Divine Guest House</h3>
+                        <div class="hotel-location">
+                            <span>📍</span>
+                            <span>Thamel, Kathmandu Valley</span>
+                        </div>
+                        <div class="price-tag">
+                            <div class="price">Rs 499</div>
+                            <div class="price-label">/ night</div>
+                        </div>
+                    </div>
+                    <p class="hotel-description">
+                        A peaceful sanctuary perfect for couples seeking privacy and comfort. 
+                        Intimate spaces designed for creating cherished memories together.
+                    </p>
+                    <div class="hotel-amenities">
+                        <div class="amenity-item">
+                            <span class="amenity-icon">✓</span>
+                            <span>Free Wi-Fi</span>
+                        </div>
+                        <div class="amenity-item">
+                            <span class="amenity-icon">✓</span>
+                            <span>Free Parking</span>
+                        </div>
+                        <div class="amenity-item">
+                            <span class="amenity-icon">✓</span>
+                            <span>AC Rooms</span>
+                        </div>
+                        <div class="amenity-item">
+                            <span class="amenity-icon">✓</span>
+                            <span>24/7 Service</span>
+                        </div>
+                    </div>
+                    <div class="hotel-features">
+                        <span class="feature-tag">Private Rooms</span>
+                        <span class="feature-tag">Couple-Friendly</span>
+                        <span class="feature-tag">Garden Space</span>
+                        <span class="feature-tag">24/7 Check-in</span>
+                    </div>
+                    <a href="#" class="book-button" onclick="handleBooking('divine'); return false;">
+                        Book Your Stay
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hotel Lumanti -->
+            <div class="hotel-card">
+                <div class="hotel-image-wrapper">
+                    <div class="hotel-badge">Premium</div>
+                    <div class="hotel-images-slider">
+                        <img src="assets/mini.png" alt="Hotel Lumanti - Luxury Room" class="hotel-image active">
+                        <img src="assets/suite.png" alt="Hotel Lumanti - Dining Area" class="hotel-image">
+                        <img src="assets/classic.png" alt="Hotel Lumanti - Exterior" class="hotel-image">
+                    </div>
+                    <div class="slider-dots">
+                        <span class="dot active" onclick="showImage(this, 0)"></span>
+                        <span class="dot" onclick="showImage(this, 1)"></span>
+                        <span class="dot" onclick="showImage(this, 2)"></span>
+                    </div>
+                    <button class="slider-btn prev" onclick="changeImage(this, -1)">❮</button>
+                    <button class="slider-btn next" onclick="changeImage(this, 1)">❯</button>
+                </div>
+                <div class="hotel-content">
+                    <div class="hotel-header">
+                        <div class="hotel-type">Premium Experience</div>
+                        <h3 class="hotel-name">Hotel Lumanti</h3>
+                        <div class="hotel-location">
+                            <span>📍</span>
+                            <span>Lazimpat, Kathmandu</span>
+                        </div>
+                        <div class="price-tag">
+                            <div class="price">Rs 600</div>
+                            <div class="price-label">/ night</div>
+                        </div>
+                    </div>
+                    <p class="hotel-description">
+                        Elevated comfort meets romance. Modern amenities and thoughtful touches 
+                        create the perfect backdrop for your special time together.
+                    </p>
+                    <div class="hotel-amenities">
+                        <div class="amenity-item">
+                            <span class="amenity-icon">✓</span>
+                            <span>High-Speed Wi-Fi</span>
+                        </div>
+                        <div class="amenity-item">
+                            <span class="amenity-icon">✓</span>
+                            <span>Valet Parking</span>
+                        </div>
+                        <div class="amenity-item">
+                            <span class="amenity-icon">✓</span>
+                            <span>Premium AC</span>
+                        </div>
+                        <div class="amenity-item">
+                            <span class="amenity-icon">✓</span>
+                            <span>Room Service</span>
+                        </div>
+                    </div>
+                    <div class="hotel-features">
+                        <span class="feature-tag">Luxury Rooms</span>
+                        <span class="feature-tag">Couple Packages</span>
+                        <span class="feature-tag">In-Room Dining</span>
+                        <span class="feature-tag">Premium Amenities</span>
+                    </div>
+                    <a href="#" class="book-button" onclick="handleBooking('lumanti'); return false;">
+                        Book Your Stay
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Create<br>New Memories?</h2>
+        <p>Don't wait for the perfect moment. Create it together, today.</p>
+        <a href="#hotels" class="cta-secondary">View All Stays</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About</h4>
+                <p>Curating perfect couple getaways since 2020. Your romantic escape awaits in the heart of Kathmandu.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="#hotels">Book Now</a>
+                <a href="#">Packages</a>
+                <a href="#">FAQs</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📧 hello@khojum.com</p>
+                <p>📞 +91 98765 43210</p>
+                <p>📍 Thamel, Kathmandu</p>
+                <p>🕐 Available 24/7</p>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">TripAdvisor</a>
+                <a href="#">Google Reviews</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 khojum.com - Made with ♡ for couples.</p>
+        </div>
+    </footer>
+
+    <script>
+        function showImage(dotElement, index) {
+            const wrapper = dotElement.closest('.hotel-image-wrapper');
+            const images = wrapper.querySelectorAll('.hotel-image');
+            const dots = wrapper.querySelectorAll('.dot');
+            
+            images.forEach(img => img.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            images[index].classList.add('active');
+            dots[index].classList.add('active');
+        }
+
+        function changeImage(btnElement, direction) {
+            const wrapper = btnElement.closest('.hotel-image-wrapper');
+            const images = wrapper.querySelectorAll('.hotel-image');
+            const dots = wrapper.querySelectorAll('.dot');
+            let currentIndex = Array.from(images).findIndex(img => img.classList.contains('active'));
+            
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = images.length - 1;
+            if (currentIndex >= images.length) currentIndex = 0;
+            
+            showImage(dots[currentIndex], currentIndex);
+        }
+
+        // Auto-advance slider every 5 seconds
+        setInterval(() => {
+            document.querySelectorAll('.hotel-card').forEach(card => {
+                const nextBtn = card.querySelector('.slider-btn.next');
+                if (nextBtn) changeImage(nextBtn, 1);
+            });
+        }, 5000);
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Booking handler
+        function handleBooking(hotel) {
+            const bookingLinks = {
+                'divine': 'divine.html',
+                'lumanti': 'lumanti.html'
+            };
+
+            if (bookingLinks[hotel]) {
+                window.open(bookingLinks[hotel], '_blank');
+            } else {
+                alert('Booking page coming soon! Call us at +91 98765 43210');
+            }
+        }
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements
+        document.querySelectorAll('.hotel-card, .value-item, .quick-info-item').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

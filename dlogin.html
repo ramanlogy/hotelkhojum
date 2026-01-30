@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divine Guest House Staff Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fafafa;
+            color: #1a1a1a;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: 2px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        /* Login */
+        .login-screen {
+            position: fixed;
+            inset: 0;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+        
+        .login-screen.hidden {
+            display: none;
+        }
+        
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .login-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+        
+        .login-subtitle {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #1a1a1a;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            background: #000;
+        }
+        
+        .btn-small {
+            width: auto;
+            padding: 12px 24px;
+            font-size: 14px;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #1a1a1a;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #1a1a1a;
+            background: #fafafa;
+        }
+        
+        .error-msg {
+            color: #d32f2f;
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .stat-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        
+        /* Date Selector */
+        .date-section {
+            margin-bottom: 32px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .date-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .date-scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .date-scroll::-webkit-scrollbar-track {
+            background: #f5f5f5;
+        }
+        
+        .date-scroll::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 2px;
+        }
+        
+        .date-btn {
+            flex-shrink: 0;
+            min-width: 80px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .date-btn:hover {
+            border-color: #1a1a1a;
+        }
+        
+        .date-btn.active {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
+            color: white;
+        }
+        
+        .date-day {
+            font-size: 10px;
+            text-transform: uppercase;
+            opacity: 0.6;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+        
+        .date-number {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        /* Rooms Grid */
+        .rooms-section {
+            margin-bottom: 32px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 4px;
+        }
+        
+        .filter-tab {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .filter-tab.active {
+            background: #1a1a1a;
+            color: white;
+        }
+        
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .room-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .room-card:hover {
+            border-color: #1a1a1a;
+            transform: translateY(-2px);
+        }
+        
+        .room-card.available {
+            border-color: #0a8040;
+            background: #f0fdf4;
+        }
+        
+        .room-card.busy {
+            border-color: #d32f2f;
+            background: #fef2f2;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .room-card.busy:hover {
+            transform: none;
+        }
+        
+        .room-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        
+        .room-card.available .room-icon {
+            background: #dcfce7;
+        }
+        
+        .room-card.busy .room-icon {
+            background: #fee2e2;
+        }
+        
+        .room-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+        
+        .room-status {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .room-capacity {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        /* Bookings List */
+        .bookings-section {
+            margin-bottom: 32px;
+        }
+        
+        .search-box {
+            position: relative;
+            max-width: 300px;
+        }
+        
+        .search-box input {
+            padding-left: 40px;
+            padding-right: 16px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 14px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        
+        .bookings-list {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .booking-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.2s;
+        }
+        
+        .booking-card:hover {
+            border-color: #1a1a1a;
+        }
+        
+        .booking-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .booking-name {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .booking-details {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .booking-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .action-btn.check-in {
+            background: #0a8040;
+            color: white;
+        }
+        
+        .action-btn.check-out {
+            background: #1a1a1a;
+            color: white;
+        }
+        
+        .action-btn.edit {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+        
+        .action-btn.delete {
+            background: #dc2626;
+            color: white;
+        }
+        
+        .action-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-pending {
+            background: #fff7ed;
+            color: #92400e;
+        }
+        
+        .status-checked-in {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+        
+        .status-checked-out {
+            background: #f5f5f5;
+            color: #666;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 150;
+            padding: 20px;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .modal-close {
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .modal-close:hover {
+            color: #1a1a1a;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        select {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #1a1a1a;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border-radius: 12px;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-action-btn {
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .quick-action-btn:hover {
+            border-color: #1a1a1a;
+            background: #fafafa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .rooms-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .booking-card {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .booking-actions {
+                justify-content: stretch;
+            }
+            
+            .action-btn {
+                flex: 1;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="login-screen">
+        <div class="login-box">
+            <h1 class="login-title">DIVINE GUEST HOUSE</h1>
+            <p class="login-subtitle">Staff Portal</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/>
+                    </svg>
+                    Login
+                </button>
+                <p class="error-msg" id="error-msg">Invalid credentials</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" style="display: none;">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">DIVINE GUEST HOUSE</div>
+            <div class="header-actions">
+                <button class="btn btn-small btn-secondary" id="logout-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+                    </svg>
+                    Logout
+                </button>
+                <button class="btn btn-small" id="new-booking-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    New Booking
+                </button>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-label">Today's Revenue</div>
+                    </div>
+                    <div class="stat-value" id="stat-revenue">Rs 0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-label">Total Bookings</div>
+                    </div>
+                    <div class="stat-value" id="stat-bookings">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-label">Pending Payment</div>
+                    </div>
+                    <div class="stat-value" id="stat-pending">Rs 0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-label">Day Slots Left</div>
+                    </div>
+                    <div class="stat-value" id="stat-day">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-label">Night Slots Left</div>
+                    </div>
+                    <div class="stat-value" id="stat-night">0</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="quick-action-btn" id="view-today-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    Today's View
+                </button>
+                <button class="quick-action-btn" id="pending-checkins-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    Pending Check-ins
+                </button>
+                <button class="quick-action-btn" id="active-guests-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    Active Guests
+                </button>
+            </div>
+
+            <!-- Date Selector -->
+            <div class="date-section">
+                <div class="section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    Select Date
+                </div>
+                <div class="date-scroll" id="date-scroll"></div>
+            </div>
+
+            <!-- Room Availability -->
+            <div class="rooms-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Room Availability
+                    </div>
+                    <div class="filter-tabs">
+                        <div class="filter-tab active" data-filter="Daycation" id="tab-day">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                            Day
+                        </div>
+                        <div class="filter-tab" data-filter="Staycation" id="tab-night">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                            Night
+                        </div>
+                    </div>
+                </div>
+                <div class="rooms-grid" id="rooms-grid"></div>
+            </div>
+
+            <!-- Today's Bookings -->
+            <div class="bookings-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        Today's Bookings
+                    </div>
+                    <div class="search-box">
+                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="search-bookings" placeholder="Search by name or phone...">
+                    </div>
+                </div>
+                <div class="bookings-list" id="bookings-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="booking-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    New Booking
+                </h3>
+                <button class="modal-close" id="modal-close-btn">×</button>
+            </div>
+            <form id="booking-form">
+                <div class="form-group">
+                    <input type="text" id="b-name" placeholder="Guest Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="b-phone" placeholder="Phone Number" required>
+                </div>
+                <div class="form-row">
+                    <select id="b-room" required>
+                        <option value="Cozy Mini">Cozy Mini</option>
+                        <option value="Compact Twin">Compact Twin</option>
+                        <option value="Convenient Queen">Convenient Queen</option>
+                    </select>
+                    <select id="b-type" required>
+                        <option value="Daycation">Day Time</option>
+                        <option value="Staycation">Night Time</option>
+                        <option value="Full Stay">Full Stay</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <input type="date" id="b-date" required>
+                    <input type="time" id="b-time" placeholder="Arrival Time" readonly style="background-color: #f9fafb;">
+                </div>
+                <div class="form-group">
+                    <input type="number" id="b-amount" placeholder="Amount per person (Rs)" required>
+                </div>
+                <div class="form-row">
+                    <select id="b-payment">
+                        <option value="unpaid">Unpaid</option>
+                        <option value="paid">Paid</option>
+                    </select>
+                    <select id="b-status">
+                        <option value="pending">Pending</option>
+                        <option value="checked-in">Checked In</option>
+                        <option value="checked-out">Checked Out</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Save Booking
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Application wrapped in IIFE to avoid global scope pollution
+        (function() {
+            'use strict';
+            
+            // Supabase client - only initialize once
+            const SUPABASE_URL = 'https://mprksxhzbqpuxoseydgu.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wcmtzeGh6YnFwdXhvc2V5ZGd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk3NDI5NzEsImV4cCI6MjA4NTMxODk3MX0.BrBdBw2tO1LcvPWhCrXekZndxlAOabiLFdr7R7gmxsc';
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            // Configuration - Divine Guest House Rooms
+            const ROOMS = ['Cozy Mini', 'Compact Twin', 'Convenient Queen'];
+            const CAPACITY = { 
+                'Cozy Mini': 5, 
+                'Compact Twin': 2, 
+                'Convenient Queen': 1 
+            };
+            
+            // Pricing per person (half of room price)
+            const PRICING = {
+                'Cozy Mini': {
+                    'Daycation': 600,      // Half of 1200
+                    'Staycation': 750,     // Half of 1500
+                    'Full Stay': 1250      // Half of 2500
+                },
+                'Compact Twin': {
+                    'Daycation': 700,      // Half of 1400
+                    'Staycation': 850,     // Half of 1700
+                    'Full Stay': 1450      // Half of 2900
+                },
+                'Convenient Queen': {
+                    'Daycation': 850,      // Half of 1700
+                    'Staycation': 1000,    // Half of 2000
+                    'Full Stay': 1750      // Half of 3500
+                }
+            };
+            
+            // State
+            let bookings = [];
+            let selectedDate = new Date().toISOString().split('T')[0];
+            let currentFilter = 'Daycation';
+            let editingId = null;
+
+            let isInitialized = false;
+
+            // Login
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                const { error } = await supabase.auth.signInWithPassword({ email, password });
+                
+                if (!error) {
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('app').style.display = 'block';
+                    await initializeApp();
+                } else {
+                    document.getElementById('error-msg').style.display = 'block';
+                }
+            });
+
+            // Initialize app
+            async function initializeApp() {
+                if (isInitialized) return;
+                isInitialized = true;
+
+                setupDates();
+                await loadBookings();
+                setupEventListeners();
+                
+                // Real-time updates
+                supabase.channel('bookings')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, () => {
+                        loadBookings();
+                    })
+                    .subscribe();
+            }
+
+            // Setup event listeners
+            function setupEventListeners() {
+                // Header buttons
+                document.getElementById('new-booking-btn').addEventListener('click', () => {
+                    openBookingModal();
+                });
+                
+                document.getElementById('logout-btn').addEventListener('click', () => {
+                    logout();
+                });
+                
+                // Quick actions
+                document.getElementById('view-today-btn').addEventListener('click', () => {
+                    selectDate(new Date().toISOString().split('T')[0]);
+                });
+                
+                document.getElementById('pending-checkins-btn').addEventListener('click', () => {
+                    filterBookings('pending');
+                });
+                
+                document.getElementById('active-guests-btn').addEventListener('click', () => {
+                    filterBookings('checked-in');
+                });
+                
+                // Search functionality
+                document.getElementById('search-bookings').addEventListener('input', (e) => {
+                    renderBookings(e.target.value);
+                });
+                
+                // Filter tabs
+                document.querySelectorAll('.filter-tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const filter = this.getAttribute('data-filter');
+                        setFilter(filter);
+                    });
+                });
+
+                // Room and stay type change - auto-update price
+                document.getElementById('b-room').addEventListener('change', updatePrice);
+                document.getElementById('b-type').addEventListener('change', function() {
+                    updateArrivalTime();
+                    updatePrice();
+                });
+
+                // Modal close button
+                document.getElementById('modal-close-btn').addEventListener('click', () => {
+                    closeModal();
+                });
+
+                // Click outside modal to close
+                document.getElementById('booking-modal').addEventListener('click', (e) => {
+                    if (e.target.id === 'booking-modal') {
+                        closeModal();
+                    }
+                });
+
+                // Save Booking
+                document.getElementById('booking-form').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const data = {
+                        full_name: document.getElementById('b-name').value,
+                        phone_number: document.getElementById('b-phone').value,
+                        room_type: document.getElementById('b-room').value,
+                        stay_type: document.getElementById('b-type').value,
+                        check_in_date: document.getElementById('b-date').value,
+                        arrival_time: document.getElementById('b-time').value,
+                        total_amount: parseFloat(document.getElementById('b-amount').value),
+                        payment_status: document.getElementById('b-payment').value,
+                        status: document.getElementById('b-status').value,
+                        base_amount: parseFloat(document.getElementById('b-amount').value),
+                        discount_percent: 0,
+                        qr_token: editingId ? undefined : 'DGH-' + Math.random().toString(36).substr(2, 6).toUpperCase()
+                    };
+                    
+                    try {
+                        if (editingId) {
+                            const { error } = await supabase.from('bookings').update(data).eq('id', editingId);
+                            if (error) throw error;
+                        } else {
+                            const { error } = await supabase.from('bookings').insert([data]);
+                            if (error) throw error;
+                        }
+                        
+                        closeModal();
+                        await loadBookings();
+                    } catch (error) {
+                        console.error('Error saving booking:', error);
+                        alert('Error saving booking: ' + error.message);
+                    }
+                });
+            }
+
+            // Check session on page load
+            async function checkSession() {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('app').style.display = 'block';
+                    await initializeApp();
+                }
+            }
+
+            // Setup Dates
+            function setupDates() {
+                const container = document.getElementById('date-scroll');
+                const today = new Date();
+                let html = '';
+                
+                for (let i = 0; i < 14; i++) {
+                    const date = new Date(today);
+                    date.setDate(today.getDate() + i);
+                    const dateStr = date.toISOString().split('T')[0];
+                    const active = dateStr === selectedDate ? 'active' : '';
+                    const day = i === 0 ? 'Today' : (i === 1 ? 'Tomorrow' : date.toLocaleDateString('en-US', { weekday: 'short' }));
+                    
+                    html += `
+                        <div class="date-btn ${active}" data-date="${dateStr}">
+                            <div class="date-day">${day}</div>
+                            <div class="date-number">${date.getDate()}</div>
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = html;
+                
+                // Add click handlers
+                container.querySelectorAll('.date-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const date = this.getAttribute('data-date');
+                        selectDate(date);
+                    });
+                });
+            }
+
+            // Select Date
+            function selectDate(date) {
+                selectedDate = date;
+                setupDates();
+                renderDashboard();
+            }
+
+            // Filter Bookings
+            function filterBookings(status) {
+                const searchInput = document.getElementById('search-bookings');
+                searchInput.value = '';
+                renderBookings('', status);
+            }
+
+            // Load Bookings
+            async function loadBookings() {
+                const { data, error } = await supabase
+                    .from('bookings')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (!error && data) {
+                    bookings = data;
+                    renderDashboard();
+                } else if (error) {
+                    console.error('Error loading bookings:', error);
+                }
+            }
+
+            // Render Dashboard
+            function renderDashboard() {
+                renderStats();
+                renderRooms();
+                renderBookings();
+            }
+
+            // Render Stats
+            function renderStats() {
+                const todayBookings = bookings.filter(b => 
+                    b.check_in_date === selectedDate && 
+                    b.status !== 'cancelled'
+                );
+                
+                const revenue = todayBookings.reduce((sum, b) => sum + (b.total_amount || 0), 0);
+                const totalBookings = todayBookings.length;
+                const pendingAmount = todayBookings
+                    .filter(b => b.payment_status === 'unpaid')
+                    .reduce((sum, b) => sum + (b.total_amount || 0), 0);
+                
+                // Calculate available slots
+                const dayBookings = todayBookings.filter(b => b.stay_type === 'Daycation').length;
+                const nightBookings = todayBookings.filter(b => 
+                    b.stay_type === 'Staycation' || b.stay_type === 'Full Stay'
+                ).length;
+                
+                const totalCapacity = Object.values(CAPACITY).reduce((a, b) => a + b, 0);
+                const dayLeft = Math.max(0, totalCapacity - dayBookings);
+                const nightLeft = Math.max(0, totalCapacity - nightBookings);
+                
+                document.getElementById('stat-revenue').textContent = `Rs ${revenue.toLocaleString()}`;
+                document.getElementById('stat-bookings').textContent = totalBookings;
+                document.getElementById('stat-pending').textContent = `Rs ${pendingAmount.toLocaleString()}`;
+                document.getElementById('stat-day').textContent = dayLeft;
+                document.getElementById('stat-night').textContent = nightLeft;
+            }
+
+            // Render Rooms
+            function renderRooms() {
+                const container = document.getElementById('rooms-grid');
+                const todayBookings = bookings.filter(b => 
+                    b.check_in_date === selectedDate && 
+                    b.status !== 'cancelled' &&
+                    b.status !== 'checked-out'
+                );
+                
+                const roomUsage = {};
+                ROOMS.forEach(room => {
+                    roomUsage[room] = { day: 0, night: 0 };
+                });
+                
+                todayBookings.forEach(b => {
+                    if (roomUsage[b.room_type]) {
+                        if (b.stay_type === 'Daycation') {
+                            roomUsage[b.room_type].day++;
+                        } else {
+                            roomUsage[b.room_type].night++;
+                        }
+                    }
+                });
+                
+                let html = '';
+                ROOMS.forEach(room => {
+                    let used = currentFilter === 'Daycation' ? roomUsage[room].day : roomUsage[room].night;
+                    let available = CAPACITY[room] - used;
+                    const statusClass = available > 0 ? 'available' : 'busy';
+                    const clickable = available > 0 ? `data-room="${room}"` : '';
+                    
+                    html += `
+                        <div class="room-card ${statusClass}" ${clickable}>
+                            <div class="room-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                            </div>
+                            <div class="room-name">${room}</div>
+                            <div class="room-status">${available} Available</div>
+                            <div class="room-capacity">Capacity: ${CAPACITY[room]}</div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+                
+                // Add click handlers to available rooms
+                container.querySelectorAll('.room-card[data-room]').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const room = this.getAttribute('data-room');
+                        openBookingModal(room);
+                    });
+                });
+            }
+
+            // Render Bookings
+            function renderBookings(searchTerm = '', statusFilter = null) {
+                const container = document.getElementById('bookings-list');
+                let todayBookings = bookings.filter(b => b.check_in_date === selectedDate);
+                
+                // Apply status filter
+                if (statusFilter) {
+                    todayBookings = todayBookings.filter(b => b.status === statusFilter);
+                }
+                
+                // Apply search filter
+                if (searchTerm) {
+                    todayBookings = todayBookings.filter(b => 
+                        b.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        b.phone_number.includes(searchTerm)
+                    );
+                }
+                
+                if (todayBookings.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                            </div>
+                            <div>${searchTerm || statusFilter ? 'No bookings found' : 'No bookings for this date'}</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '';
+                todayBookings.forEach(booking => {
+                    const statusClass = `status-${booking.status}`;
+                    
+                    html += `
+                        <div class="booking-card">
+                            <div class="booking-info">
+                                <div class="booking-name">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    ${booking.full_name}
+                                </div>
+                                <div class="booking-details">
+                                    <span>
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle;">
+                                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                        </svg>
+                                        ${booking.phone_number}
+                                    </span>
+                                    <span>•</span>
+                                    <span>${booking.room_type}</span>
+                                    <span>•</span>
+                                    <span>${booking.stay_type}</span>
+                                    <span>•</span>
+                                    <span>Rs ${booking.total_amount.toLocaleString()}/person</span>
+                                    <span>•</span>
+                                    <span class="status-badge ${statusClass}">${booking.status}</span>
+                                </div>
+                            </div>
+                            <div class="booking-actions">
+                                ${booking.status === 'pending' ? `
+                                    <button class="action-btn check-in" data-id="${booking.id}" data-action="check-in">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                        </svg>
+                                        Check In
+                                    </button>
+                                ` : ''}
+                                ${booking.status === 'checked-in' ? `
+                                    <button class="action-btn check-out" data-id="${booking.id}" data-action="check-out">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                            <polyline points="16 17 21 12 16 7"></polyline>
+                                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                                        </svg>
+                                        Check Out
+                                    </button>
+                                ` : ''}
+                                <button class="action-btn edit" data-id="${booking.id}" data-action="edit">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                    Edit
+                                </button>
+                                <button class="action-btn delete" data-id="${booking.id}" data-action="delete" data-name="${booking.full_name}">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    </svg>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+                
+                // Add event listeners to all action buttons
+                container.querySelectorAll('.action-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const id = this.getAttribute('data-id');
+                        const action = this.getAttribute('data-action');
+                        const name = this.getAttribute('data-name');
+                        
+                        if (action === 'check-in') {
+                            updateStatus(id, 'checked-in');
+                        } else if (action === 'check-out') {
+                            updateStatus(id, 'checked-out');
+                        } else if (action === 'edit') {
+                            editBooking(id);
+                        } else if (action === 'delete') {
+                            deleteBooking(id, name);
+                        }
+                    });
+                });
+            }
+
+            // Set Filter
+            function setFilter(filter) {
+                currentFilter = filter;
+                document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+                document.getElementById(`tab-${filter === 'Daycation' ? 'day' : 'night'}`).classList.add('active');
+                renderRooms();
+            }
+
+            // Auto-fill arrival time based on stay type
+            function updateArrivalTime() {
+                const stayType = document.getElementById('b-type').value;
+                const timeInput = document.getElementById('b-time');
+                
+                if (stayType === 'Daycation') {
+                    timeInput.value = '12:00';
+                } else if (stayType === 'Staycation') {
+                    timeInput.value = '18:00';
+                } else if (stayType === 'Full Stay') {
+                    timeInput.value = '12:00';
+                }
+            }
+
+            // Auto-update price based on room and stay type
+            function updatePrice() {
+                const room = document.getElementById('b-room').value;
+                const stayType = document.getElementById('b-type').value;
+                const amountInput = document.getElementById('b-amount');
+                
+                if (room && stayType && PRICING[room] && PRICING[room][stayType]) {
+                    amountInput.value = PRICING[room][stayType];
+                }
+            }
+
+            // Open Booking Modal
+            function openBookingModal(roomType = '') {
+                editingId = null;
+                document.getElementById('modal-title').innerHTML = `
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    New Booking
+                `;
+                document.getElementById('booking-form').reset();
+                document.getElementById('b-date').value = selectedDate;
+                if (roomType) document.getElementById('b-room').value = roomType;
+                document.getElementById('b-type').value = currentFilter;
+                updateArrivalTime();
+                updatePrice();
+                document.getElementById('booking-modal').classList.add('active');
+            }
+
+            // Edit Booking
+            function editBooking(id) {
+                const bookingId = parseInt(id);
+                const booking = bookings.find(b => b.id === bookingId);
+                
+                if (!booking) {
+                    console.error('Booking not found with ID:', id, 'Available bookings:', bookings.map(b => b.id));
+                    alert('Error: Booking not found. Please refresh the page and try again.');
+                    return;
+                }
+                
+                editingId = bookingId;
+                document.getElementById('modal-title').innerHTML = `
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    Edit Booking - ${booking.full_name}
+                `;
+                
+                document.getElementById('b-name').value = booking.full_name || '';
+                document.getElementById('b-phone').value = booking.phone_number || '';
+                document.getElementById('b-room').value = booking.room_type || 'Cozy Mini';
+                document.getElementById('b-type').value = booking.stay_type || 'Daycation';
+                document.getElementById('b-date').value = booking.check_in_date || selectedDate;
+                document.getElementById('b-time').value = booking.arrival_time || '12:00';
+                document.getElementById('b-amount').value = booking.total_amount || '';
+                document.getElementById('b-payment').value = booking.payment_status || 'unpaid';
+                document.getElementById('b-status').value = booking.status || 'pending';
+                
+                document.getElementById('booking-modal').classList.add('active');
+            }
+
+            // Delete Booking
+            async function deleteBooking(id, name) {
+                if (confirm(`Are you sure you want to delete booking for ${name}?`)) {
+                    await supabase.from('bookings').delete().eq('id', id);
+                    await loadBookings();
+                }
+            }
+
+            // Logout
+            async function logout() {
+                await supabase.auth.signOut();
+                document.getElementById('app').style.display = 'none';
+                document.getElementById('login-screen').classList.remove('hidden');
+                document.getElementById('login-form').reset();
+                isInitialized = false;
+            }
+
+            // Close Modal
+            function closeModal() {
+                document.getElementById('booking-modal').classList.remove('active');
+                editingId = null;
+            }
+
+            // Update Status
+            async function updateStatus(id, status) {
+                await supabase.from('bookings').update({ status }).eq('id', id);
+                await loadBookings();
+            }
+
+            // Start - Check for existing session
+            checkSession();
+        })();
+    </script>
+</body>
+</html>
