@@ -885,7 +885,7 @@
       flex: 1;
     }
     
-    /* Payment Options */
+    /* IMPROVED Payment Options */
     .payment-options {
       margin-bottom: 32px;
       padding-top: 24px;
@@ -896,64 +896,115 @@
       font-size: 18px;
       font-weight: 700;
       color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    .payment-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
       margin-bottom: 20px;
     }
     
-    .payment-option {
+    .payment-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .payment-btn {
       background: #FFFFFF;
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 12px;
+      padding: 20px 16px;
       cursor: pointer;
       transition: all 0.2s ease;
+      text-align: center;
       position: relative;
     }
-    
-    .payment-option:hover {
-      border-color: var(--text-dark);
-    }
-    
-    .payment-option.selected {
+
+    .payment-btn:hover {
       border-color: var(--text-dark);
       background: #fafafa;
     }
-    
-    .payment-option::before {
-      content: '';
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--border);
-      border-radius: 50%;
-      background: #FFFFFF;
-      transition: all 0.2s ease;
-    }
-    
-    .payment-option.selected::before {
+
+    .payment-btn.selected {
+      background: var(--text-dark);
       border-color: var(--text-dark);
-      border-width: 6px;
     }
-    
-    .payment-info h4 {
+
+    .payment-btn.selected .payment-btn-title,
+    .payment-btn.selected .payment-btn-subtitle {
+      color: white;
+    }
+
+    .payment-btn-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .payment-btn-title {
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-dark);
       margin-bottom: 4px;
     }
-    
-    .payment-info p {
-      font-size: 14px;
+
+    .payment-btn-subtitle {
+      font-size: 13px;
       color: var(--text-muted);
-      margin: 0;
+    }
+
+    .timing-requirements {
+      margin-top: 16px;
+      padding: 18px;
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .timing-requirements.show {
+      display: block;
+    }
+
+    .requirement-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      font-size: 14px;
+    }
+
+    .requirement-row:last-of-type {
+      border-bottom: none;
+      margin-bottom: 8px;
+    }
+
+    .req-label {
+      color: #856404;
+      font-weight: 500;
+    }
+
+    .req-value {
+      color: #856404;
+      font-weight: 700;
+    }
+
+    .requirement-note {
+      margin: 8px 0 0 0;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(0,0,0,0.2);
+      font-size: 13px;
+      color: #856404;
+      line-height: 1.6;
+      font-style: italic;
     }
     
     /* Summary Card */
     .summary-card {
-      background: white;
+      background: #F5F6F8;
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 24px;
@@ -1279,35 +1330,22 @@
     }
     
     .payment-qr-container {
-  text-align: center;
-  margin-bottom: 24px;
-  padding: 20px;
-  background: var(--bg-light);
-  border-radius: 12px;
-  position: relative;
-}
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 20px;
+      background: var(--bg-light);
+      border-radius: 12px;
+      position: relative;
+    }
 
-.payment-qr-container img {
-  max-width: 250px;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .payment-qr-container img {
-    max-width: 200px;
-  }
-}
-
-@media (max-width: 480px) {
-  .payment-qr-container img {
-    max-width: 180px;
-  }
-}
+    .payment-qr-container img {
+      max-width: 250px;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
     
     .download-qr-btn {
       position: absolute;
@@ -1463,63 +1501,22 @@
         padding: 6px 10px;
         font-size: 12px;
       }
+
+      .payment-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .payment-qr-container img {
+        max-width: 200px;
+      }
     }
-    .timing-requirements {
-  margin-top: 16px;
-  padding: 18px;
-  background: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
+    .payment-btn-icon svg {
+  stroke: var(--text-dark);
+  transition: all 0.2s ease;
 }
 
-.requirement-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #e9ecef;
-  font-size: 14px;
-}
-
-.requirement-row:last-of-type {
-  border-bottom: none;
-  margin-bottom: 12px;
-}
-
-.req-label {
-  color: #495057;
-  font-weight: 500;
-}
-
-.req-value {
-  color: #212529;
-  font-weight: 600;
-}
-
-.requirement-note {
-  margin: 12px 0 0 0;
-  padding-top: 12px;
-  border-top: 1px solid #e9ecef;
-  font-size: 13px;
-  color: #6c757d;
-  line-height: 1.6;
-  font-style: italic;
-}
-
-/* Mobile responsive */
-@media (max-width: 480px) {
-  .timing-requirements {
-    padding: 14px;
-  }
-  
-  .requirement-row {
-    font-size: 13px;
-    padding: 8px 0;
-  }
-  
-  .requirement-note {
-    font-size: 12px;
-  }
+.payment-btn.selected .payment-btn-icon svg {
+  stroke: white;
 }
   </style>
 </head>
@@ -1527,12 +1524,11 @@
   <div class="container">
     <!-- Header -->
     <header>
-<div class="back-btn" onclick="window.location.href='index.html'">
-  <svg viewBox="0 0 24 24">
-    <path d="M15 18l-6-6 6-6"/>
-  </svg>
-</div>
-
+      <div class="back-btn" onclick="window.location.href='index.html'">
+        <svg viewBox="0 0 24 24">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </div>
 
       <div class="logo">DIVINE</div>
       <div class="tagline">GUEST HOUSE</div>
@@ -1562,7 +1558,7 @@
               <span>Room Types</span>
             </div>
             <div class="stat">
-              <strong>Rs 600 </strong>
+              <strong>Rs 600</strong>
               <span>per person</span>
             </div>
             <div class="stat">
@@ -1586,12 +1582,11 @@
           <div class="feature-content">
             <h2>Why Book Online?</h2>
             <div class="feature-list">
-              
               <div class="feature-item">
                 <strong>See All Rooms</strong>
                 <p>Browse photos, compare prices, and choose what fits you.</p>
               </div>
-                <div class="feature-item">
+              <div class="feature-item">
                 <strong>Protect your Identity</strong>
                 <p>Don't have to Share your Instagram.</p>
               </div>
@@ -1603,7 +1598,6 @@
                 <strong>Instant Confirmation</strong>
                 <p>Get your booking QR code immediately via WhatsApp.</p>
               </div>
-            
             </div>
           </div>
         </div>
@@ -1818,35 +1812,51 @@
         </div>
       </div>
 
+      <!-- IMPROVED Payment Options -->
       <div class="payment-options">
-        <h3 class="payment-title">Payment Method</h3>
+        <h3 class="payment-title">How would you like to pay?</h3>
+        <p class="payment-subtitle">Choose your preferred payment method</p>
         
-        <div class="payment-option selected" data-payment="pay-now">
-          <div class="payment-info">
-            <h4>Pay Now (Recommended)</h4>
-            <p>Secure your room instantly with eSewa or Khalti payment.</p>
-          </div>
-        </div>
-
-        <div class="payment-option" data-payment="pay-later">
-  <div class="payment-info">
-    <h4>Pay at Hotel</h4>
-    <p>Your Booking will be hold for certain time until tommorrow without payment.</p>
-    <div class="timing-requirements">
-      <div class="requirement-row">
-        <span class="req-label">Daycation Hold Time:</span>
-        <span class="req-value">until 1:00 PM</span>
-      </div>
-      <div class="requirement-row">
-        <span class="req-label">Staycation Hold Time:</span>
-        <span class="req-value">until 8:00 PM</span>
-      </div>
-      <p class="requirement-note">
-        Reservation might pass to others if you arrive after mention time.
-      </p>
+   <div class="payment-buttons">
+  <div class="payment-btn selected" data-payment="pay-now">
+    <div class="payment-btn-icon">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="2"/>
+        <path d="M2 10h20"/>
+        <path d="M7 15h0.01"/>
+        <path d="M11 15h2"/>
+      </svg>
     </div>
+    <div class="payment-btn-title">Pay Now</div>
+    <div class="payment-btn-subtitle">Instant confirmation</div>
+  </div>
+
+  <div class="payment-btn" data-payment="pay-later">
+    <div class="payment-btn-icon">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </div>
+    <div class="payment-btn-title">Pay at Hotel</div>
+    <div class="payment-btn-subtitle">Hold until arrival</div>
   </div>
 </div>
+        <!-- Timing Requirements (hidden by default) -->
+        <div class="timing-requirements" id="timing-requirements">
+          <div class="requirement-row">
+            <span class="req-label">Daycation Hold Until:</span>
+            <span class="req-value">1:00 PM Tomorrow</span>
+          </div>
+          <div class="requirement-row">
+            <span class="req-label">Staycation Hold Until:</span>
+            <span class="req-value">8:00 PM Tomorrow</span>
+          </div>
+          <p class="requirement-note">
+            * Reservation may be released if you arrive after the hold time.
+          </p>
+        </div>
+      </div>
 
       <button class="btn btn-primary" id="btn-book-now">
         <span id="book-text">Continue to Payment</span>
@@ -1922,8 +1932,7 @@
             Download
           </button>
           <img src="assets/dpayment-qr.png" alt="Payment QR" id="payment-qr-img" 
-               onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23f5f5f5%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 font-size=%2216%22%3EPayment QR%3C/text%3E%3C/svg%3E'"
-               style="width: 250px; height: 250px; margin: 0 auto; display: block; border: 1px solid var(--border); border-radius: 8px;">
+               onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23f5f5f5%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 font-size=%2216%22%3EPayment QR%3C/text%3E%3C/svg%3E'">
         </div>
         
         <div class="payment-amount">
@@ -1942,7 +1951,7 @@
         </div>
         
         <button class="btn btn-primary" id="btn-confirm-payment">
-          I've Completed Payment
+        I’ve Paid — Confirm Payment
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 6L9 17l-5-5"/>
           </svg>
@@ -1965,8 +1974,8 @@
     // Initialize Supabase
     function initSupabase() {
       try {
-         const SUPABASE_URL = 'https://fzwnglhxtmtltpysdzma.supabase.co';
-            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6d25nbGh4dG10bHRweXNkem1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODE0MzAsImV4cCI6MjA4NDE1NzQzMH0.PuES2nphqkKU-FqzBge6LlptVibSfeTQcUExEdfTleg';
+        const SUPABASE_URL = 'https://fzwnglhxtmtltpysdzma.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6d25nbGh4dG10bHRweXNkem1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODE0MzAsImV4cCI6MjA4NDE1NzQzMH0.PuES2nphqkKU-FqzBge6LlptVibSfeTQcUExEdfTleg';
         if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
           supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
           console.log('✅ Supabase initialized successfully');
@@ -2136,18 +2145,22 @@
         });
       }
 
-      document.querySelectorAll('.payment-option').forEach(option => {
-        option.addEventListener('click', () => {
-          document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
-          option.classList.add('selected');
-          state.paymentMethod = option.dataset.payment;
+      // IMPROVED Payment Button Handling
+      document.querySelectorAll('.payment-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          state.paymentMethod = btn.dataset.payment;
           
           const btnText = document.getElementById('book-text');
-          const btnArrow = document.getElementById('book-arrow');
+          const timingRequirements = document.getElementById('timing-requirements');
+          
           if (state.paymentMethod === 'pay-now') {
             btnText.textContent = 'Continue to Payment';
+            timingRequirements.classList.remove('show');
           } else {
-            btnText.textContent = 'Confirm Reservation';
+            btnText.textContent = 'Confirm Booking';
+            timingRequirements.classList.add('show');
           }
           
           console.log('✅ Payment method:', state.paymentMethod);
@@ -2185,6 +2198,28 @@
 
       document.getElementById('btn-book-now').addEventListener('click', confirmBooking);
       document.getElementById('btn-download').addEventListener('click', downloadTicket);
+      
+      // Confirm Payment in Modal
+      document.getElementById('btn-confirm-payment').addEventListener('click', async () => {
+        const btn = document.getElementById('btn-confirm-payment');
+        btn.disabled = true;
+        btn.textContent = 'Processing...';
+        
+        try {
+          window.pendingBooking.payment_status = 'paid';
+          window.pendingBooking.status = 'confirmed';
+          
+          await createBooking(window.pendingBooking);
+        } catch (error) {
+          console.error('Payment confirmation error:', error);
+          alert('Failed to confirm payment. Please try again.');
+          btn.disabled = false;
+          btn.innerHTML = `I've Completed Payment
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>`;
+        }
+      });
     }
 
     // Load Available Rooms
@@ -2405,12 +2440,16 @@
           status: 'pending',
           payment_status: 'unpaid',
           qr_token: ref,
-         
         };
 
         if (state.paymentMethod === 'pay-now') {
           showPaymentModal(total);
+          btn.disabled = false;
+          text.style.display = 'inline';
+          arrow.style.display = 'inline';
+          loader.style.display = 'none';
         } else {
+          // Pay at Hotel - Create booking directly with QR code
           await createBooking(window.pendingBooking);
         }
 
@@ -2430,15 +2469,6 @@
       document.getElementById('payment-amount-display').textContent = `Rs ${amount.toLocaleString()}`;
       document.getElementById('payment-amount-small').textContent = `Rs ${amount.toLocaleString()}`;
       modal.classList.add('active');
-      
-      const btn = document.getElementById('btn-book-now');
-      const text = document.getElementById('book-text');
-      const arrow = document.getElementById('book-arrow');
-      const loader = document.getElementById('book-loader');
-      btn.disabled = false;
-      text.style.display = 'inline';
-      arrow.style.display = 'inline';
-      loader.style.display = 'none';
     }
 
     // Close Payment Modal
@@ -2478,101 +2508,80 @@
         sendWhatsAppConfirmation(data[0]);
       }
       
+      // FIXED: Generate QR code immediately
       generateTicket(data[0]);
       goToStep('success');
       
       closePaymentModal();
     }
 
-    // Confirm Payment Button Handler
-    document.addEventListener('DOMContentLoaded', () => {
-      const confirmPaymentBtn = document.getElementById('btn-confirm-payment');
-      if (confirmPaymentBtn) {
-        confirmPaymentBtn.addEventListener('click', async () => {
-          confirmPaymentBtn.disabled = true;
-          confirmPaymentBtn.textContent = 'Processing...';
-          
-          try {
-            window.pendingBooking.payment_status = 'paid';
-            window.pendingBooking.status = 'confirmed';
-            
-            await createBooking(window.pendingBooking);
-          } catch (error) {
-            console.error('Payment confirmation error:', error);
-            alert('Failed to confirm payment. Please try again.');
-            confirmPaymentBtn.disabled = false;
-            confirmPaymentBtn.textContent = "I've Completed Payment";
-          }
-        });
-      }
-    });
-
     // Send WhatsApp Confirmation
     function sendWhatsAppConfirmation(booking) {
-      const message = `*PAYMENT Confirming...*
+ const message = `Payment done.
 
-🏨 *Divine Guest House Booking*
-━━━━━━━━━━━━━━━━━
+Divine Guest House
 
-📅 Date: ${new Date(booking.check_in_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-🕐 Time: ${STAY_TIMES[booking.stay_type].display}
-🛏️ Room: ${booking.room_type}
-👤 Guest: ${booking.full_name}
-📞 Phone: ${booking.phone_number}
-💰 Paid: Rs ${booking.total_amount.toLocaleString()}
-🎫 Ref: ${booking.qr_token}
+Check-in Date: ${new Date(booking.check_in_date).toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric'
+})}
+Stay Type: ${STAY_TIMES[booking.stay_type].display}
+Room Type: ${booking.room_type}
 
- *Send Us this message to book your room*
+Guest Name: ${booking.full_name}
+Phone Number: ${booking.phone_number}
 
-━━━━━━━━━━━━━━━━━
-Thank you for booking with us!`;
+Amount Paid: Rs ${booking.total_amount.toLocaleString()}
+Payment Method: eSewa / Khalti / Other
 
-      const whatsappUrl = `https://wa.me/${9861828821}?text=${encodeURIComponent(message)}`;
+
+Booking ID: ${booking.qr_token}
+
+Please verify my payment and confirm my booking.
+`;
+
+
+      const whatsappUrl = `https://wa.me/9861828821?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
     }
 
-    // Generate Ticket
+    // Generate Ticket with QR Code
     function generateTicket(booking) {
-      const successTitle = document.getElementById('success-title');
-      const successSubtitle = document.getElementById('success-subtitle');
-      
-      if (booking.payment_status === 'paid') {
-        successTitle.textContent = 'Payment Reviewing!';
-        successSubtitle.textContent = 'You will receive confirmation on WhatsApp shortly.';
-      } else {
-        successTitle.textContent = 'Reservation Created';
-        successSubtitle.textContent = 'Your Room will be held for certain time until tomorrow.';
-      }
-
-      document.getElementById('ticket-ref').textContent = booking.qr_token;
-
       const qrContainer = document.getElementById('qr-code');
       qrContainer.innerHTML = '';
+      
+      // Generate QR Code
       new QRCode(qrContainer, {
         text: booking.qr_token,
-        width: 180,
-        height: 180,
-        colorDark: '#111111',
-        colorLight: '#ffffff',
+        width: 200,
+        height: 200,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
       });
 
-      const formatDate = (dateStr) => {
-        const date = new Date(dateStr);
-        const options = { month: 'short', day: 'numeric', year: 'numeric' };
-        return date.toLocaleDateString('en-US', options);
-      };
-
-      const statusText = booking.payment_status === 'paid' ? 'PAID' : 'PAY AT HOTEL';
-      const statusColor = booking.payment_status === 'paid' ? '#10b981' : '#f59e0b';
-
-      document.getElementById('ticket-details').innerHTML = `
+      // Update ticket details
+      const detailsContainer = document.getElementById('ticket-details');
+      detailsContainer.innerHTML = `
         <div class="ticket-row">
           <span class="ticket-label">Guest Name</span>
           <span class="ticket-value">${booking.full_name}</span>
         </div>
         <div class="ticket-row">
-          <span class="ticket-label">Room Type</span>
+          <span class="ticket-label">Phone</span>
+          <span class="ticket-value">+977 ${booking.phone_number}</span>
+        </div>
+        <div class="ticket-row">
+          <span class="ticket-label">Date</span>
+          <span class="ticket-value">${new Date(booking.check_in_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+        </div>
+        <div class="ticket-row">
+          <span class="ticket-label">Time</span>
+          <span class="ticket-value">${STAY_TIMES[booking.stay_type].display}</span>
+        </div>
+        <div class="ticket-row">
+          <span class="ticket-label">Room</span>
           <span class="ticket-value">${booking.room_type}</span>
         </div>
         <div class="ticket-row">
@@ -2580,195 +2589,69 @@ Thank you for booking with us!`;
           <span class="ticket-value">${booking.stay_type}</span>
         </div>
         <div class="ticket-row">
-          <span class="ticket-label">Date</span>
-          <span class="ticket-value">${formatDate(booking.check_in_date)}</span>
-        </div>
-        <div class="ticket-row">
-          <span class="ticket-label">Time</span>
-          <span class="ticket-value">${STAY_TIMES[booking.stay_type].display}</span>
-        </div>
-        <div class="ticket-row">
-          <span class="ticket-label">Phone</span>
-          <span class="ticket-value">${booking.phone_number}</span>
-        </div>
-        <div class="ticket-row" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);">
-          <span class="ticket-label" style="font-weight: 700; color: var(--text-dark);">Total Amount</span>
-          <span class="ticket-value" style="font-size: 20px; font-weight: 700;">Rs ${booking.total_amount.toLocaleString()}</span>
-          </div>
-        <div class="ticket-row">
-          <span class="ticket-label">Payment Status</span>
-          <span class="ticket-value" style="color: ${statusColor}; font-weight: 700;">${statusText}</span>
+          <span class="ticket-label">Total Paid</span>
+          <span class="ticket-value">Rs ${booking.total_amount.toLocaleString()}</span>
         </div>
       `;
+
+      document.getElementById('ticket-ref').textContent = booking.qr_token;
+
+      // Update success message based on payment method
+      const successTitle = document.getElementById('success-title');
+      const successSubtitle = document.getElementById('success-subtitle');
+      
+      if (booking.payment_status === 'paid') {
+        successTitle.textContent = 'Booking Confirmed!';
+        successSubtitle.textContent = 'Show this QR code at the reception';
+      } else {
+        successTitle.textContent = 'Reservation Held!';
+        successSubtitle.textContent = 'Complete payment at hotel check-in';
+      }
+
+      // Update share button functionality
+      const shareBtn = document.getElementById('btn-share');
+      shareBtn.onclick = () => sendWhatsAppConfirmation(booking);
     }
 
-    // Download Ticket
+    // Download Ticket as Image
     async function downloadTicket() {
       const ticket = document.getElementById('ticket-capture');
-      const btn = document.getElementById('btn-download');
       
-      btn.disabled = true;
-      btn.innerHTML = `
-        <div class="loader-small"></div>
-        Generating...
-      `;
-
       try {
         const canvas = await html2canvas(ticket, {
           backgroundColor: '#ffffff',
           scale: 2,
           logging: false
         });
-
+        
         const link = document.createElement('a');
         link.download = `Divine-Booking-${document.getElementById('ticket-ref').textContent}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
-
-        btn.disabled = false;
-        btn.innerHTML = `
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-15"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-          Download Ticket
-        `;
+        
+        console.log('✅ Ticket downloaded');
       } catch (error) {
-        console.error('Download error:', error);
-        alert('Failed to download ticket. Please try screenshot instead.');
-        btn.disabled = false;
-        btn.innerHTML = `
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-15"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-          Download Ticket
-        `;
+        console.error('❌ Download error:', error);
+        alert('Failed to download ticket. Please take a screenshot instead.');
       }
     }
 
-    // Share on WhatsApp
-    document.addEventListener('DOMContentLoaded', () => {
-      const shareBtn = document.getElementById('btn-share');
-      if (shareBtn) {
-        shareBtn.addEventListener('click', () => {
-          const ref = document.getElementById('ticket-ref').textContent;
-          const name = window.pendingBooking?.full_name || 'Guest';
-          const room = window.pendingBooking?.room_type || 'Room';
-          const date = window.pendingBooking?.check_in_date || '';
-          const stay = window.pendingBooking?.stay_type || '';
-          
-          const message = `🎉 *Booking Confirmed!*
-
-🏨 Divine Guest House
-📅 ${new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-🛏️ ${room}
-⏰ ${STAY_TIMES[stay]?.display || 'N/A'}
-🎫 Booking Ref: ${ref}
-
-Looking forward to welcoming you!`;
-
-          const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-          window.open(whatsappUrl, '_blank');
-        });
-      }
-    });
-
-    // Navigation between steps
+    // Navigation
     function goToStep(step) {
       document.querySelectorAll('.view').forEach(view => {
         view.classList.remove('active');
       });
 
-      let viewId;
-      if (step === 'success') {
-        viewId = 'step-success';
-      } else {
-        viewId = `step-${step}`;
-      }
+      const stepId = step === 'success' ? 'step-success' : `step-${step}`;
+      document.getElementById(stepId).classList.add('active');
 
-      const targetView = document.getElementById(viewId);
-      if (targetView) {
-        targetView.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-
-      // Special handling for landing page
-      if (step === 1) {
-        const landingPage = document.getElementById('landing-page');
-        if (landingPage) {
-          landingPage.classList.remove('active');
-        }
-      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      console.log('✅ Navigated to:', stepId);
     }
 
     // Initialize on page load
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
-
-    // Prevent form submission on Enter key
-    document.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') {
-        e.preventDefault();
-      }
-    });
-
-    // Auto-format phone number
-    document.addEventListener('DOMContentLoaded', () => {
-      const phoneInput = document.getElementById('guest-phone');
-      if (phoneInput) {
-        phoneInput.addEventListener('input', (e) => {
-          e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
-        });
-      }
-    });
-
-    // Handle browser back button
-    window.addEventListener('popstate', (e) => {
-      // Optionally handle back button navigation
-      console.log('Browser back button pressed');
-    });
-
-    // Debug helpers (remove in production)
-    window.debugState = () => {
-      console.log('Current State:', state);
-      console.log('Pending Booking:', window.pendingBooking);
-    };
-
-    window.testSupabase = async () => {
-      if (!supabaseClient) {
-        console.error('Supabase not initialized');
-        return;
-      }
-      
-      try {
-        const { data, error } = await supabaseClient
-          .from('bookings')
-          .select('*')
-          .limit(1);
-        
-        if (error) throw error;
-        console.log('✅ Supabase connection working:', data);
-      } catch (error) {
-        console.error('❌ Supabase test failed:', error);
-      }
-    };
-
-    // Error boundary for global errors
-    window.addEventListener('error', (e) => {
-      console.error('Global error:', e.error);
-      // Optionally show user-friendly error message
-    });
-
-    window.addEventListener('unhandledrejection', (e) => {
-      console.error('Unhandled promise rejection:', e.reason);
-      // Optionally show user-friendly error message
-    });
+    window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
