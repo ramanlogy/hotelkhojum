@@ -1521,21 +1521,6 @@
     font-size: 12px;
   }
 }
-
-  .no-rooms {
-    display: inline-flex;
-    align-items: bottom-right;
-    gap: 6px;
-    cursor: pointer;
-    color: #111;
-    font-size: 14px;
-  }
-
-  .no-rooms:hover {
-    text-decoration: underline;
-  }
-
-
   </style>
 </head>
 <body>
@@ -1738,8 +1723,6 @@
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
       </button>
-     
-
     </div>
 
     <!-- Step 2: Room Selection -->
@@ -1778,17 +1761,9 @@
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </button>
-           <div class="no-rooms" onclick="window.location.href='index.html'">
-  <span>No rooms here. Explore nearby stays</span>
-  <svg class="arrow" viewBox="0 0 24 24" width="18" height="18">
-    <path d="M5 12h14M13 5l6 7-6 7" fill="none" stroke="currentColor" stroke-width="2"/>
-  </svg>
-</div>
         </div>
-        
       </div>
     </div>
-    
 
     <!-- Step 3: Guest Details -->
     <div class="view" id="step-3">
