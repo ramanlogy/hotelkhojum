@@ -48,6 +48,249 @@
         .header-actions {
             display: flex;
             gap: 12px;
+            align-items: center;
+        }
+        
+        /* Notification Bell */
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            background: white;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .notification-bell:hover {
+            background: #fafafa;
+            border-color: #1a1a1a;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: #dc2626;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 18px;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Notification Panel */
+        .notification-panel {
+            position: fixed;
+            right: 20px;
+            top: 80px;
+            width: 380px;
+            max-height: 600px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            display: none;
+            flex-direction: column;
+            z-index: 150;
+        }
+        
+        .notification-panel.active {
+            display: flex;
+        }
+        
+        .notification-header {
+            padding: 16px 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .notification-title {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .notification-tabs {
+            display: flex;
+            gap: 8px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 4px;
+        }
+        
+        .notification-tab {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .notification-tab.active {
+            background: white;
+            color: #1a1a1a;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .notification-tab-badge {
+            background: #dc2626;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 18px;
+        }
+        
+        .notification-tab.active .notification-tab-badge {
+            background: #1a1a1a;
+        }
+        
+        .notification-clear {
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            margin-top: 8px;
+            text-align: center;
+        }
+        
+        .notification-clear:hover {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+        
+        .notification-list {
+            overflow-y: auto;
+            max-height: 500px;
+        }
+        
+        .notification-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .notification-item:hover {
+            background: #fafafa;
+        }
+        
+        .notification-item.unread {
+            background: #f0f9ff;
+        }
+        
+        .notification-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: #0a8040;
+            border-radius: 50%;
+        }
+        
+        .notification-content {
+            margin-left: 12px;
+        }
+        
+        .notification-guest {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #1a1a1a;
+        }
+        
+        .notification-details {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        
+        .notification-detail {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .notification-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 4px;
+        }
+        
+        .notification-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .notification-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .notification-btn.confirm {
+            background: #0a8040;
+            color: white;
+        }
+        
+        .notification-btn.view {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+        
+        .notification-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        .notification-empty {
+            padding: 60px 20px;
+            text-align: center;
+            color: #999;
+        }
+        
+        .notification-empty-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border-radius: 12px;
         }
         
         /* Login */
@@ -91,7 +334,18 @@
             margin-bottom: 16px;
         }
         
-        input {
+        .form-label {
+            display: block;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input, select, textarea {
             width: 100%;
             padding: 16px;
             border: 2px solid #e0e0e0;
@@ -101,7 +355,7 @@
             transition: all 0.2s;
         }
         
-        input:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #1a1a1a;
         }
@@ -195,6 +449,12 @@
             font-size: 24px;
             font-weight: 700;
             color: #1a1a1a;
+        }
+        
+        .stat-subtext {
+            font-size: 11px;
+            color: #999;
+            margin-top: 4px;
         }
         
         /* Date Selector */
@@ -602,19 +862,8 @@
         }
         
         select {
-            width: 100%;
-            padding: 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            font-family: inherit;
-            background: white;
             cursor: pointer;
-        }
-        
-        select:focus {
-            outline: none;
-            border-color: #1a1a1a;
+            background: white;
         }
         
         .empty-state {
@@ -691,6 +940,12 @@
             .search-box {
                 max-width: 100%;
             }
+            
+            .notification-panel {
+                right: 10px;
+                left: 10px;
+                width: auto;
+            }
         }
     </style>
 </head>
@@ -724,6 +979,15 @@
         <div class="header">
             <div class="logo">DIVINE GUEST HOUSE</div>
             <div class="header-actions">
+                <!-- Notification Bell -->
+                <div class="notification-bell" id="notification-bell">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <div class="notification-badge" id="notification-badge" style="display: none;">0</div>
+                </div>
+                
                 <button class="btn btn-small btn-secondary" id="logout-btn">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
@@ -737,6 +1001,48 @@
                     </svg>
                     New Booking
                 </button>
+            </div>
+        </div>
+
+        <!-- Notification Panel -->
+        <div class="notification-panel" id="notification-panel">
+            <div class="notification-header">
+                <div class="notification-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    Bookings
+                </div>
+                <div class="notification-tabs">
+                    <div class="notification-tab active" id="tab-latest" data-tab="latest">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                        Latest
+                        <span class="notification-tab-badge" id="badge-latest">0</span>
+                    </div>
+                    <div class="notification-tab" id="tab-recent" data-tab="recent">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        Recent
+                        <span class="notification-tab-badge" id="badge-recent">0</span>
+                    </div>
+                </div>
+                <div class="notification-clear" id="notification-clear">Mark all as read</div>
+            </div>
+            <div class="notification-list" id="notification-list">
+                <div class="notification-empty">
+                    <div class="notification-empty-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </div>
+                    <div>No new notifications</div>
+                </div>
             </div>
         </div>
 
@@ -765,9 +1071,10 @@
                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                             </svg>
                         </div>
-                        <div class="stat-label">Total Bookings</div>
+                        <div class="stat-label">Today's Bookings</div>
                     </div>
                     <div class="stat-value" id="stat-bookings">0</div>
+                    <div class="stat-subtext">For selected date</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-header">
@@ -792,6 +1099,7 @@
                         <div class="stat-label">Day Slots Left</div>
                     </div>
                     <div class="stat-value" id="stat-day">0</div>
+                    <div class="stat-subtext">Currently available</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-header">
@@ -803,6 +1111,7 @@
                         <div class="stat-label">Night Slots Left</div>
                     </div>
                     <div class="stat-value" id="stat-night">0</div>
+                    <div class="stat-subtext">Currently available</div>
                 </div>
             </div>
 
@@ -923,40 +1232,61 @@
             </div>
             <form id="booking-form">
                 <div class="form-group">
-                    <input type="text" id="b-name" placeholder="Guest Name" required>
+                   
+                    <input type="text" id="b-name" placeholder=" Guest name" required>
                 </div>
                 <div class="form-group">
-                    <input type="tel" id="b-phone" placeholder="Phone Number" required>
+                 
+                    <input type="tel" id="b-phone" placeholder=" phone number" required>
                 </div>
                 <div class="form-row">
-                    <select id="b-room" required>
-                        <option value="Cozy Mini">Cozy Mini</option>
-                        <option value="Compact Twin">Compact Twin</option>
-                        <option value="Convenient Queen">Convenient Queen</option>
-                    </select>
-                    <select id="b-type" required>
-                        <option value="Daycation">Day Time</option>
-                        <option value="Staycation">Night Time</option>
-                        <option value="Full Stay">Full Stay</option>
-                    </select>
+                    <div class="form-group">
+                        <label class="form-label">Room Type</label>
+                        <select id="b-room" required>
+                            <option value="Cozy Mini">Cozy Mini</option>
+                            <option value="Compact Twin">Compact Twin</option>
+                            <option value="Convenient Queen">Convenient Queen</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Stay Type</label>
+                        <select id="b-type" required>
+                            <option value="Daycation">Day Time</option>
+                            <option value="Staycation">Night Time</option>
+                            <option value="Full Stay">Full Stay</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-row">
-                    <input type="date" id="b-date" required>
-                    <input type="time" id="b-time" placeholder="Arrival Time" readonly style="background-color: #f9fafb;">
+                    <div class="form-group">
+                        <label class="form-label">Check-in Date</label>
+                        <input type="date" id="b-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Arrival Time (Adjustable)</label>
+                        <input type="time" id="b-time" placeholder="Arrival Time">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <input type="number" id="b-amount" placeholder="Amount per person (Rs)" required>
+                    <label class="form-label">Amount (x2 people included)</label>
+                    <input type="number" id="b-amount" placeholder="Enter amount for 2 people" required>
                 </div>
                 <div class="form-row">
-                    <select id="b-payment">
-                        <option value="unpaid">Unpaid</option>
-                        <option value="paid">Paid</option>
-                    </select>
-                    <select id="b-status">
-                        <option value="pending">Pending</option>
-                        <option value="checked-in">Checked In</option>
-                        <option value="checked-out">Checked Out</option>
-                    </select>
+                    <div class="form-group">
+                        <label class="form-label">Payment Status</label>
+                        <select id="b-payment">
+                            <option value="unpaid">Unpaid</option>
+                            <option value="paid">Paid</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Booking Status</label>
+                        <select id="b-status">
+                            <option value="pending">Pending</option>
+                            <option value="checked-in">Checked In</option>
+                            <option value="checked-out">Checked Out</option>
+                        </select>
+                    </div>
                 </div>
                 <button type="submit" class="btn">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -974,12 +1304,12 @@
         (function() {
             'use strict';
             
-            // Supabase client - only initialize once
-            const SUPABASE_URL = 'https://mprksxhzbqpuxoseydgu.supabase.co';
-            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wcmtzeGh6YnFwdXhvc2V5ZGd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk3NDI5NzEsImV4cCI6MjA4NTMxODk3MX0.BrBdBw2tO1LcvPWhCrXekZndxlAOabiLFdr7R7gmxsc';
+            // Supabase client
+            const SUPABASE_URL = 'https://fzwnglhxtmtltpysdzma.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6d25nbGh4dG10bHRweXNkem1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODE0MzAsImV4cCI6MjA4NDE1NzQzMH0.PuES2nphqkKU-FqzBge6LlptVibSfeTQcUExEdfTleg';
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            // Configuration - Divine Guest House Rooms
+            // Configuration
             const ROOMS = ['Cozy Mini', 'Compact Twin', 'Convenient Queen'];
             const CAPACITY = { 
                 'Cozy Mini': 5, 
@@ -987,32 +1317,33 @@
                 'Convenient Queen': 1 
             };
             
-            // Pricing per person (half of room price)
             const PRICING = {
                 'Cozy Mini': {
-                    'Daycation': 600,      // Half of 1200
-                    'Staycation': 750,     // Half of 1500
-                    'Full Stay': 1250      // Half of 2500
+                    'Daycation': 1200,  // 600 x 2 people
+                    'Staycation': 1500, // 750 x 2 people
+                    'Full Stay': 2500   // 1250 x 2 people
                 },
                 'Compact Twin': {
-                    'Daycation': 700,      // Half of 1400
-                    'Staycation': 850,     // Half of 1700
-                    'Full Stay': 1450      // Half of 2900
+                    'Daycation': 1400,  // 700 x 2 people
+                    'Staycation': 1700, // 850 x 2 people
+                    'Full Stay': 2900   // 1450 x 2 people
                 },
                 'Convenient Queen': {
-                    'Daycation': 850,      // Half of 1700
-                    'Staycation': 1000,    // Half of 2000
-                    'Full Stay': 1750      // Half of 3500
+                    'Daycation': 1700,  // 850 x 2 people
+                    'Staycation': 2000, // 1000 x 2 people
+                    'Full Stay': 3500   // 1750 x 2 people
                 }
             };
             
             // State
             let bookings = [];
+            let notifications = [];
             let selectedDate = new Date().toISOString().split('T')[0];
             let currentFilter = 'Daycation';
+            let currentNotificationTab = 'latest'; // Track which notification tab is active
             let editingId = null;
-
             let isInitialized = false;
+            let lastBookingCount = 0;
 
             // Login
             document.getElementById('login-form').addEventListener('submit', async (e) => {
@@ -1042,14 +1373,401 @@
                 
                 // Real-time updates
                 supabase.channel('bookings')
-                    .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, () => {
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'bookings' }, (payload) => {
+                        handleNewBooking(payload.new);
+                    })
+                    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'bookings' }, () => {
+                        loadBookings();
+                    })
+                    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'bookings' }, () => {
                         loadBookings();
                     })
                     .subscribe();
             }
 
+            // Handle New Booking (for notifications)
+            function handleNewBooking(booking) {
+                // Add to notifications
+                notifications.unshift({
+                    id: booking.id,
+                    booking: booking,
+                    read: false,
+                    timestamp: new Date()
+                });
+                
+                // Keep only last 100 notifications in memory
+                if (notifications.length > 100) {
+                    notifications = notifications.slice(0, 100);
+                }
+                
+                // Save to localStorage for permanent history
+                saveNotificationHistory(booking);
+                
+                updateNotificationBadge();
+                renderNotifications();
+                loadBookings();
+            }
+
+            // Save notification to permanent history (organized by date)
+            function saveNotificationHistory(booking) {
+                try {
+                    const history = JSON.parse(localStorage.getItem('bookingHistory') || '{}');
+                    const dateKey = booking.check_in_date;
+                    
+                    if (!history[dateKey]) {
+                        history[dateKey] = [];
+                    }
+                    
+                    // Add booking to that date if not already there
+                    const exists = history[dateKey].some(b => b.id === booking.id);
+                    if (!exists) {
+                        history[dateKey].push({
+                            id: booking.id,
+                            booking: booking,
+                            timestamp: new Date().toISOString()
+                        });
+                    }
+                    
+                    localStorage.setItem('bookingHistory', JSON.stringify(history));
+                } catch (error) {
+                    console.error('Error saving to history:', error);
+                }
+            }
+
+            // Load notification history from localStorage
+            function loadNotificationHistory() {
+                try {
+                    const history = JSON.parse(localStorage.getItem('bookingHistory') || '{}');
+                    const allHistoricalBookings = [];
+                    
+                    // Flatten all dates into single array
+                    Object.keys(history).forEach(dateKey => {
+                        history[dateKey].forEach(item => {
+                            allHistoricalBookings.push({
+                                id: item.id,
+                                booking: item.booking,
+                                read: true, // Historical items are marked as read
+                                timestamp: new Date(item.timestamp)
+                            });
+                        });
+                    });
+                    
+                    // Sort by timestamp (newest first)
+                    allHistoricalBookings.sort((a, b) => b.timestamp - a.timestamp);
+                    
+                    return allHistoricalBookings;
+                } catch (error) {
+                    console.error('Error loading history:', error);
+                    return [];
+                }
+            }
+
+            // Update Notification Badge
+            function updateNotificationBadge() {
+                const now = new Date();
+                const oneHourAgo = new Date(now - 60 * 60 * 1000); // 1 hour ago
+                
+                // Latest = last 1 hour, unread
+                const latestUnread = notifications.filter(n => 
+                    !n.read && new Date(n.timestamp) > oneHourAgo
+                ).length;
+                
+                // Recent = total count from permanent history
+                const historicalBookings = loadNotificationHistory();
+                const recentCount = historicalBookings.length;
+                
+                // Main badge shows latest only
+                const badge = document.getElementById('notification-badge');
+                if (latestUnread > 0) {
+                    badge.textContent = latestUnread > 99 ? '99+' : latestUnread;
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
+                
+                // Update tab badges
+                const badgeLatest = document.getElementById('badge-latest');
+                const badgeRecent = document.getElementById('badge-recent');
+                
+                if (badgeLatest) {
+                    badgeLatest.textContent = latestUnread;
+                    badgeLatest.style.display = latestUnread > 0 ? 'inline-block' : 'none';
+                }
+                
+                if (badgeRecent) {
+                    badgeRecent.textContent = recentCount > 999 ? '999+' : recentCount;
+                    badgeRecent.style.display = recentCount > 0 ? 'inline-block' : 'none';
+                }
+            }
+
+            // Render Notifications
+            function renderNotifications() {
+                const container = document.getElementById('notification-list');
+                
+                const now = new Date();
+                const oneHourAgo = new Date(now - 60 * 60 * 1000);
+                
+                let filteredNotifications;
+                if (currentNotificationTab === 'latest') {
+                    // Latest = last 1 hour from in-memory notifications
+                    filteredNotifications = notifications.filter(n => 
+                        new Date(n.timestamp) > oneHourAgo
+                    );
+                } else {
+                    // Recent = ALL historical bookings from localStorage, organized by date
+                    const historicalBookings = loadNotificationHistory();
+                    filteredNotifications = historicalBookings;
+                }
+                
+                if (filteredNotifications.length === 0) {
+                    container.innerHTML = `
+                        <div class="notification-empty">
+                            <div class="notification-empty-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                </svg>
+                            </div>
+                            <div>No ${currentNotificationTab} bookings</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '';
+                
+                // Group by date for Recent tab
+                if (currentNotificationTab === 'recent') {
+                    const groupedByDate = {};
+                    filteredNotifications.forEach(notif => {
+                        const dateKey = notif.booking.check_in_date;
+                        if (!groupedByDate[dateKey]) {
+                            groupedByDate[dateKey] = [];
+                        }
+                        groupedByDate[dateKey].push(notif);
+                    });
+                    
+                    // Sort dates (newest first)
+                    const sortedDates = Object.keys(groupedByDate).sort((a, b) => new Date(b) - new Date(a));
+                    
+                    sortedDates.forEach(dateKey => {
+                        const dateObj = new Date(dateKey);
+                        const formattedDate = dateObj.toLocaleDateString('en-US', { 
+                            weekday: 'short', 
+                            month: 'short', 
+                            day: 'numeric',
+                            year: 'numeric'
+                        });
+                        
+                        html += `
+                            <div style="padding: 12px 20px; background: #f5f5f5; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #666; border-bottom: 1px solid #e0e0e0;">
+                                ${formattedDate}
+                            </div>
+                        `;
+                        
+                        groupedByDate[dateKey].forEach(notif => {
+                            html += renderNotificationItem(notif);
+                        });
+                    });
+                } else {
+                    // Latest tab - just list chronologically
+                    filteredNotifications.forEach(notif => {
+                        html += renderNotificationItem(notif);
+                    });
+                }
+                
+                container.innerHTML = html;
+                attachNotificationEventListeners();
+            }
+
+            // Render a single notification item
+            function renderNotificationItem(notif) {
+                const b = notif.booking;
+                const timeAgo = getTimeAgo(notif.timestamp);
+                const unreadClass = notif.read ? '' : 'unread';
+                
+                return `
+                    <div class="notification-item ${unreadClass}" data-id="${notif.id}">
+                        <div class="notification-content">
+                            <div class="notification-guest">${b.full_name}</div>
+                            <div class="notification-details">
+                                <span class="notification-detail">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    </svg>
+                                    ${formatDate(b.check_in_date)}
+                                </span>
+                                <span>•</span>
+                                <span class="notification-detail">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    </svg>
+                                    ${b.room_type}
+                                </span>
+                                <span>•</span>
+                                <span class="notification-detail">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        ${b.stay_type === 'Daycation' ? 
+                                            '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line>' : 
+                                            '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'
+                                        }
+                                    </svg>
+                                    ${b.stay_type}
+                                </span>
+                                <span>•</span>
+                                <span class="notification-detail">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                    Rs ${b.total_amount}
+                                </span>
+                            </div>
+                            <div class="notification-time">${timeAgo}</div>
+                            <div class="notification-actions">
+                                <button class="notification-btn confirm" data-booking-id="${b.id}">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Mark Done
+                                </button>
+                                <button class="notification-btn view" data-booking-id="${b.id}">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    View
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Attach event listeners to notification items
+            function attachNotificationEventListeners() {
+                const container = document.getElementById('notification-list');
+                
+                container.querySelectorAll('.notification-item').forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        if (!e.target.closest('.notification-btn')) {
+                            const id = parseInt(this.getAttribute('data-id'));
+                            markAsRead(id);
+                        }
+                    });
+                });
+                
+                container.querySelectorAll('.notification-btn.confirm').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const bookingId = parseInt(this.getAttribute('data-booking-id'));
+                        confirmBooking(bookingId);
+                    });
+                });
+                
+                container.querySelectorAll('.notification-btn.view').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const bookingId = parseInt(this.getAttribute('data-booking-id'));
+                        viewBooking(bookingId);
+                    });
+                });
+            }
+
+            // Mark notification as read
+            function markAsRead(notifId) {
+                const notif = notifications.find(n => n.id === notifId);
+                if (notif) {
+                    notif.read = true;
+                    updateNotificationBadge();
+                    renderNotifications();
+                }
+            }
+
+            // Mark all as read
+            function markAllAsRead() {
+                notifications.forEach(n => n.read = true);
+                updateNotificationBadge();
+                renderNotifications();
+            }
+
+            // Mark notification as done (just mark as read, don't auto check-in)
+            async function confirmBooking(bookingId) {
+                // Just mark the notification as read - don't change booking status
+                const notif = notifications.find(n => n.booking.id === bookingId);
+                if (notif) notif.read = true;
+                updateNotificationBadge();
+                renderNotifications();
+            }
+
+            // View booking from notification
+            function viewBooking(bookingId) {
+                editBooking(bookingId);
+                const notif = notifications.find(n => n.booking.id === bookingId);
+                if (notif) notif.read = true;
+                updateNotificationBadge();
+                renderNotifications();
+                closeNotificationPanel();
+            }
+
+            // Format date helper
+            function formatDate(dateStr) {
+                const date = new Date(dateStr);
+                const today = new Date();
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                
+                if (date.toDateString() === today.toDateString()) {
+                    return 'Today';
+                } else if (date.toDateString() === tomorrow.toDateString()) {
+                    return 'Tomorrow';
+                } else {
+                    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                }
+            }
+
+            // Time ago helper
+            function getTimeAgo(timestamp) {
+                const now = new Date();
+                const diff = Math.floor((now - timestamp) / 1000); // seconds
+                
+                if (diff < 60) return 'Just now';
+                if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+                if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+                return `${Math.floor(diff / 86400)}d ago`;
+            }
+
             // Setup event listeners
             function setupEventListeners() {
+                // Notification bell
+                document.getElementById('notification-bell').addEventListener('click', () => {
+                    toggleNotificationPanel();
+                });
+                
+                // Notification tabs
+                document.querySelectorAll('.notification-tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        currentNotificationTab = this.getAttribute('data-tab');
+                        document.querySelectorAll('.notification-tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        renderNotifications();
+                    });
+                });
+                
+                // Clear all notifications
+                document.getElementById('notification-clear').addEventListener('click', () => {
+                    markAllAsRead();
+                });
+                
+                // Close notification panel when clicking outside
+                document.addEventListener('click', (e) => {
+                    const panel = document.getElementById('notification-panel');
+                    const bell = document.getElementById('notification-bell');
+                    if (!panel.contains(e.target) && !bell.contains(e.target)) {
+                        closeNotificationPanel();
+                    }
+                });
+                
                 // Header buttons
                 document.getElementById('new-booking-btn').addEventListener('click', () => {
                     openBookingModal();
@@ -1085,10 +1803,10 @@
                     });
                 });
 
-                // Room and stay type change - auto-update price
+                // Room and stay type change
                 document.getElementById('b-room').addEventListener('change', updatePrice);
                 document.getElementById('b-type').addEventListener('change', function() {
-                    updateArrivalTime();
+                    updateDefaultArrivalTime();
                     updatePrice();
                 });
 
@@ -1141,6 +1859,17 @@
                 });
             }
 
+            // Toggle notification panel
+            function toggleNotificationPanel() {
+                const panel = document.getElementById('notification-panel');
+                panel.classList.toggle('active');
+            }
+
+            // Close notification panel
+            function closeNotificationPanel() {
+                document.getElementById('notification-panel').classList.remove('active');
+            }
+
             // Check session on page load
             async function checkSession() {
                 const { data: { session } } = await supabase.auth.getSession();
@@ -1174,7 +1903,6 @@
                 
                 container.innerHTML = html;
                 
-                // Add click handlers
                 container.querySelectorAll('.date-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const date = this.getAttribute('data-date');
@@ -1205,7 +1933,34 @@
                     .order('created_at', { ascending: false });
                 
                 if (!error && data) {
+                    // Check for new bookings to add to notifications
+                    if (bookings.length > 0 && data.length > lastBookingCount) {
+                        const newBookings = data.slice(0, data.length - lastBookingCount);
+                        newBookings.forEach(booking => {
+                            // Only add if not already in notifications
+                            if (!notifications.find(n => n.booking.id === booking.id)) {
+                                notifications.unshift({
+                                    id: booking.id,
+                                    booking: booking,
+                                    read: false,
+                                    timestamp: new Date(booking.created_at)
+                                });
+                                
+                                // Also save to permanent history
+                                saveNotificationHistory(booking);
+                            }
+                        });
+                        
+                        if (notifications.length > 100) {
+                            notifications = notifications.slice(0, 100);
+                        }
+                        
+                        updateNotificationBadge();
+                        renderNotifications();
+                    }
+                    
                     bookings = data;
+                    lastBookingCount = data.length;
                     renderDashboard();
                 } else if (error) {
                     console.error('Error loading bookings:', error);
@@ -1219,43 +1974,59 @@
                 renderBookings();
             }
 
-            // Render Stats
+            // Render Stats - IMPROVED with better logic
             function renderStats() {
+                // TODAY'S BOOKINGS (for selected date)
                 const todayBookings = bookings.filter(b => 
                     b.check_in_date === selectedDate && 
                     b.status !== 'cancelled'
                 );
                 
+                // REVENUE - only from today's bookings
                 const revenue = todayBookings.reduce((sum, b) => sum + (b.total_amount || 0), 0);
-                const totalBookings = todayBookings.length;
-                const pendingAmount = todayBookings
-                    .filter(b => b.payment_status === 'unpaid')
+                
+                // TODAY'S TOTAL BOOKINGS - bookings for the selected date
+                const totalTodayBookings = todayBookings.length;
+                
+                // PENDING AMOUNT - only from unpaid bookings
+                const pendingAmount = bookings
+                    .filter(b => b.payment_status === 'unpaid' && b.status !== 'cancelled')
                     .reduce((sum, b) => sum + (b.total_amount || 0), 0);
                 
-                // Calculate available slots
-                const dayBookings = todayBookings.filter(b => b.stay_type === 'Daycation').length;
-                const nightBookings = todayBookings.filter(b => 
+                // ACTIVE BOOKINGS - ALL bookings that haven't checked out (pending + checked-in)
+                const activeBookings = bookings.filter(b => 
+                    b.check_in_date === selectedDate && 
+                    b.status !== 'checked-out' &&  // Only checked-out frees the room
+                    b.status !== 'cancelled'
+                );
+                
+                const dayBookings = activeBookings.filter(b => b.stay_type === 'Daycation').length;
+                const nightBookings = activeBookings.filter(b => 
                     b.stay_type === 'Staycation' || b.stay_type === 'Full Stay'
                 ).length;
                 
                 const totalCapacity = Object.values(CAPACITY).reduce((a, b) => a + b, 0);
+                
+                // Room slots = Total capacity - ALL active bookings (pending + checked-in)
                 const dayLeft = Math.max(0, totalCapacity - dayBookings);
                 const nightLeft = Math.max(0, totalCapacity - nightBookings);
                 
                 document.getElementById('stat-revenue').textContent = `Rs ${revenue.toLocaleString()}`;
-                document.getElementById('stat-bookings').textContent = totalBookings;
+                document.getElementById('stat-bookings').textContent = totalTodayBookings;
                 document.getElementById('stat-pending').textContent = `Rs ${pendingAmount.toLocaleString()}`;
                 document.getElementById('stat-day').textContent = dayLeft;
                 document.getElementById('stat-night').textContent = nightLeft;
             }
 
-            // Render Rooms
+            // Render Rooms - Count ALL active bookings (pending + checked-in), only free up on checkout
             function renderRooms() {
                 const container = document.getElementById('rooms-grid');
-                const todayBookings = bookings.filter(b => 
+                
+                // Count ALL bookings that haven't been checked out or cancelled
+                const activeBookings = bookings.filter(b => 
                     b.check_in_date === selectedDate && 
-                    b.status !== 'cancelled' &&
-                    b.status !== 'checked-out'
+                    b.status !== 'checked-out' &&  // Only checked-out frees the room
+                    b.status !== 'cancelled'
                 );
                 
                 const roomUsage = {};
@@ -1263,7 +2034,7 @@
                     roomUsage[room] = { day: 0, night: 0 };
                 });
                 
-                todayBookings.forEach(b => {
+                activeBookings.forEach(b => {
                     if (roomUsage[b.room_type]) {
                         if (b.stay_type === 'Daycation') {
                             roomUsage[b.room_type].day++;
@@ -1297,7 +2068,6 @@
                 
                 container.innerHTML = html;
                 
-                // Add click handlers to available rooms
                 container.querySelectorAll('.room-card[data-room]').forEach(card => {
                     card.addEventListener('click', function() {
                         const room = this.getAttribute('data-room');
@@ -1311,12 +2081,10 @@
                 const container = document.getElementById('bookings-list');
                 let todayBookings = bookings.filter(b => b.check_in_date === selectedDate);
                 
-                // Apply status filter
                 if (statusFilter) {
                     todayBookings = todayBookings.filter(b => b.status === statusFilter);
                 }
                 
-                // Apply search filter
                 if (searchTerm) {
                     todayBookings = todayBookings.filter(b => 
                         b.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -1367,7 +2135,9 @@
                                     <span>•</span>
                                     <span>${booking.stay_type}</span>
                                     <span>•</span>
-                                    <span>Rs ${booking.total_amount.toLocaleString()}/person</span>
+                                    <span>${booking.arrival_time || 'No time'}</span>
+                                    <span>•</span>
+                                    <span>Rs ${booking.total_amount.toLocaleString()}</span>
                                     <span>•</span>
                                     <span class="status-badge ${statusClass}">${booking.status}</span>
                                 </div>
@@ -1413,7 +2183,6 @@
                 
                 container.innerHTML = html;
                 
-                // Add event listeners to all action buttons
                 container.querySelectorAll('.action-btn').forEach(btn => {
                     btn.addEventListener('click', function(e) {
                         e.preventDefault();
@@ -1442,21 +2211,24 @@
                 renderRooms();
             }
 
-            // Auto-fill arrival time based on stay type
-            function updateArrivalTime() {
+            // IMPROVED: Auto-fill default arrival time based on stay type
+            function updateDefaultArrivalTime() {
                 const stayType = document.getElementById('b-type').value;
                 const timeInput = document.getElementById('b-time');
                 
-                if (stayType === 'Daycation') {
-                    timeInput.value = '12:00';
-                } else if (stayType === 'Staycation') {
-                    timeInput.value = '18:00';
-                } else if (stayType === 'Full Stay') {
-                    timeInput.value = '12:00';
+                // Only set default if field is empty
+                if (!timeInput.value) {
+                    if (stayType === 'Daycation') {
+                        timeInput.value = '12:00';
+                    } else if (stayType === 'Staycation') {
+                        timeInput.value = '18:00';
+                    } else if (stayType === 'Full Stay') {
+                        timeInput.value = '12:00';
+                    }
                 }
             }
 
-            // Auto-update price based on room and stay type
+            // Auto-update price
             function updatePrice() {
                 const room = document.getElementById('b-room').value;
                 const stayType = document.getElementById('b-type').value;
@@ -1481,7 +2253,7 @@
                 document.getElementById('b-date').value = selectedDate;
                 if (roomType) document.getElementById('b-room').value = roomType;
                 document.getElementById('b-type').value = currentFilter;
-                updateArrivalTime();
+                updateDefaultArrivalTime();
                 updatePrice();
                 document.getElementById('booking-modal').classList.add('active');
             }
@@ -1492,7 +2264,7 @@
                 const booking = bookings.find(b => b.id === bookingId);
                 
                 if (!booking) {
-                    console.error('Booking not found with ID:', id, 'Available bookings:', bookings.map(b => b.id));
+                    console.error('Booking not found');
                     alert('Error: Booking not found. Please refresh the page and try again.');
                     return;
                 }
@@ -1511,7 +2283,7 @@
                 document.getElementById('b-room').value = booking.room_type || 'Cozy Mini';
                 document.getElementById('b-type').value = booking.stay_type || 'Daycation';
                 document.getElementById('b-date').value = booking.check_in_date || selectedDate;
-                document.getElementById('b-time').value = booking.arrival_time || '12:00';
+                document.getElementById('b-time').value = booking.arrival_time || '';
                 document.getElementById('b-amount').value = booking.total_amount || '';
                 document.getElementById('b-payment').value = booking.payment_status || 'unpaid';
                 document.getElementById('b-status').value = booking.status || 'pending';
@@ -1534,6 +2306,8 @@
                 document.getElementById('login-screen').classList.remove('hidden');
                 document.getElementById('login-form').reset();
                 isInitialized = false;
+                notifications = [];
+                updateNotificationBadge();
             }
 
             // Close Modal
@@ -1548,7 +2322,7 @@
                 await loadBookings();
             }
 
-            // Start - Check for existing session
+            // Start
             checkSession();
         })();
     </script>
