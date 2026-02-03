@@ -67,16 +67,14 @@
     .dt-display .dot { width: 4px; height: 4px; background: var(--brand-300); border-radius: 50%; }
     .admin-controls small { font-size: 8px; font-weight: 900; color: var(--brand-300); text-transform: uppercase; display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin-top: 4px; }
 
-    .admin-edit-panel { display: none; padding: 15px; background: #fff; border-radius: 20px; margin-top: 12px; border: 1px solid var(--brand-200); box-shadow: 0 20px 40px rgba(0,0,0,0.08); position: absolute; right: 1.5rem; top: 80%; width: 200px; }
+    .admin-edit-panel { display: none; padding: 15px; background: #fff; border-radius: 20px; margin-top: 12px; border: 1px solid var(--brand-200); box-shadow: 0 20px 40px rgba(0,0,0,0.08); position: absolute; right: 1.5rem; top: 80%; width: 220px; }
     .admin-edit-panel input { padding: 10px 12px; border: 1.5px solid var(--brand-100); border-radius: 10px; font-size: 13px; margin-bottom: 8px; width: 100%; font-family: inherit; font-weight: 700; outline: none; }
     .admin-edit-panel button { width: 100%; background: var(--brand-500); color: #fff; border: none; padding: 12px; border-radius: 10px; font-size: 11px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
 
-    /* Content Layout */
     main { padding: 2rem 1.5rem; flex: 1; padding-bottom: 150px; }
     section { margin-bottom: 3.5rem; }
     h2 { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em; color: var(--brand-300); margin-bottom: 1.5rem; }
 
-    /* Stay Grid */
     .stay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .stay-card {
       padding: 1.25rem 0.5rem; border-radius: 1.75rem; border: 2px solid var(--brand-50); background: var(--brand-50);
@@ -86,7 +84,6 @@
     .stay-card b { display: block; font-size: 14px; font-weight: 900; margin-bottom: 2px; }
     .stay-card span { font-size: 9px; font-weight: 700; opacity: 0.6; }
 
-    /* Inputs Flow */
     .input-group { margin-bottom: 1.5rem; }
     .input-group label { display: block; font-size: 10px; font-weight: 900; color: var(--brand-300); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em; }
     .input-group input {
@@ -95,8 +92,6 @@
     }
     .input-group input:focus { background: #fff; border-color: var(--brand-500); transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0,0,0,0.06); }
 
-    /* ID Verification */
-    .upload-container { width: 100%; position: relative; }
     .upload-box {
       width: 100%; border: 4px dashed var(--brand-100); border-radius: 2.5rem;
       height: 200px; position: relative; cursor: pointer; background: var(--brand-50);
@@ -109,7 +104,6 @@
     .upload-box span { font-size: 14px; font-weight: 900; color: var(--brand-500); }
     .upload-box small { font-size: 10px; color: var(--brand-300); font-weight: 800; margin-top: 4px; }
 
-    /* Payment Panel */
     .payment-area { background: var(--brand-500); color: #fff; padding: 2.5rem; border-radius: 3rem; margin-top: 1rem; }
     .pay-header { margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
     .pay-header small { font-size: 10px; font-weight: 900; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.25em; }
@@ -118,7 +112,6 @@
     .pay-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .pay-method-item { background: rgba(255,255,255,0.08); padding: 1.5rem; border-radius: 1.75rem; transition: 0.3s; }
     .pay-method-item label { font-size: 9px; font-weight: 900; text-transform: uppercase; opacity: 0.4; margin-bottom: 12px; display: block; }
-    .pay-method-item .input-flex { display: flex; align-items: center; gap: 4px; }
     .pay-method-item input { background: transparent; border: none; color: #fff; font-size: 1.35rem; font-weight: 900; width: 100%; outline: none; }
     
     .scan-trigger {
@@ -129,7 +122,6 @@
     }
     .scan-trigger:active { transform: scale(0.97); }
 
-    /* Scanner View */
     #qr-scanner-overlay {
       position: fixed; inset: 0; background: #000; z-index: 2000; display: none;
       flex-direction: column; align-items: center; justify-content: center;
@@ -142,9 +134,8 @@
     }
     .scanner-target::after { content: ''; width: 100%; height: 2px; background: var(--success); position: absolute; animation: scanLine 2s infinite linear; }
     @keyframes scanLine { 0% { top: 0; } 100% { top: 100%; } }
-    .scanner-exit { position: absolute; top: 4rem; right: 2rem; color: #fff; font-size: 2rem; font-weight: 900; cursor: pointer; z-index: 2100; }
+    .scanner-exit { position: absolute; top: 4rem; right: 2rem; color: #fff; font-size: 2.5rem; font-weight: 300; cursor: pointer; z-index: 2100; }
 
-    /* Bottom Action */
     footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 2rem 1.5rem; z-index: 100; pointer-events: none; }
     .main-submit {
       width: 100%; max-width: 392px; margin: 0 auto; background: var(--brand-500); color: #fff; border: none;
@@ -155,7 +146,6 @@
     .main-submit:active { transform: scale(0.96); }
     .main-submit:disabled { opacity: 0.4; transform: none; box-shadow: none; }
 
-    /* Success Overlay */
     .success-screen {
       position: fixed; inset: 0; background: #fff; z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem; text-align: center;
     }
@@ -164,10 +154,9 @@
     .success-room-card { background: var(--brand-50); padding: 3rem 2rem; border-radius: 3rem; width: 100%; margin: 2.5rem 0; border: 1.5px solid var(--brand-100); }
     .success-room-card small { font-size: 10px; font-weight: 900; text-transform: uppercase; color: var(--brand-300); letter-spacing: 0.3em; margin-bottom: 12px; display: block; }
     .success-room-card .number { font-size: 7rem; font-weight: 900; line-height: 1; letter-spacing: -0.06em; color: var(--brand-500); }
-    .success-room-card .type { font-size: 12px; font-weight: 800; color: var(--brand-400); margin-top: 15px; }
 
     .hidden { display: none; }
-    .toast { position: fixed; top: 140px; left: 50%; transform: translateX(-50%); background: var(--error); color: #fff; padding: 15px 30px; border-radius: 1.5rem; font-weight: 800; font-size: 13px; z-index: 4000; display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+    .toast { position: fixed; top: 140px; left: 50%; transform: translateX(-50%); background: var(--error); color: #fff; padding: 15px 30px; border-radius: 1.5rem; font-weight: 800; font-size: 13px; z-index: 4000; display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.2); width: 85%; max-width: 360px; text-align: center; }
   </style>
 <script type="importmap">
 {
@@ -205,7 +194,6 @@
   </header>
 
   <main>
-    <!-- Step 1 -->
     <section>
       <h2>1. Stay Selection</h2>
       <div class="stay-grid">
@@ -224,20 +212,18 @@
       </div>
     </section>
 
-    <!-- Step 2 -->
     <section>
       <h2>2. Guest Information</h2>
       <div class="input-group">
         <label>Full Legal Name</label>
-        <input type="text" id="field-name" placeholder="E.g. Johnathan Smith">
+        <input type="text" id="field-name" placeholder="John Doe">
       </div>
       <div class="input-group">
-        <label>Primary Contact Number</label>
-        <input type="tel" id="field-phone" placeholder="10 Digit Mobile" maxlength="10">
+        <label>Mobile Number</label>
+        <input type="tel" id="field-phone" placeholder="9876543210" maxlength="10">
       </div>
     </section>
 
-    <!-- Step 3 -->
     <section>
       <h2>3. Identity Upload</h2>
       <input type="file" id="field-id-file" accept="image/*" capture="environment" class="hidden">
@@ -253,7 +239,6 @@
       </label>
     </section>
 
-    <!-- Step 4 -->
     <section>
       <h2>4. Payment Confirmation</h2>
       <div class="payment-area">
@@ -271,14 +256,14 @@
         <div class="pay-methods">
           <div class="pay-method-item">
             <label>Online</label>
-            <div class="input-flex">
+            <div style="display:flex; align-items:center; gap:4px">
               <span>₹</span>
               <input type="number" id="pay-online-val" placeholder="0">
             </div>
           </div>
           <div class="pay-method-item">
             <label>Cash</label>
-            <div class="input-flex">
+            <div style="display:flex; align-items:center; gap:4px">
               <span>₹</span>
               <input type="number" id="pay-cash-val" placeholder="0">
             </div>
@@ -287,7 +272,7 @@
 
         <button class="scan-trigger" id="scan-payment-qr">
           <svg style="width:22px;height:22px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-          Scan & Pay
+          Scan Hotel QR & Pay
         </button>
       </div>
     </section>
@@ -306,7 +291,7 @@
   <div class="scanner-exit" id="exit-scanner">✕</div>
   <video id="scanner-stream" playsinline></video>
   <div class="scanner-target"></div>
-  <p style="color:#fff; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; position: absolute; bottom: 120px; background: rgba(0,0,0,0.4); padding: 8px 16px; border-radius: 12px;">Center the QR in the box</p>
+  <p style="color:#fff; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; position: absolute; bottom: 120px; background: rgba(0,0,0,0.4); padding: 8px 16px; border-radius: 12px;">Point at eSewa / Bank QR</p>
 </div>
 
 <!-- Success Screen -->
@@ -314,34 +299,33 @@
   <div class="success-badge">
     <svg style="width:45px;height:45px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
   </div>
-  <h1>Registration Success</h1>
-  <p style="color:var(--brand-300); font-weight: 700; font-size: 1.1rem;">Your Divine stay starts now</p>
+  <h1>Success!</h1>
+  <p style="color:var(--brand-300); font-weight: 700; font-size: 1.1rem;">Check-in complete</p>
 
   <div class="success-room-card">
     <small>Room Assigned</small>
     <div class="number" id="final-room-num">--</div>
-    <div class="type" id="final-room-type">--</div>
+    <div style="font-size: 11px; font-weight: 800; color: var(--brand-400); margin-top: 15px;" id="final-room-type">--</div>
   </div>
 
   <div style="width: 100%; max-width: 340px; border-top: 1.5px solid var(--brand-100); padding-top: 2rem; text-align: left;">
-    <div style="display:flex; justify-content:space-between; margin-bottom: 15px;">
+    <div style="display:flex; justify-content:space-between; margin-bottom: 12px;">
       <span style="font-size:11px; color:var(--brand-300); font-weight: 900; text-transform: uppercase;">Guest</span>
-      <b id="final-name" style="font-size:15px; font-weight: 900;">--</b>
+      <b id="final-name" style="font-size:14px;">--</b>
     </div>
     <div style="display:flex; justify-content:space-between;">
-      <span style="font-size:11px; color:var(--brand-300); font-weight: 900; text-transform: uppercase;">Stay Ref</span>
-      <b id="final-ref" style="font-size:15px; font-family: monospace; font-weight: 900; color: var(--brand-400);">--</b>
+      <span style="font-size:11px; color:var(--brand-300); font-weight: 900; text-transform: uppercase;">Ref ID</span>
+      <b id="final-ref" style="font-size:14px; font-family: monospace;">--</b>
     </div>
   </div>
 
-  <button class="main-submit" style="margin-top: 3.5rem; box-shadow: none;" onclick="location.reload()">New Check-in</button>
+  <button class="main-submit" style="margin-top: 3.5rem; box-shadow: none;" onclick="location.reload()">Next Guest</button>
 </div>
 
 <canvas id="qr-processing-canvas" class="hidden"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // -- CONFIG --
   const SUPABASE_URL = 'https://fzwnglhxtmtltpysdzma.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6d25nbGh4dG10bHRweXNkem1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODE0MzAsImV4cCI6MjA4NDE1NzQzMH0.PuES2nphqkKU-FqzBge6LlptVibSfeTQcUExEdfTleg';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -352,7 +336,6 @@
     'Convenient Queen': ['101']
   };
 
-  // -- STATE --
   let app = {
     date: new Date().toISOString().split('T')[0],
     time: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }),
@@ -364,14 +347,12 @@
 
   const get = (id) => document.getElementById(id);
 
-  // -- INITIALIZATION --
   function start() {
     updateDT();
     get('admin-date').value = app.date;
     get('admin-time').value = app.time;
     findRoom();
 
-    // Interaction logic
     get('admin-toggle').onclick = (e) => {
       if(e.target.closest('#admin-panel')) return;
       get('admin-panel').style.display = get('admin-panel').style.display === 'block' ? 'none' : 'block';
@@ -434,31 +415,23 @@
     try {
       const { data } = await db.from('bookings').select('room_number').eq('check_in_date', app.date).eq('stay_type', app.stay);
       const busy = (data || []).map(b => b.room_number);
-      
-      let res = null;
-      let typ = null;
-
+      let res = null, typ = null;
       for (const t of Object.keys(ROOMS)) {
         const free = ROOMS[t].filter(r => !busy.includes(r));
-        if(free.length > 0) {
-          res = free[0];
-          typ = t;
-          break;
-        }
+        if(free.length > 0) { res = free[0]; typ = t; break; }
       }
       app.room.num = res;
       app.room.type = typ;
-    } catch(err) { console.error(err); }
+    } catch(err) {}
   }
 
   function alertBox(txt) {
     const box = get('toast');
     box.textContent = txt;
     box.style.display = 'block';
-    setTimeout(() => box.style.display = 'none', 3500);
+    setTimeout(() => box.style.display = 'none', 4000);
   }
 
-  // -- QR SCANNER ENGINE --
   let stream;
   async function openScanner() {
     app.scanning = true;
@@ -470,7 +443,7 @@
       vid.play();
       requestAnimationFrame(processScan);
     } catch(e) {
-      alertBox("Camera blocked. Enable permissions.");
+      alertBox("Camera blocked. Please enable camera access.");
       closeScanner();
     }
   }
@@ -494,15 +467,20 @@
       const code = jsQR(dat.data, dat.width, dat.height);
       if(code) {
         closeScanner();
-        // Intent redirect for UPI or Links
-        window.location.href = code.data;
+        // Detect and handle Payment deep-links (UPI, eSewa, Banking Apps)
+        const payUrl = code.data;
+        if(payUrl.startsWith('upi://') || payUrl.startsWith('esewa://') || payUrl.includes('pay') || payUrl.includes('banking')) {
+          window.location.href = payUrl;
+        } else {
+          // If it's a standard URL, still try to open it
+          window.open(payUrl, '_blank');
+        }
         return;
       }
     }
     requestAnimationFrame(processScan);
   }
 
-  // -- SUBMISSION HANDLER --
   async function submitForm() {
     const name = get('field-name').value.trim();
     const phone = get('field-phone').value.trim();
@@ -510,31 +488,28 @@
     const ca = parseFloat(get('pay-cash-val').value) || 0;
     const total = on + ca;
 
-    if(!name) return alertBox("Guest Name required");
-    if(phone.length < 10) return alertBox("Valid Phone required");
-    if(!app.room.num) return alertBox("Full House! No rooms free.");
-    if(total <= 0) return alertBox("Enter payment received");
-    if(!app.doc) return alertBox("Upload Guest ID photo");
+    if(!name) return alertBox("Legal Name is required");
+    if(phone.length < 10) return alertBox("10-digit Phone required");
+    if(!app.room.num) return alertBox("We are fully booked for this stay.");
+    if(total <= 0) return alertBox("Payment amount is required");
+    if(!app.doc) return alertBox("Identity proof is required");
 
     get('form-submit-btn').disabled = true;
-    get('form-submit-btn').textContent = "Finalizing Stay...";
+    get('form-submit-btn').textContent = "Processing...";
 
     try {
-      // 1. Storage Upload
       const ext = app.doc.name.split('.').pop();
-      // Clean path: use just the filename inside the bucket
-      const filename = `${Date.now()}_${Math.random().toString(36).substr(2,6)}.${ext}`;
+      const filename = `${Date.now()}_guest_id.${ext}`;
       
       const { error: upErr } = await db.storage.from('guest-photos').upload(filename, app.doc);
       if(upErr) {
-        // Discretely log the error for developers, show a general message to customers
         console.error("Storage Error:", upErr);
-        throw new Error("Check-in service temporarily unavailable. Please ask reception for assistance.");
+        // Generic error for guest to avoid technical details like "Bucket not found"
+        throw new Error("System is busy recording your documents. Please ask the front desk to finalize.");
       }
       
       const { data: urlDat } = db.storage.from('guest-photos').getPublicUrl(filename);
 
-      // 2. Database Insert
       const payload = {
         full_name: name,
         phone_number: phone,
@@ -555,7 +530,6 @@
       const { data, error } = await db.from('bookings').insert([payload]).select();
       if(error) throw error;
 
-      // 3. Victory Screen
       get('final-room-num').textContent = data[0].room_number;
       get('final-room-type').textContent = data[0].room_type;
       get('final-name').textContent = data[0].full_name;
@@ -563,12 +537,8 @@
       get('final-success-screen').style.display = 'flex';
       
     } catch(err) {
-      console.error("Submit Error:", err);
-      // Hide technical details like "Bucket not found" from the customer
-      const customerMsg = err.message.includes("Bucket not found") 
-        ? "Check-in service temporarily unavailable. Please see reception." 
-        : (err.message || "Something went wrong. Please try again.");
-      alertBox(customerMsg);
+      console.error(err);
+      alertBox(err.message || "Something went wrong. Please check with reception.");
       get('form-submit-btn').disabled = false;
       get('form-submit-btn').textContent = "Confirm Stay";
     }
