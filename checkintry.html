@@ -4,8 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Divine Guest House – Check-in</title>
+  <title>Divine Guest House – Premium Check-in</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- QR Scanner Library -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
   <style>
     :root {
       --brand-50: #faf9f7;
@@ -16,8 +18,9 @@
       --brand-500: #1a1a1a;
       --success: #22a667;
       --error: #d44a3a;
-      --radius-xl: 2rem;
-      --radius-lg: 1rem;
+      --radius-xl: 2.5rem;
+      --radius-lg: 1.5rem;
+      --radius-sm: 0.75rem;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -35,127 +38,136 @@
       margin: 0 auto;
       background: #fff;
       min-height: 100vh;
-      box-shadow: 0 0 50px rgba(0,0,0,0.05);
+      box-shadow: 0 0 80px rgba(0,0,0,0.03);
       position: relative;
       display: flex;
       flex-direction: column;
     }
 
-    /* Header & Admin Controls */
+    /* Luxury Header */
     header {
-      padding: 1.5rem;
-      border-bottom: 1px solid var(--brand-100);
+      padding: 2.5rem 1.5rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
-      background: rgba(255,255,255,0.9);
-      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(15px);
       z-index: 100;
+      border-bottom: 1px solid var(--brand-100);
     }
 
-    .brand h1 { font-family: 'Playfair Display', serif; font-size: 1.5rem; }
+    .brand h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; letter-spacing: -0.02em; line-height: 1; }
     .brand span { color: var(--brand-300); font-weight: 400; }
-    .brand p { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--brand-300); margin-top: 4px; }
+    .brand p { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; color: var(--brand-400); margin-top: 6px; }
 
-    .admin-controls { text-align: right; cursor: pointer; }
-    .dt-display { font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
-    .dt-display .dot { width: 4px; height: 4px; background: var(--brand-200); border-radius: 50%; }
-    .admin-controls small { font-size: 9px; font-weight: 800; color: var(--brand-300); text-transform: uppercase; display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin-top: 2px; }
+    .admin-controls { text-align: right; cursor: pointer; padding: 10px 14px; border-radius: 14px; background: var(--brand-50); transition: 0.3s; }
+    .dt-display { font-weight: 800; font-size: 0.9rem; display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+    .dt-display .dot { width: 4px; height: 4px; background: var(--brand-300); border-radius: 50%; }
+    .admin-controls small { font-size: 8px; font-weight: 900; color: var(--brand-300); text-transform: uppercase; display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin-top: 4px; }
 
-    .admin-edit-panel { display: none; padding: 10px; background: var(--brand-50); border-radius: 12px; margin-top: 8px; border: 1px solid var(--brand-200); }
-    .admin-edit-panel input { padding: 4px 8px; border: 1px solid var(--brand-200); border-radius: 6px; font-size: 12px; margin-bottom: 4px; width: 100%; }
-    .admin-edit-panel button { width: 100%; background: var(--brand-500); color: #fff; border: none; padding: 6px; border-radius: 6px; font-size: 11px; font-weight: 800; }
+    .admin-edit-panel { display: none; padding: 15px; background: #fff; border-radius: 20px; margin-top: 12px; border: 1px solid var(--brand-200); box-shadow: 0 20px 40px rgba(0,0,0,0.08); position: absolute; right: 1.5rem; top: 80%; width: 200px; }
+    .admin-edit-panel input { padding: 10px 12px; border: 1.5px solid var(--brand-100); border-radius: 10px; font-size: 13px; margin-bottom: 8px; width: 100%; font-family: inherit; font-weight: 700; outline: none; }
+    .admin-edit-panel button { width: 100%; background: var(--brand-500); color: #fff; border: none; padding: 12px; border-radius: 10px; font-size: 11px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
 
-    /* Main Content */
-    main { padding: 1.5rem; flex: 1; padding-bottom: 120px; }
-    section { margin-bottom: 2.5rem; }
-    h2 { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; color: var(--brand-300); margin-bottom: 1rem; }
+    /* Content Layout */
+    main { padding: 2rem 1.5rem; flex: 1; padding-bottom: 150px; }
+    section { margin-bottom: 3.5rem; }
+    h2 { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em; color: var(--brand-300); margin-bottom: 1.5rem; }
 
-    /* Stay Types */
-    .stay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    /* Stay Grid */
+    .stay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .stay-card {
-      padding: 12px; border-radius: 1.25rem; border: 2px solid var(--brand-50); background: var(--brand-50);
-      text-align: center; cursor: pointer; transition: all 0.3s;
+      padding: 1.25rem 0.5rem; border-radius: 1.75rem; border: 2px solid var(--brand-50); background: var(--brand-50);
+      text-align: center; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .stay-card.active { background: var(--brand-500); color: #fff; border-color: var(--brand-500); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-    .stay-card b { display: block; font-size: 13px; font-weight: 800; }
-    .stay-card span { font-size: 9px; font-weight: 600; opacity: 0.6; }
+    .stay-card.active { background: var(--brand-500); color: #fff; border-color: var(--brand-500); transform: scale(1.05); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+    .stay-card b { display: block; font-size: 14px; font-weight: 900; margin-bottom: 2px; }
+    .stay-card span { font-size: 9px; font-weight: 700; opacity: 0.6; }
 
-    /* Room Badge */
-    .room-assignment-box {
-      background: var(--brand-50); border-radius: var(--radius-xl); padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem;
-      border: 2px solid var(--brand-50);
-    }
-    .room-icon { width: 60px; height: 60px; background: #fff; border-radius: 1.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid var(--brand-100); }
-    .room-info small { font-size: 10px; font-weight: 800; color: var(--brand-300); text-transform: uppercase; }
-    .room-info .number { font-size: 2.5rem; font-weight: 900; line-height: 1; margin: 4px 0; }
-    .room-info .type { font-size: 11px; font-weight: 600; color: var(--brand-400); }
-    .change-room-btn { margin-left: auto; background: #fff; border: 1px solid var(--brand-200); padding: 8px 12px; border-radius: 10px; font-size: 10px; font-weight: 800; cursor: pointer; }
-
-    /* Inputs */
-    .input-group { margin-bottom: 1rem; position: relative; }
+    /* Inputs Flow */
+    .input-group { margin-bottom: 1.5rem; }
+    .input-group label { display: block; font-size: 10px; font-weight: 900; color: var(--brand-300); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em; }
     .input-group input {
-      width: 100%; padding: 1.25rem 1.5rem; background: var(--brand-50); border: 2px solid transparent; border-radius: 1.25rem;
-      font-size: 1.1rem; font-weight: 700; outline: none; transition: all 0.3s;
+      width: 100%; padding: 1.5rem; background: var(--brand-50); border: 2.5px solid transparent; border-radius: 1.75rem;
+      font-size: 1.2rem; font-weight: 700; outline: none; transition: all 0.3s;
     }
-    .input-group input:focus { background: #fff; border-color: var(--brand-500); }
+    .input-group input:focus { background: #fff; border-color: var(--brand-500); transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0,0,0,0.06); }
 
-    /* Document Upload */
-    .upload-label {
-      display: block; width: 100%; aspect-ratio: 16/9; border: 4px dashed var(--brand-100); border-radius: 2rem;
-      overflow: hidden; position: relative; cursor: pointer; background: var(--brand-50); transition: all 0.3s;
+    /* ID Verification */
+    .upload-container { width: 100%; position: relative; }
+    .upload-box {
+      width: 100%; border: 4px dashed var(--brand-100); border-radius: 2.5rem;
+      height: 200px; position: relative; cursor: pointer; background: var(--brand-50);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden;
+      transition: 0.3s;
     }
-    .upload-label.has-file { border-color: var(--success); border-style: solid; }
-    .upload-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-    .upload-placeholder svg { width: 32px; height: 32px; color: var(--brand-300); margin-bottom: 10px; }
-    .upload-placeholder span { font-size: 13px; font-weight: 800; color: var(--brand-500); }
-    .upload-placeholder small { font-size: 10px; color: var(--brand-300); }
-    .upload-preview { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .upload-box.has-file { border-style: solid; border-color: var(--success); background: #fff; }
+    .upload-box img { width: 100%; height: 100%; object-fit: cover; }
+    .upload-box .icon-wrap { background: #fff; padding: 15px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.03); margin-bottom: 12px; }
+    .upload-box span { font-size: 14px; font-weight: 900; color: var(--brand-500); }
+    .upload-box small { font-size: 10px; color: var(--brand-300); font-weight: 800; margin-top: 4px; }
 
     /* Payment Panel */
-    .payment-card { background: var(--brand-500); color: #fff; padding: 2rem; border-radius: 2rem; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-    .pay-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; }
-    .pay-header small { font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0.6; font-weight: 900; display: block; margin-bottom: 4px; }
-    .pay-header .total { font-size: 3rem; font-weight: 900; line-height: 1; }
-    .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .split-input { background: rgba(255,255,255,0.1); border-radius: 1rem; padding: 1rem; }
-    .split-input label { font-size: 9px; font-weight: 900; text-transform: uppercase; opacity: 0.5; margin-bottom: 8px; display: block; }
-    .split-input .val { display: flex; align-items: center; gap: 4px; font-size: 1.25rem; font-weight: 900; }
-    .split-input input { background: transparent; border: none; color: #fff; font-weight: 900; width: 100%; outline: none; }
-
-    /* Footer Button */
-    footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 1.5rem; z-index: 100; pointer-events: none; }
-    .submit-btn {
-      width: 100%; max-width: 392px; margin: 0 auto; background: var(--brand-500); color: #fff; border: none;
-      padding: 1.5rem; border-radius: 2rem; font-size: 1.25rem; font-weight: 900; cursor: pointer;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.3); pointer-events: auto; display: flex; align-items: center; justify-content: center; gap: 12px;
-      transition: all 0.2s;
+    .payment-area { background: var(--brand-500); color: #fff; padding: 2.5rem; border-radius: 3rem; margin-top: 1rem; }
+    .pay-header { margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
+    .pay-header small { font-size: 10px; font-weight: 900; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.25em; }
+    .pay-header .total { font-size: 3.5rem; font-weight: 900; line-height: 1; letter-spacing: -0.05em; margin-top: 6px; }
+    
+    .pay-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pay-method-item { background: rgba(255,255,255,0.08); padding: 1.5rem; border-radius: 1.75rem; transition: 0.3s; }
+    .pay-method-item label { font-size: 9px; font-weight: 900; text-transform: uppercase; opacity: 0.4; margin-bottom: 12px; display: block; }
+    .pay-method-item .input-flex { display: flex; align-items: center; gap: 4px; }
+    .pay-method-item input { background: transparent; border: none; color: #fff; font-size: 1.35rem; font-weight: 900; width: 100%; outline: none; }
+    
+    .scan-trigger {
+      width: 100%; margin-top: 1.25rem; background: #fff; color: var(--brand-500); border: none; 
+      padding: 1.5rem; border-radius: 2rem; font-weight: 900; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer;
+      display: none; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
-    .submit-btn:active { transform: scale(0.96); }
-    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .scan-trigger:active { transform: scale(0.97); }
+
+    /* Scanner View */
+    #qr-scanner-overlay {
+      position: fixed; inset: 0; background: #000; z-index: 2000; display: none;
+      flex-direction: column; align-items: center; justify-content: center;
+    }
+    #scanner-stream { width: 100%; height: 100%; object-fit: cover; }
+    .scanner-target {
+      position: absolute; width: 280px; height: 280px; border: 5px solid #fff;
+      border-radius: 3rem; box-shadow: 0 0 0 1000px rgba(0,0,0,0.7);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .scanner-target::after { content: ''; width: 100%; height: 2px; background: var(--success); position: absolute; animation: scanLine 2s infinite linear; }
+    @keyframes scanLine { 0% { top: 0; } 100% { top: 100%; } }
+    .scanner-exit { position: absolute; top: 4rem; right: 2rem; color: #fff; font-size: 2rem; font-weight: 900; cursor: pointer; z-index: 2100; }
+
+    /* Bottom Action */
+    footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 2rem 1.5rem; z-index: 100; pointer-events: none; }
+    .main-submit {
+      width: 100%; max-width: 392px; margin: 0 auto; background: var(--brand-500); color: #fff; border: none;
+      padding: 1.75rem; border-radius: 2.25rem; font-size: 1.3rem; font-weight: 900; cursor: pointer;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.35); pointer-events: auto; display: flex; align-items: center; justify-content: center; gap: 15px;
+      transition: all 0.3s;
+    }
+    .main-submit:active { transform: scale(0.96); }
+    .main-submit:disabled { opacity: 0.4; transform: none; box-shadow: none; }
 
     /* Success Overlay */
-    .success-overlay {
-      position: fixed; inset: 0; background: #fff; z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center;
+    .success-screen {
+      position: fixed; inset: 0; background: #fff; z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem; text-align: center;
     }
-    .success-icon { width: 80px; height: 80px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(34,166,103,0.3); }
-    .success-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .success-room { background: var(--brand-50); padding: 2rem; border-radius: 2rem; width: 100%; margin: 2rem 0; }
-    .success-room .num { font-size: 5rem; font-weight: 900; line-height: 1; }
+    .success-badge { width: 100px; height: 100px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; margin-bottom: 2.5rem; box-shadow: 0 20px 40px rgba(34,166,103,0.3); }
+    .success-screen h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--brand-500); }
+    .success-room-card { background: var(--brand-50); padding: 3rem 2rem; border-radius: 3rem; width: 100%; margin: 2.5rem 0; border: 1.5px solid var(--brand-100); }
+    .success-room-card small { font-size: 10px; font-weight: 900; text-transform: uppercase; color: var(--brand-300); letter-spacing: 0.3em; margin-bottom: 12px; display: block; }
+    .success-room-card .number { font-size: 7rem; font-weight: 900; line-height: 1; letter-spacing: -0.06em; color: var(--brand-500); }
+    .success-room-card .type { font-size: 12px; font-weight: 800; color: var(--brand-400); margin-top: 15px; }
 
-    /* Room Picker List */
-    #room-list { display: none; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1rem; animation: slideIn 0.3s ease-out; }
-    @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-    .room-picker-item { padding: 12px; border: 2px solid var(--brand-100); border-radius: 1rem; cursor: pointer; text-align: left; }
-    .room-picker-item.active { border-color: var(--brand-500); background: var(--brand-50); }
-    .room-picker-item b { font-size: 14px; display: block; }
-    .room-picker-item span { font-size: 10px; color: var(--brand-300); font-weight: 800; text-transform: uppercase; }
-
-    /* Utils */
     .hidden { display: none; }
-    .error-toast { position: fixed; top: 100px; left: 50%; transform: translateX(-50%); background: var(--error); color: #fff; padding: 12px 24px; border-radius: 12px; font-weight: 800; font-size: 12px; z-index: 2000; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .toast { position: fixed; top: 140px; left: 50%; transform: translateX(-50%); background: var(--error); color: #fff; padding: 15px 30px; border-radius: 1.5rem; font-weight: 800; font-size: 13px; z-index: 4000; display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
   </style>
 <script type="importmap">
 {
@@ -170,35 +182,32 @@
 <body>
 
 <div class="app-container">
-  <div id="error-toast" class="error-toast"></div>
+  <div id="toast" class="toast"></div>
 
   <header>
     <div class="brand">
       <h1>Divine <span>Guest House</span></h1>
-      <p>Self Check-in Portal</p>
+      <p>Luxury Self Check-In</p>
     </div>
-    <div class="admin-controls" id="admin-trigger">
+    <div class="admin-controls" id="admin-toggle">
       <div class="dt-display">
-        <span id="display-date">--</span>
+        <span id="label-date">--</span>
         <span class="dot"></span>
-        <span id="display-time">--</span>
+        <span id="label-time">--</span>
       </div>
-      <small>
-        <svg style="width:10px;height:10px" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
-        Admin Lock
-      </small>
+      <small><svg style="width:10px;height:10px" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg> Employee Lock</small>
       <div id="admin-panel" class="admin-edit-panel">
-        <input type="date" id="input-date">
-        <input type="time" id="input-time">
-        <button id="save-admin">Unlock & Save</button>
+        <input type="date" id="admin-date">
+        <input type="time" id="admin-time">
+        <button id="admin-save">Unlock & Update</button>
       </div>
     </div>
   </header>
 
   <main>
-    <!-- Stay Selection -->
+    <!-- Step 1 -->
     <section>
-      <h2>1. Stay Duration</h2>
+      <h2>1. Stay Selection</h2>
       <div class="stay-grid">
         <div class="stay-card active" data-type="Daycation">
           <b>Day</b>
@@ -210,372 +219,362 @@
         </div>
         <div class="stay-card" data-type="Full Stay">
           <b>Full</b>
-          <span>Staycation</span>
+          <span>24 Hours</span>
         </div>
       </div>
     </section>
 
-    <!-- Room Selection -->
+    <!-- Step 2 -->
     <section>
-      <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h2 style="margin-bottom:0">2. Assigned Room</h2>
-        <button class="change-room-btn" id="toggle-room-picker">Change</button>
-      </div>
-      <div class="room-assignment-box">
-        <div class="room-icon">
-          <svg style="width:24px;height:24px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-        </div>
-        <div class="room-info">
-          <small>Room Number</small>
-          <div class="number" id="room-number">--</div>
-          <div class="type" id="room-type">Auto Selecting...</div>
-        </div>
-      </div>
-      <div id="room-list"></div>
-    </section>
-
-    <!-- Guest Details -->
-    <section>
-      <h2>3. Guest Identity</h2>
+      <h2>2. Guest Information</h2>
       <div class="input-group">
-        <input type="text" id="guest-name" placeholder="Full Name">
+        <label>Full Legal Name</label>
+        <input type="text" id="field-name" placeholder="E.g. Johnathan Smith">
       </div>
       <div class="input-group">
-        <input type="tel" id="guest-phone" placeholder="Phone Number" maxlength="10">
+        <label>Primary Contact Number</label>
+        <input type="tel" id="field-phone" placeholder="10 Digit Mobile" maxlength="10">
       </div>
     </section>
 
-    <!-- ID Verification -->
+    <!-- Step 3 -->
     <section>
-      <h2>4. ID Verification</h2>
-      <input type="file" id="id-input" accept="image/*" capture="environment" class="hidden">
-      <label for="id-input" class="upload-label" id="id-label">
-        <div class="upload-placeholder" id="upload-placeholder">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-          <span>Snap ID Photo</span>
-          <small>Aadhaar, Passport or PAN</small>
+      <h2>3. Identity Upload</h2>
+      <input type="file" id="field-id-file" accept="image/*" capture="environment" class="hidden">
+      <label for="field-id-file" class="upload-box" id="id-upload-area">
+        <div id="upload-pre-view">
+          <div class="icon-wrap">
+            <svg style="width:30px;height:30px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg>
+          </div>
+          <span>Take Photo of ID</span>
+          <small>Aadhaar, Passport or License</small>
         </div>
-        <img src="" class="upload-preview" id="id-preview">
+        <img src="" id="id-image-preview" class="hidden">
       </label>
     </section>
 
-    <!-- Payment Panel -->
-    <section style="padding-bottom: 2rem;">
-      <h2>5. Payment Details</h2>
-      <div class="payment-card">
+    <!-- Step 4 -->
+    <section>
+      <h2>4. Payment Confirmation</h2>
+      <div class="payment-area">
         <div class="pay-header">
           <div>
-            <small>Total Received</small>
-            <div class="total">₹<span id="total-val">0</span></div>
+            <small>Stay Amount</small>
+            <div class="total">₹<span id="final-total">0</span></div>
           </div>
           <div style="text-align:right">
             <small>Method</small>
-            <div id="pay-method-badge" style="font-size: 10px; font-weight: 800; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 20px;">Pending</div>
+            <div id="method-tag" style="font-size: 10px; font-weight: 900; border: 1.5px solid rgba(255,255,255,0.3); padding: 5px 12px; border-radius: 50px;">Pending</div>
           </div>
         </div>
-        <div class="split-grid">
-          <div class="split-input">
+        
+        <div class="pay-methods">
+          <div class="pay-method-item">
             <label>Online</label>
-            <div class="val">
+            <div class="input-flex">
               <span>₹</span>
-              <input type="number" id="pay-online" placeholder="0">
+              <input type="number" id="pay-online-val" placeholder="0">
             </div>
           </div>
-          <div class="split-input">
+          <div class="pay-method-item">
             <label>Cash</label>
-            <div class="val">
+            <div class="input-flex">
               <span>₹</span>
-              <input type="number" id="pay-cash" placeholder="0">
+              <input type="number" id="pay-cash-val" placeholder="0">
             </div>
           </div>
         </div>
+
+        <button class="scan-trigger" id="scan-payment-qr">
+          <svg style="width:22px;height:22px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+          Scan & Pay
+        </button>
       </div>
     </section>
   </main>
 
   <footer>
-    <button class="submit-btn" id="submit-btn">
-      Confirm Check-in
-      <svg style="width:20px;height:20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+    <button class="main-submit" id="form-submit-btn">
+      Confirm Stay
+      <svg style="width:24px;height:24px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
     </button>
   </footer>
 </div>
 
-<!-- Success Screen -->
-<div class="success-overlay" id="success-overlay">
-  <div class="success-icon">
-    <svg style="width:40px;height:40px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-  </div>
-  <h1 class="success-title">Check-in Success</h1>
-  <p style="color:var(--brand-300); font-weight: 500;">Your room is ready for check-in</p>
-  
-  <div class="success-room">
-    <small style="font-size:10px; font-weight: 900; text-transform: uppercase; color: var(--brand-300); letter-spacing: 0.2em;">Assigned Room</small>
-    <div class="num" id="success-room-num">--</div>
-  </div>
-
-  <div style="text-align:left; width: 100%; max-width: 300px; margin: 0 auto 2rem; border-top: 1px solid var(--brand-100); padding-top: 1rem;">
-    <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
-      <span style="font-size:11px; color:var(--brand-300); font-weight: 700;">Guest</span>
-      <b id="success-name" style="font-size:13px">--</b>
-    </div>
-    <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
-      <span style="font-size:11px; color:var(--brand-300); font-weight: 700;">Reference</span>
-      <b id="success-token" style="font-size:13px; font-family: monospace;">--</b>
-    </div>
-  </div>
-
-  <button class="submit-btn" style="box-shadow: none;" onclick="location.reload()">Done</button>
+<!-- QR Overlay -->
+<div id="qr-scanner-overlay">
+  <div class="scanner-exit" id="exit-scanner">✕</div>
+  <video id="scanner-stream" playsinline></video>
+  <div class="scanner-target"></div>
+  <p style="color:#fff; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; position: absolute; bottom: 120px; background: rgba(0,0,0,0.4); padding: 8px 16px; border-radius: 12px;">Center the QR in the box</p>
 </div>
+
+<!-- Success Screen -->
+<div class="success-screen" id="final-success-screen">
+  <div class="success-badge">
+    <svg style="width:45px;height:45px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
+  </div>
+  <h1>Registration Success</h1>
+  <p style="color:var(--brand-300); font-weight: 700; font-size: 1.1rem;">Your Divine stay starts now</p>
+
+  <div class="success-room-card">
+    <small>Room Assigned</small>
+    <div class="number" id="final-room-num">--</div>
+    <div class="type" id="final-room-type">--</div>
+  </div>
+
+  <div style="width: 100%; max-width: 340px; border-top: 1.5px solid var(--brand-100); padding-top: 2rem; text-align: left;">
+    <div style="display:flex; justify-content:space-between; margin-bottom: 15px;">
+      <span style="font-size:11px; color:var(--brand-300); font-weight: 900; text-transform: uppercase;">Guest</span>
+      <b id="final-name" style="font-size:15px; font-weight: 900;">--</b>
+    </div>
+    <div style="display:flex; justify-content:space-between;">
+      <span style="font-size:11px; color:var(--brand-300); font-weight: 900; text-transform: uppercase;">Stay Ref</span>
+      <b id="final-ref" style="font-size:15px; font-family: monospace; font-weight: 900; color: var(--brand-400);">--</b>
+    </div>
+  </div>
+
+  <button class="main-submit" style="margin-top: 3.5rem; box-shadow: none;" onclick="location.reload()">New Check-in</button>
+</div>
+
+<canvas id="qr-processing-canvas" class="hidden"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // Config
+  // -- CONFIG --
   const SUPABASE_URL = 'https://fzwnglhxtmtltpysdzma.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6d25nbGh4dG10bHRweXNkem1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODE0MzAsImV4cCI6MjA4NDE1NzQzMH0.PuES2nphqkKU-FqzBge6LlptVibSfeTQcUExEdfTleg';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const ROOM_MAP = {
+  const ROOMS = {
     'Cozy Mini': ['102','201','202','301','302'],
     'Compact Twin': ['203','303'],
     'Convenient Queen': ['101']
   };
 
-  // State
-  let appState = {
+  // -- STATE --
+  let app = {
     date: new Date().toISOString().split('T')[0],
     time: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }),
-    stayType: 'Daycation',
-    roomType: null,
-    roomNumber: null,
-    docFile: null,
-    availability: {}
+    stay: 'Daycation',
+    room: { num: null, type: null },
+    doc: null,
+    scanning: false
   };
 
-  // UI Elements
-  const el = (id) => document.getElementById(id);
-  const elements = {
-    displayDate: el('display-date'),
-    displayTime: el('display-time'),
-    adminTrigger: el('admin-trigger'),
-    adminPanel: el('admin-panel'),
-    inputDate: el('input-date'),
-    inputTime: el('input-time'),
-    saveAdmin: el('save-admin'),
-    roomNumber: el('room-number'),
-    roomType: el('room-type'),
-    totalVal: el('total-val'),
-    payMethodBadge: el('pay-method-badge'),
-    submitBtn: el('submit-btn'),
-    idInput: el('id-input'),
-    idPreview: el('id-preview'),
-    idLabel: el('id-label'),
-    uploadPlaceholder: el('upload-placeholder'),
-    roomList: el('room-list'),
-    toggleRoomPicker: el('toggle-room-picker')
-  };
+  const get = (id) => document.getElementById(id);
 
-  // Init
-  function init() {
-    updateDTDisplay();
-    elements.inputDate.value = appState.date;
-    elements.inputTime.value = appState.time;
-    fetchAvailability();
+  // -- INITIALIZATION --
+  function start() {
+    updateDT();
+    get('admin-date').value = app.date;
+    get('admin-time').value = app.time;
+    findRoom();
 
-    // Event Listeners
-    elements.adminTrigger.onclick = (e) => {
+    // Interaction logic
+    get('admin-toggle').onclick = (e) => {
       if(e.target.closest('#admin-panel')) return;
-      elements.adminPanel.style.display = elements.adminPanel.style.display === 'block' ? 'none' : 'block';
+      get('admin-panel').style.display = get('admin-panel').style.display === 'block' ? 'none' : 'block';
     };
 
-    elements.saveAdmin.onclick = () => {
-      appState.date = elements.inputDate.value;
-      appState.time = elements.inputTime.value;
-      updateDTDisplay();
-      elements.adminPanel.style.display = 'none';
-      fetchAvailability();
+    get('admin-save').onclick = () => {
+      app.date = get('admin-date').value;
+      app.time = get('admin-time').value;
+      updateDT();
+      get('admin-panel').style.display = 'none';
+      findRoom();
     };
 
-    document.querySelectorAll('.stay-card').forEach(card => {
-      card.onclick = () => {
-        document.querySelectorAll('.stay-card').forEach(c => c.classList.remove('active'));
-        card.classList.add('active');
-        appState.stayType = card.dataset.type;
-        fetchAvailability();
+    document.querySelectorAll('.stay-card').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.stay-card').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        app.stay = btn.dataset.type;
+        findRoom();
       };
     });
 
-    elements.idInput.onchange = (e) => {
-      const file = e.target.files[0];
-      if(!file) return;
-      appState.docFile = file;
+    get('field-id-file').onchange = (e) => {
+      const f = e.target.files[0];
+      if(!f) return;
+      app.doc = f;
       const reader = new FileReader();
-      reader.onload = (ev) => {
-        elements.idPreview.src = ev.target.result;
-        elements.idPreview.style.display = 'block';
-        elements.uploadPlaceholder.style.display = 'none';
-        elements.idLabel.classList.add('has-file');
+      reader.onload = (v) => {
+        get('id-image-preview').src = v.target.result;
+        get('id-image-preview').classList.remove('hidden');
+        get('upload-pre-view').classList.add('hidden');
+        get('id-upload-area').classList.add('has-file');
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(f);
     };
 
-    const updatePayments = () => {
-      const online = parseFloat(el('pay-online').value) || 0;
-      const cash = parseFloat(el('pay-cash').value) || 0;
-      const total = online + cash;
-      elements.totalVal.textContent = total;
-      elements.payMethodBadge.textContent = (online && cash) ? 'Split Pay' : online ? 'Online' : cash ? 'Cash' : 'Pending';
-      elements.payMethodBadge.style.background = total > 0 ? 'var(--success)' : 'rgba(255,255,255,0.2)';
+    const updatePay = () => {
+      const on = parseFloat(get('pay-online-val').value) || 0;
+      const ca = parseFloat(get('pay-cash-val').value) || 0;
+      const total = on + ca;
+      get('final-total').textContent = total;
+      get('method-tag').textContent = (on && ca) ? 'Split' : on ? 'Online' : ca ? 'Cash' : 'Pending';
+      get('method-tag').style.background = total > 0 ? 'var(--success)' : 'transparent';
+      get('scan-payment-qr').style.display = on > 0 ? 'flex' : 'none';
     };
+    get('pay-online-val').oninput = updatePay;
+    get('pay-cash-val').oninput = updatePay;
 
-    el('pay-online').oninput = updatePayments;
-    el('pay-cash').oninput = updatePayments;
-
-    elements.toggleRoomPicker.onclick = () => {
-      elements.roomList.style.display = elements.roomList.style.display === 'grid' ? 'none' : 'grid';
-      renderRoomPicker();
-    };
-
-    elements.submitBtn.onclick = handleCheckin;
+    get('scan-payment-qr').onclick = openScanner;
+    get('exit-scanner').onclick = closeScanner;
+    get('form-submit-btn').onclick = submitForm;
   }
 
-  function updateDTDisplay() {
-    elements.displayDate.textContent = new Date(appState.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
-    elements.displayTime.textContent = appState.time;
+  function updateDT() {
+    get('label-date').textContent = new Date(app.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+    get('label-time').textContent = app.time;
   }
 
-  async function fetchAvailability() {
+  async function findRoom() {
     try {
-      const { data, error } = await db.from('bookings').select('room_number').eq('check_in_date', appState.date).eq('stay_type', appState.stayType);
-      if(error) throw error;
+      const { data } = await db.from('bookings').select('room_number').eq('check_in_date', app.date).eq('stay_type', app.stay);
+      const busy = (data || []).map(b => b.room_number);
+      
+      let res = null;
+      let typ = null;
 
-      const occupied = (data || []).map(b => b.room_number);
-      const avail = {};
-      Object.keys(ROOM_MAP).forEach(type => {
-        avail[type] = ROOM_MAP[type].filter(r => !occupied.includes(r));
-      });
-      appState.availability = avail;
-
-      // Auto-assign logic
-      let found = false;
-      for (const type of Object.keys(ROOM_MAP)) {
-        if(avail[type].length > 0) {
-          appState.roomType = type;
-          appState.roomNumber = avail[type][0];
-          found = true;
+      for (const t of Object.keys(ROOMS)) {
+        const free = ROOMS[t].filter(r => !busy.includes(r));
+        if(free.length > 0) {
+          res = free[0];
+          typ = t;
           break;
         }
       }
+      app.room.num = res;
+      app.room.type = typ;
+    } catch(err) { console.error(err); }
+  }
 
-      if(!found) {
-        elements.roomNumber.textContent = "FULL";
-        elements.roomType.textContent = "No Rooms Left Today";
-        appState.roomNumber = null;
-      } else {
-        elements.roomNumber.textContent = appState.roomNumber;
-        elements.roomType.textContent = appState.roomType;
-      }
-      renderRoomPicker();
-    } catch(err) {
-      console.error(err);
-      toast("Error checking availability");
+  function alertBox(txt) {
+    const box = get('toast');
+    box.textContent = txt;
+    box.style.display = 'block';
+    setTimeout(() => box.style.display = 'none', 3500);
+  }
+
+  // -- QR SCANNER ENGINE --
+  let stream;
+  async function openScanner() {
+    app.scanning = true;
+    get('qr-scanner-overlay').style.display = 'flex';
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      const vid = get('scanner-stream');
+      vid.srcObject = stream;
+      vid.play();
+      requestAnimationFrame(processScan);
+    } catch(e) {
+      alertBox("Camera blocked. Enable permissions.");
+      closeScanner();
     }
   }
 
-  function renderRoomPicker() {
-    elements.roomList.innerHTML = '';
-    Object.keys(ROOM_MAP).forEach(type => {
-      const count = appState.availability[type]?.length || 0;
-      const first = appState.availability[type]?.[0] || '--';
-      const item = document.createElement('div');
-      item.className = `room-picker-item ${appState.roomType === type ? 'active' : ''} ${count === 0 ? 'opacity-30' : ''}`;
-      item.innerHTML = `
-        <span>${type}</span>
-        <b>Room ${first}</b>
-        <small style="font-size:8px; font-weight:800; color:${count > 0 ? 'var(--success)' : 'var(--error)'}">${count} Available</small>
-      `;
-      if(count > 0) {
-        item.onclick = () => {
-          appState.roomType = type;
-          appState.roomNumber = first;
-          elements.roomNumber.textContent = first;
-          elements.roomType.textContent = type;
-          elements.roomList.style.display = 'none';
-          renderRoomPicker();
-        };
+  function closeScanner() {
+    app.scanning = false;
+    get('qr-scanner-overlay').style.display = 'none';
+    if(stream) stream.getTracks().forEach(t => t.stop());
+  }
+
+  function processScan() {
+    if(!app.scanning) return;
+    const vid = get('scanner-stream');
+    const can = get('qr-processing-canvas');
+    if(vid.readyState === vid.HAVE_ENOUGH_DATA) {
+      can.width = vid.videoWidth;
+      can.height = vid.videoHeight;
+      const ctx = can.getContext('2d');
+      ctx.drawImage(vid, 0, 0, can.width, can.height);
+      const dat = ctx.getImageData(0, 0, can.width, can.height);
+      const code = jsQR(dat.data, dat.width, dat.height);
+      if(code) {
+        closeScanner();
+        // Intent redirect for UPI or Links
+        window.location.href = code.data;
+        return;
       }
-      elements.roomList.appendChild(item);
-    });
+    }
+    requestAnimationFrame(processScan);
   }
 
-  function toast(msg) {
-    const t = el('error-toast');
-    t.textContent = msg;
-    t.style.display = 'block';
-    setTimeout(() => t.style.display = 'none', 3000);
-  }
+  // -- SUBMISSION HANDLER --
+  async function submitForm() {
+    const name = get('field-name').value.trim();
+    const phone = get('field-phone').value.trim();
+    const on = parseFloat(get('pay-online-val').value) || 0;
+    const ca = parseFloat(get('pay-cash-val').value) || 0;
+    const total = on + ca;
 
-  async function handleCheckin() {
-    const name = el('guest-name').value.trim();
-    const phone = el('guest-phone').value.trim();
-    const online = parseFloat(el('pay-online').value) || 0;
-    const cash = parseFloat(el('pay-cash').value) || 0;
-    const total = online + cash;
+    if(!name) return alertBox("Guest Name required");
+    if(phone.length < 10) return alertBox("Valid Phone required");
+    if(!app.room.num) return alertBox("Full House! No rooms free.");
+    if(total <= 0) return alertBox("Enter payment received");
+    if(!app.doc) return alertBox("Upload Guest ID photo");
 
-    if(!name) return toast("Name is required");
-    if(phone.length < 10) return toast("Valid phone is required");
-    if(!appState.roomNumber) return toast("No room selected");
-    if(total <= 0) return toast("Payment amount required");
-    if(!appState.docFile) return toast("ID Document required");
-
-    elements.submitBtn.disabled = true;
-    elements.submitBtn.textContent = "Processing...";
+    get('form-submit-btn').disabled = true;
+    get('form-submit-btn').textContent = "Finalizing Stay...";
 
     try {
-      // 1. Upload Doc
-      const ext = appState.docFile.name.split('.').pop();
-      const path = `guest-photos/${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
-      const { error: uploadError } = await db.storage.from('guest-photos').upload(path, appState.docFile);
-      if(uploadError) throw uploadError;
-      const { data: urlData } = db.storage.from('guest-photos').getPublicUrl(path);
+      // 1. Storage Upload
+      const ext = app.doc.name.split('.').pop();
+      // Clean path: use just the filename inside the bucket
+      const filename = `${Date.now()}_${Math.random().toString(36).substr(2,6)}.${ext}`;
+      
+      const { error: upErr } = await db.storage.from('guest-photos').upload(filename, app.doc);
+      if(upErr) {
+        // Discretely log the error for developers, show a general message to customers
+        console.error("Storage Error:", upErr);
+        throw new Error("Check-in service temporarily unavailable. Please ask reception for assistance.");
+      }
+      
+      const { data: urlDat } = db.storage.from('guest-photos').getPublicUrl(filename);
 
-      // 2. Insert Booking
-      const booking = {
+      // 2. Database Insert
+      const payload = {
         full_name: name,
         phone_number: phone,
-        check_in_date: appState.date,
-        arrival_time: appState.time,
-        stay_type: appState.stayType,
-        room_type: appState.roomType,
-        room_number: appState.roomNumber,
+        check_in_date: app.date,
+        arrival_time: app.time,
+        stay_type: app.stay,
+        room_type: app.room.type,
+        room_number: app.room.num,
         total_amount: total,
-        payment_online: online,
-        payment_cash: cash,
+        payment_online: on,
+        payment_cash: ca,
         status: 'confirmed',
         payment_status: 'paid',
-        guest_photo_url: urlData.publicUrl,
-        qr_token: 'DGH-' + Math.random().toString(36).substr(2, 6).toUpperCase()
+        guest_photo_url: urlDat.publicUrl,
+        qr_token: 'DGH-' + Math.random().toString(36).substr(2,6).toUpperCase()
       };
 
-      const { data, error } = await db.from('bookings').insert([booking]).select();
+      const { data, error } = await db.from('bookings').insert([payload]).select();
       if(error) throw error;
 
-      // 3. Success
-      const result = data[0];
-      el('success-room-num').textContent = result.room_number;
-      el('success-name').textContent = result.full_name;
-      el('success-token').textContent = result.qr_token;
-      el('success-overlay').style.display = 'flex';
-
+      // 3. Victory Screen
+      get('final-room-num').textContent = data[0].room_number;
+      get('final-room-type').textContent = data[0].room_type;
+      get('final-name').textContent = data[0].full_name;
+      get('final-ref').textContent = data[0].qr_token;
+      get('final-success-screen').style.display = 'flex';
+      
     } catch(err) {
-      console.error(err);
-      toast("Check-in failed. Try again.");
-      elements.submitBtn.disabled = false;
-      elements.submitBtn.textContent = "Confirm Check-in";
+      console.error("Submit Error:", err);
+      // Hide technical details like "Bucket not found" from the customer
+      const customerMsg = err.message.includes("Bucket not found") 
+        ? "Check-in service temporarily unavailable. Please see reception." 
+        : (err.message || "Something went wrong. Please try again.");
+      alertBox(customerMsg);
+      get('form-submit-btn').disabled = false;
+      get('form-submit-btn').textContent = "Confirm Stay";
     }
   }
 
-  init();
+  start();
 </script>
 </body>
 </html>
