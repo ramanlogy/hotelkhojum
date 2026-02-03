@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Divine Guest House</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #222;
+      font-size: 15px;
+      line-height: 1.4;
+      overflow-x: hidden;
+    }
+    
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header - Compact */
+    .header {
+      padding: 12px 16px;
+      border-bottom: 1px solid #eee;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: #222;
+    }
+    
+    /* Main Content - Scrollable */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Section - Minimal Spacing */
+    .section {
+      padding: 20px 16px;
+      border-bottom: 8px solid #f7f7f7;
+    }
+    
+    .section:last-of-type {
+      border-bottom: none;
+      padding-bottom: 100px;
+    }
+    
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #222;
+    }
+    
+    /* Date Picker - Inline */
+    .date-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    
+    .date-quick {
+      background: #f7f7f7;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .date-quick.active {
+      background: #222;
+      border-color: #222;
+      color: #fff;
+    }
+    
+    .date-quick-label {
+      font-size: 11px;
+      opacity: 0.7;
+      display: block;
+      margin-bottom: 2px;
+    }
+    
+    .date-quick-value {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .date-custom {
+      grid-column: 1 / -1;
+    }
+    
+    input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #f7f7f7;
+    }
+    
+    /* Stay Type - Compact Pills */
+    .stay-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .stay-pill {
+      flex: 1;
+      min-width: 100px;
+      padding: 10px 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #f7f7f7;
+    }
+    
+    .stay-pill.active {
+      background: #222;
+      border-color: #222;
+      color: #fff;
+    }
+    
+    .stay-pill-name {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    
+    .stay-pill-time {
+      font-size: 10px;
+      opacity: 0.7;
+    }
+    
+    .stay-pill-price {
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+    
+    /* Room Cards - Compact Horizontal Scroll */
+    .rooms-scroll {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin: 0 -16px;
+      padding: 0 16px 8px;
+    }
+    
+    .rooms-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .room-card {
+      flex-shrink: 0;
+      width: 200px;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: #fff;
+    }
+    
+    .room-card.active {
+      border-color: #222;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: scale(1.02);
+    }
+    
+    .room-card.unavailable {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    
+    .room-img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .room-info {
+      padding: 10px;
+    }
+    
+    .room-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .room-price {
+      font-size: 13px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 6px;
+    }
+    
+    .room-status {
+      font-size: 11px;
+      color: #0a8;
+    }
+    
+    .room-status.soldout {
+      color: #c44;
+    }
+    
+    /* Input Fields - Clean */
+    .input-group {
+      margin-bottom: 12px;
+    }
+    
+    .input-label {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+      color: #222;
+    }
+    
+    input[type="text"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+      background: #f7f7f7;
+      transition: all 0.2s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #222;
+      background: #fff;
+    }
+    
+    .phone-input {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .phone-code {
+      width: 70px;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    /* Payment Toggle - Simple */
+    .payment-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: #f7f7f7;
+      padding: 4px;
+      border-radius: 8px;
+    }
+    
+    .payment-option {
+      padding: 10px;
+      text-align: center;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+      background: transparent;
+      color: #666;
+    }
+    
+    .payment-option.active {
+      background: #222;
+      color: #fff;
+    }
+    
+    /* Summary - Inline */
+    .summary {
+      background: #f7f7f7;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    
+    .summary-row:last-child {
+      margin-bottom: 0;
+      padding-top: 8px;
+      border-top: 1px solid #e0e0e0;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    
+    .summary-label {
+      color: #666;
+    }
+    
+    .summary-value {
+      color: #222;
+      font-weight: 600;
+    }
+    
+    /* Bottom Action Bar - Sticky */
+    .action-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-top: 1px solid #eee;
+      padding: 12px 16px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom));
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+      z-index: 100;
+    }
+    
+    .action-bar-inner {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    
+    .btn-book {
+      width: 100%;
+      padding: 14px;
+      background: #222;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    
+    .btn-book:active {
+      transform: scale(0.98);
+    }
+    
+    .btn-book:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    /* Loading State */
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Success Screen - Simple */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 40px 16px;
+    }
+    
+    .success-screen.show {
+      display: block;
+    }
+    
+    .success-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 16px;
+      background: #0a8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 32px;
+    }
+    
+    .success-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .success-subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 24px;
+    }
+    
+    .qr-container {
+      background: #f7f7f7;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .qr-container canvas {
+      max-width: 200px;
+      height: auto !important;
+    }
+    
+    .ticket-details {
+      background: #f7f7f7;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .ticket-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 13px;
+    }
+    
+    .ticket-label {
+      color: #666;
+    }
+    
+    .ticket-value {
+      font-weight: 600;
+    }
+    
+    .btn-secondary {
+      width: 100%;
+      padding: 12px;
+      background: #f7f7f7;
+      color: #222;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 8px;
+      font-family: inherit;
+    }
+    
+    /* Modal - Payment QR */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    
+    .modal.show {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 400px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .modal-subtitle {
+      font-size: 13px;
+      color: #666;
+    }
+    
+    .payment-qr {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .payment-qr img {
+      max-width: 200px;
+      border-radius: 8px;
+    }
+    
+    .payment-amount {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #222;
+    }
+    
+    .payment-steps {
+      background: #f7f7f7;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .payment-steps ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    
+    .payment-steps li {
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: #444;
+    }
+    
+    /* Hide main content when success */
+    .app.success .content > *:not(.success-screen) {
+      display: none;
+    }
+    
+    .app.success .action-bar {
+      display: none;
+    }
+    
+    /* Smooth Transitions */
+    .room-card,
+    .date-quick,
+    .stay-pill,
+    .payment-option,
+    .btn-book {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Loading Skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    
+    /* Error State */
+    .error-message {
+      background: #fee;
+      color: #c44;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 12px;
+      display: none;
+    }
+    
+    .error-message.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">DIVINE Guest House</div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Date Selection -->
+      <div class="section">
+        <div class="section-title">When?</div>
+        <div class="date-row">
+          <div class="date-quick active" data-date="today">
+            <span class="date-quick-label">TODAY</span>
+            <span class="date-quick-value" id="today-val">Jan 28</span>
+          </div>
+          <div class="date-quick" data-date="tomorrow">
+            <span class="date-quick-label">TOMORROW</span>
+            <span class="date-quick-value" id="tomorrow-val">Jan 29</span>
+          </div>
+          <div class="date-custom">
+            <input type="date" id="date-picker">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Stay Type -->
+      <div class="section">
+        <div class="section-title">What time?</div>
+        <div class="stay-pills">
+          <div class="stay-pill" data-type="Daycation">
+            <div class="stay-pill-name">Day</div>
+            <div class="stay-pill-time">12PM-5PM</div>
+            <div class="stay-pill-price">Rs 600</div>
+          </div>
+          <div class="stay-pill" data-type="Staycation">
+            <div class="stay-pill-name">Night</div>
+            <div class="stay-pill-time">6PM-11AM</div>
+            <div class="stay-pill-price">Rs 750</div>
+          </div>
+          <div class="stay-pill" data-type="Full Stay">
+            <div class="stay-pill-name">Full Day</div>
+            <div class="stay-pill-time">12PM-11AM</div>
+            <div class="stay-pill-price">Rs 1250</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Room Selection -->
+      <div class="section">
+        <div class="section-title">Choose room</div>
+        <div class="rooms-scroll" id="rooms-container">
+          <!-- Rooms will be loaded here -->
+        </div>
+      </div>
+      
+      <!-- Guest Details -->
+      <div class="section">
+        <div class="section-title">Your details</div>
+        <div class="input-group">
+          <label class="input-label">Name</label>
+          <input type="text" id="guest-name" placeholder="Full name">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Phone</label>
+          <input type="tel" id="guest-phone" placeholder="98XXXXXXXX" maxlength="10">
+        </div>
+      </div>
+      
+      <!-- Payment Method -->
+      <div class="section">
+        <div class="section-title">Confirm and pay</div>
+        <div class="payment-toggle">
+          <div class="payment-option active" data-payment="now">Pay Now</div>
+          <div class="payment-option" data-payment="later">Pay at Hotel</div>
+        </div>
+      </div>
+      
+      <!-- Summary -->
+      <div class="section">
+        <div class="summary" id="summary">
+          <div class="summary-row">
+            <span class="summary-label">Date</span>
+            <span class="summary-value" id="sum-date">-</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Time</span>
+            <span class="summary-value" id="sum-time">-</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Room</span>
+            <span class="summary-value" id="sum-room">-</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Total (2 persons)</span>
+            <span class="summary-value" id="sum-total">Rs 0</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Success Screen -->
+      <div class="success-screen" id="success-screen">
+        <div class="success-icon">✓</div>
+        <h2 class="success-title" id="success-title">Booking Confirmed!</h2>
+        <p class="success-subtitle">Show this QR at reception</p>
+        
+        <div class="qr-container" id="qr-code"></div>
+        
+        <div class="ticket-details" id="ticket-details"></div>
+        
+        <button class="btn-secondary" onclick="downloadTicket()">Download Ticket</button>
+        <button class="btn-secondary" onclick="shareWhatsApp()">Share on WhatsApp</button>
+        <button class="btn-secondary" onclick="location.reload()">New Booking</button>
+      </div>
+    </div>
+    
+    <!-- Bottom Action Bar -->
+    <div class="action-bar">
+      <div class="action-bar-inner">
+        <div class="error-message" id="error-msg"></div>
+        <button class="btn-book" id="btn-book">
+          <span id="btn-text">Complete Booking</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Payment Modal -->
+  <div class="modal" id="payment-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Scan to Pay</h3>
+        <p class="modal-subtitle">Use eSewa or Khalti</p>
+      </div>
+      
+      <div class="payment-qr">
+        <img src="assets/dpayment-qr.png" alt="Payment QR">
+      </div>
+      
+      <div class="payment-amount" id="payment-amt">Rs 0</div>
+      
+      <div class="payment-steps">
+        <ol>
+          <li>Open eSewa/Khalti app</li>
+          <li>Scan QR code above</li>
+          <li>Complete payment</li>
+          <li>Click "I've Paid" below</li>
+        </ol>
+      </div>
+      
+      <button class="btn-book" onclick="confirmPayment()">I've Paid</button>
+      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  
+  <script>
+    // Config - Initialize Supabase client
+    const SUPABASE_URL = 'https://fzwnglhxtmtltpysdzma.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6d25nbGh4dG10bHRweXNkem1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODE0MzAsImV4cCI6MjA4NDE1NzQzMH0.PuES2nphqkKU-FqzBge6LlptVibSfeTQcUExEdfTleg';
+    
+    // Initialize Supabase - using window property to avoid redeclaration
+    window.dbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const db = window.dbClient;
+    
+    // Data
+    const ROOMS = [
+      { id: 'cozy-mini', name: 'Cozy Mini', capacity: 5, img: 'assets/cozy-mini.png' },
+      { id: 'compact-twin', name: 'Compact Twin', capacity: 2, img: 'assets/compact-twin.png' },
+      { id: 'convenient-queen', name: 'Convenient Queen', capacity: 1, img: 'assets/convenient-queen.png' }
+    ];
+    
+    const PRICES = {
+      'Daycation': { 'Cozy Mini': 600, 'Compact Twin': 700, 'Convenient Queen': 850 },
+      'Staycation': { 'Cozy Mini': 750, 'Compact Twin': 850, 'Convenient Queen': 1000 },
+      'Full Stay': { 'Cozy Mini': 1250, 'Compact Twin': 1450, 'Convenient Queen': 1750 }
+    };
+    
+    const TIMES = {
+      'Daycation': '12:00 PM - 5:00 PM',
+      'Staycation': '6:00 PM - 11:00 AM',
+      'Full Stay': '12:00 PM - 11:00 AM'
+    };
+    
+    // State
+    let state = {
+      date: new Date().toISOString().split('T')[0],
+      stayType: null,
+      room: null,
+      payment: 'now',
+      availability: {},
+      booking: null
+    };
+    
+    // Init
+    function init() {
+      setupDates();
+      setupEvents();
+      loadRooms();
+    }
+    
+    function setupDates() {
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      
+      const fmt = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      document.getElementById('today-val').textContent = fmt(today);
+      document.getElementById('tomorrow-val').textContent = fmt(tomorrow);
+      document.getElementById('date-picker').value = state.date;
+      document.getElementById('date-picker').min = state.date;
+    }
+    
+    function setupEvents() {
+      // Date selection
+      document.querySelectorAll('.date-quick').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll('.date-quick').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          const today = new Date();
+          if (btn.dataset.date === 'today') {
+            state.date = today.toISOString().split('T')[0];
+          } else {
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            state.date = tomorrow.toISOString().split('T')[0];
+          }
+          
+          document.getElementById('date-picker').value = state.date;
+          loadRooms();
+          updateSummary();
+        };
+      });
+      
+      document.getElementById('date-picker').onchange = (e) => {
+        state.date = e.target.value;
+        document.querySelectorAll('.date-quick').forEach(b => b.classList.remove('active'));
+        loadRooms();
+        updateSummary();
+      };
+      
+      // Stay type
+      document.querySelectorAll('.stay-pill').forEach(pill => {
+        pill.onclick = () => {
+          document.querySelectorAll('.stay-pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          state.stayType = pill.dataset.type;
+          loadRooms();
+          updateSummary();
+        };
+      });
+      
+      // Payment
+      document.querySelectorAll('.payment-option').forEach(opt => {
+        opt.onclick = () => {
+          document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
+          opt.classList.add('active');
+          state.payment = opt.dataset.payment;
+          updateButton();
+        };
+      });
+      
+      // Book button
+      document.getElementById('btn-book').onclick = handleBook;
+    }
+    
+    async function loadRooms() {
+      const container = document.getElementById('rooms-container');
+      
+      // Show message if no stay type selected
+      if (!state.stayType) {
+        container.innerHTML = '<div style="padding: 20px; text-align: center; color: #666; font-size: 14px;">Please select a time slot above to see available rooms</div>';
+        return;
+      }
+      
+      container.innerHTML = '<div class="skeleton" style="width:200px;height:180px;"></div>'.repeat(3);
+      
+      try {
+        const { data } = await db
+          .from('bookings')
+          .select('room_type')
+          .eq('check_in_date', state.date)
+          .eq('stay_type', state.stayType);
+        
+        const availability = {};
+        ROOMS.forEach(room => {
+          const booked = data?.filter(b => b.room_type === room.name).length || 0;
+          availability[room.name] = Math.max(0, room.capacity - booked);
+        });
+        
+        state.availability = availability;
+        
+        container.innerHTML = '';
+        ROOMS.forEach(room => {
+          const avail = availability[room.name];
+          const price = PRICES[state.stayType][room.name];
+          
+          const card = document.createElement('div');
+          card.className = `room-card ${avail === 0 ? 'unavailable' : ''}`;
+          card.innerHTML = `
+            <img src="${room.img}" alt="${room.name}" class="room-img" 
+                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22120%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22200%22 height=%22120%22/%3E%3C/svg%3E'">
+            <div class="room-info">
+              <div class="room-name">${room.name}</div>
+              <div class="room-price">Rs ${price}</div>
+              <div class="room-status ${avail === 0 ? 'soldout' : ''}">${avail === 0 ? 'Sold Out' : `${avail} available`}</div>
+            </div>
+          `;
+          
+          if (avail > 0) {
+            card.onclick = () => {
+              document.querySelectorAll('.room-card').forEach(c => c.classList.remove('active'));
+              card.classList.add('active');
+              state.room = room;
+              updateSummary();
+            };
+          }
+          
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error(err);
+        showError('Failed to load rooms');
+      }
+    }
+    
+    function updateSummary() {
+      if (!state.stayType || !state.room) return;
+      
+      const fmt = d => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      document.getElementById('sum-date').textContent = fmt(state.date);
+      document.getElementById('sum-time').textContent = TIMES[state.stayType];
+      document.getElementById('sum-room').textContent = state.room.name;
+      
+      const price = PRICES[state.stayType][state.room.name];
+      const total = price * 2;
+      document.getElementById('sum-total').textContent = `Rs ${total}`;
+    }
+    
+    function updateButton() {
+      const btn = document.getElementById('btn-text');
+      btn.textContent = state.payment === 'now' ? 'Pay Now' : 'Confirm Booking';
+    }
+    
+    async function handleBook() {
+      const name = document.getElementById('guest-name').value.trim();
+      const phone = document.getElementById('guest-phone').value.trim();
+      
+      if (!state.stayType) {
+        showError('Please select a time slot (Day/Night/Full Day)');
+        return;
+      }
+      
+      if (!state.room) {
+        showError('Please select a room');
+        return;
+      }
+      
+      if (!name || phone.length < 10) {
+        showError('Please enter valid name and phone');
+        return;
+      }
+      
+      const btn = document.getElementById('btn-book');
+      btn.disabled = true;
+      btn.innerHTML = 'Processing... <span class="spinner"></span>';
+      
+      try {
+        const price = PRICES[state.stayType][state.room.name];
+        const total = price * 2;
+        const ref = 'DGH-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+        
+        const bookingData = {
+          full_name: name,
+          phone_number: phone,
+          check_in_date: state.date,
+          arrival_time: state.stayType === 'Daycation' ? '12:00' : '18:00',
+          stay_type: state.stayType,
+          room_type: state.room.name,
+          total_amount: total,
+          base_amount: total,
+          discount_percent: 0,
+          status: state.payment === 'now' ? 'pending' : 'confirmed',
+          payment_status: state.payment === 'now' ? 'unpaid' : 'pending',
+          qr_token: ref
+        };
+        
+        if (state.payment === 'now') {
+          state.booking = bookingData;
+          showPaymentModal(total);
+          btn.disabled = false;
+          btn.innerHTML = '<span id="btn-text">Pay Now</span>';
+        } else {
+          await createBooking(bookingData);
+        }
+      } catch (err) {
+        console.error(err);
+        showError('Booking failed. Please try again.');
+        btn.disabled = false;
+        btn.innerHTML = '<span id="btn-text">Confirm Booking</span>';
+      }
+    }
+    
+    async function createBooking(data) {
+      const { data: result, error } = await db
+        .from('bookings')
+        .insert([data])
+        .select();
+      
+      if (error) throw error;
+      
+      state.booking = result[0];
+      showSuccess();
+    }
+    
+    function showPaymentModal(amount) {
+      document.getElementById('payment-amt').textContent = `Rs ${amount}`;
+      document.getElementById('payment-modal').classList.add('show');
+    }
+    
+    function closeModal() {
+      document.getElementById('payment-modal').classList.remove('show');
+    }
+    
+    async function confirmPayment() {
+      closeModal();
+      
+      const btn = document.getElementById('btn-book');
+      btn.disabled = true;
+      btn.innerHTML = 'Processing... <span class="spinner"></span>';
+      
+      state.booking.payment_status = 'paid';
+      state.booking.status = 'confirmed';
+      await createBooking(state.booking);
+    }
+    
+    function showSuccess() {
+      // Generate QR
+      const qr = document.getElementById('qr-code');
+      qr.innerHTML = '';
+      new QRCode(qr, {
+        text: state.booking.qr_token,
+        width: 200,
+        height: 200
+      });
+      
+      // Show details
+      const fmt = d => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      document.getElementById('ticket-details').innerHTML = `
+        <div class="ticket-row">
+          <span class="ticket-label">Name</span>
+          <span class="ticket-value">${state.booking.full_name}</span>
+        </div>
+        <div class="ticket-row">
+          <span class="ticket-label">Phone</span>
+          <span class="ticket-value">${state.booking.phone_number}</span>
+        </div>
+        <div class="ticket-row">
+          <span class="ticket-label">Date</span>
+          <span class="ticket-value">${fmt(state.booking.check_in_date)}</span>
+        </div>
+        <div class="ticket-row">
+          <span class="ticket-label">Time</span>
+          <span class="ticket-value">${TIMES[state.booking.stay_type]}</span>
+        </div>
+        <div class="ticket-row">
+          <span class="ticket-label">Room</span>
+          <span class="ticket-value">${state.booking.room_type}</span>
+        </div>
+        <div class="ticket-row">
+          <span class="ticket-label">Total</span>
+          <span class="ticket-value">Rs ${state.booking.total_amount}</span>
+        </div>
+        <div class="ticket-row">
+          <span class="ticket-label">Ref</span>
+          <span class="ticket-value">${state.booking.qr_token}</span>
+        </div>
+      `;
+      
+      document.getElementById('app').classList.add('success');
+      document.getElementById('success-screen').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    function showError(msg) {
+      const err = document.getElementById('error-msg');
+      err.textContent = msg;
+      err.classList.add('show');
+      setTimeout(() => err.classList.remove('show'), 3000);
+    }
+    
+    function downloadTicket() {
+      // Simple screenshot approach
+      alert('Take a screenshot of this page to save your ticket!');
+    }
+    
+    function shareWhatsApp() {
+      const msg = `Divine Guest House Booking\n\nName: ${state.booking.full_name}\nPhone: ${state.booking.phone_number}\nDate: ${state.booking.check_in_date}\nRoom: ${state.booking.room_type}\nTotal: Rs ${state.booking.total_amount}\nRef: ${state.booking.qr_token}`;
+      window.open(`https://wa.me/9861828821?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+    
+    init();
+  </script>
+</body>
+</html>
