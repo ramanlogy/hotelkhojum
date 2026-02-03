@@ -1,580 +1,873 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Divine Guest House – Premium Check-in</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <!-- QR Scanner Library -->
-  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
-  <style>
-    :root {
-      --brand-50: #faf9f7;
-      --brand-100: #f0efed;
-      --brand-200: #e8e5e0;
-      --brand-300: #a89f95;
-      --brand-400: #7a756e;
-      --brand-500: #1a1a1a;
-      --success: #22a667;
-      --error: #d44a3a;
-      --radius-xl: 2.5rem;
-      --radius-lg: 1.5rem;
-      --radius-sm: 0.75rem;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background-color: var(--brand-50);
-      color: var(--brand-500);
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
-
-    .app-container {
-      max-width: 440px;
-      margin: 0 auto;
-      background: #fff;
-      min-height: 100vh;
-      box-shadow: 0 0 80px rgba(0,0,0,0.03);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Luxury Header */
-    header {
-      padding: 2.5rem 1.5rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(15px);
-      z-index: 100;
-      border-bottom: 1px solid var(--brand-100);
-    }
-
-    .brand h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; letter-spacing: -0.02em; line-height: 1; }
-    .brand span { color: var(--brand-300); font-weight: 400; }
-    .brand p { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; color: var(--brand-400); margin-top: 6px; }
-
-    .admin-controls { text-align: right; cursor: pointer; padding: 10px 14px; border-radius: 14px; background: var(--brand-50); transition: 0.3s; }
-    .dt-display { font-weight: 800; font-size: 0.9rem; display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
-    .dt-display .dot { width: 4px; height: 4px; background: var(--brand-300); border-radius: 50%; }
-    .admin-controls small { font-size: 8px; font-weight: 900; color: var(--brand-300); text-transform: uppercase; display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin-top: 4px; }
-
-    .admin-edit-panel { display: none; padding: 15px; background: #fff; border-radius: 20px; margin-top: 12px; border: 1px solid var(--brand-200); box-shadow: 0 20px 40px rgba(0,0,0,0.08); position: absolute; right: 1.5rem; top: 80%; width: 200px; }
-    .admin-edit-panel input { padding: 10px 12px; border: 1.5px solid var(--brand-100); border-radius: 10px; font-size: 13px; margin-bottom: 8px; width: 100%; font-family: inherit; font-weight: 700; outline: none; }
-    .admin-edit-panel button { width: 100%; background: var(--brand-500); color: #fff; border: none; padding: 12px; border-radius: 10px; font-size: 11px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
-
-    /* Content Layout */
-    main { padding: 2rem 1.5rem; flex: 1; padding-bottom: 150px; }
-    section { margin-bottom: 3.5rem; }
-    h2 { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em; color: var(--brand-300); margin-bottom: 1.5rem; }
-
-    /* Stay Grid */
-    .stay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .stay-card {
-      padding: 1.25rem 0.5rem; border-radius: 1.75rem; border: 2px solid var(--brand-50); background: var(--brand-50);
-      text-align: center; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .stay-card.active { background: var(--brand-500); color: #fff; border-color: var(--brand-500); transform: scale(1.05); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
-    .stay-card b { display: block; font-size: 14px; font-weight: 900; margin-bottom: 2px; }
-    .stay-card span { font-size: 9px; font-weight: 700; opacity: 0.6; }
-
-    /* Inputs Flow */
-    .input-group { margin-bottom: 1.5rem; }
-    .input-group label { display: block; font-size: 10px; font-weight: 900; color: var(--brand-300); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em; }
-    .input-group input {
-      width: 100%; padding: 1.5rem; background: var(--brand-50); border: 2.5px solid transparent; border-radius: 1.75rem;
-      font-size: 1.2rem; font-weight: 700; outline: none; transition: all 0.3s;
-    }
-    .input-group input:focus { background: #fff; border-color: var(--brand-500); transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0,0,0,0.06); }
-
-    /* ID Verification */
-    .upload-container { width: 100%; position: relative; }
-    .upload-box {
-      width: 100%; border: 4px dashed var(--brand-100); border-radius: 2.5rem;
-      height: 200px; position: relative; cursor: pointer; background: var(--brand-50);
-      display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden;
-      transition: 0.3s;
-    }
-    .upload-box.has-file { border-style: solid; border-color: var(--success); background: #fff; }
-    .upload-box img { width: 100%; height: 100%; object-fit: cover; }
-    .upload-box .icon-wrap { background: #fff; padding: 15px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.03); margin-bottom: 12px; }
-    .upload-box span { font-size: 14px; font-weight: 900; color: var(--brand-500); }
-    .upload-box small { font-size: 10px; color: var(--brand-300); font-weight: 800; margin-top: 4px; }
-
-    /* Payment Panel */
-    .payment-area { background: var(--brand-500); color: #fff; padding: 2.5rem; border-radius: 3rem; margin-top: 1rem; }
-    .pay-header { margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
-    .pay-header small { font-size: 10px; font-weight: 900; opacity: 0.5; text-transform: uppercase; letter-spacing: 0.25em; }
-    .pay-header .total { font-size: 3.5rem; font-weight: 900; line-height: 1; letter-spacing: -0.05em; margin-top: 6px; }
-    
-    .pay-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .pay-method-item { background: rgba(255,255,255,0.08); padding: 1.5rem; border-radius: 1.75rem; transition: 0.3s; }
-    .pay-method-item label { font-size: 9px; font-weight: 900; text-transform: uppercase; opacity: 0.4; margin-bottom: 12px; display: block; }
-    .pay-method-item .input-flex { display: flex; align-items: center; gap: 4px; }
-    .pay-method-item input { background: transparent; border: none; color: #fff; font-size: 1.35rem; font-weight: 900; width: 100%; outline: none; }
-    
-    .scan-trigger {
-      width: 100%; margin-top: 1.25rem; background: #fff; color: var(--brand-500); border: none; 
-      padding: 1.5rem; border-radius: 2rem; font-weight: 900; font-size: 1rem;
-      display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer;
-      display: none; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-    .scan-trigger:active { transform: scale(0.97); }
-
-    /* Scanner View */
-    #qr-scanner-overlay {
-      position: fixed; inset: 0; background: #000; z-index: 2000; display: none;
-      flex-direction: column; align-items: center; justify-content: center;
-    }
-    #scanner-stream { width: 100%; height: 100%; object-fit: cover; }
-    .scanner-target {
-      position: absolute; width: 280px; height: 280px; border: 5px solid #fff;
-      border-radius: 3rem; box-shadow: 0 0 0 1000px rgba(0,0,0,0.7);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .scanner-target::after { content: ''; width: 100%; height: 2px; background: var(--success); position: absolute; animation: scanLine 2s infinite linear; }
-    @keyframes scanLine { 0% { top: 0; } 100% { top: 100%; } }
-    .scanner-exit { position: absolute; top: 4rem; right: 2rem; color: #fff; font-size: 2rem; font-weight: 900; cursor: pointer; z-index: 2100; }
-
-    /* Bottom Action */
-    footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 2rem 1.5rem; z-index: 100; pointer-events: none; }
-    .main-submit {
-      width: 100%; max-width: 392px; margin: 0 auto; background: var(--brand-500); color: #fff; border: none;
-      padding: 1.75rem; border-radius: 2.25rem; font-size: 1.3rem; font-weight: 900; cursor: pointer;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.35); pointer-events: auto; display: flex; align-items: center; justify-content: center; gap: 15px;
-      transition: all 0.3s;
-    }
-    .main-submit:active { transform: scale(0.96); }
-    .main-submit:disabled { opacity: 0.4; transform: none; box-shadow: none; }
-
-    /* Success Overlay */
-    .success-screen {
-      position: fixed; inset: 0; background: #fff; z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem; text-align: center;
-    }
-    .success-badge { width: 100px; height: 100px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; margin-bottom: 2.5rem; box-shadow: 0 20px 40px rgba(34,166,103,0.3); }
-    .success-screen h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--brand-500); }
-    .success-room-card { background: var(--brand-50); padding: 3rem 2rem; border-radius: 3rem; width: 100%; margin: 2.5rem 0; border: 1.5px solid var(--brand-100); }
-    .success-room-card small { font-size: 10px; font-weight: 900; text-transform: uppercase; color: var(--brand-300); letter-spacing: 0.3em; margin-bottom: 12px; display: block; }
-    .success-room-card .number { font-size: 7rem; font-weight: 900; line-height: 1; letter-spacing: -0.06em; color: var(--brand-500); }
-    .success-room-card .type { font-size: 12px; font-weight: 800; color: var(--brand-400); margin-top: 15px; }
-
-    .hidden { display: none; }
-    .toast { position: fixed; top: 140px; left: 50%; transform: translateX(-50%); background: var(--error); color: #fff; padding: 15px 30px; border-radius: 1.5rem; font-weight: 800; font-size: 13px; z-index: 4000; display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
-  </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/"
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divine Guest House – Check-in</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f7;
+    --surface: #ffffff;
+    --border: #e8e5e0;
+    --border-focus: #1a1a1a;
+    --text-primary: #1a1a1a;
+    --text-secondary: #7a756e;
+    --text-muted: #a89f95;
+    --accent: #1a1a1a;
+    --accent-light: #f0efed;
+    --green: #22a667;
+    --green-bg: #edfbf3;
+    --red: #d44a3a;
+    --red-bg: #fef2f0;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+    --radius: 14px;
+    --radius-sm: 10px;
   }
-}
-</script>
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    max-width: 440px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--surface);
+    position: relative;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .header-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+  .brand span { color: var(--text-secondary); font-weight: 500; }
+  .header-badge {
+    font-size: 11px; font-weight: 500;
+    color: var(--green);
+    background: var(--green-bg);
+    padding: 4px 10px; border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .header-sub {
+    font-size: 13px; color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ─── CONTENT ─── */
+  .content {
+    padding: 28px 24px 110px;
+  }
+
+  /* ─── AUTO STRIP (date / room / time) ─── */
+  .auto-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .auto-chip {
+    background: var(--accent-light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .18s, box-shadow .18s;
+    position: relative;
+  }
+  .auto-chip:focus-within {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(26,26,26,0.08);
+  }
+  .auto-chip-label {
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    font-size: 10px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.6px;
+    margin-bottom: 5px;
+  }
+  .auto-chip-label svg { width: 11px; height: 11px; color: var(--text-muted); }
+  .auto-chip-value {
+    font-size: 13px; font-weight: 600; color: var(--text-primary);
+  }
+  .auto-chip-value input {
+    background: transparent; border: none; outline: none;
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    color: var(--text-primary); text-align: center; width: 100%;
+    cursor: pointer;
+  }
+  .auto-chip-value input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+  .auto-chip-badge {
+    position: absolute; top: -6px; right: -3px;
+    font-size: 9px; font-weight: 600; color: var(--green);
+    background: var(--green-bg); border: 1px solid #c6f0dc;
+    padding: 1px 5px; border-radius: 8px; letter-spacing: 0.2px;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider { height: 1px; background: var(--border); margin: 0 0 24px; }
+
+  /* ─── FIELD ─── */
+  .field { margin-bottom: 18px; }
+  .field-label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.6px;
+    margin-bottom: 8px;
+  }
+  .field-label svg { width: 14px; height: 14px; }
+  .field-label .req { color: var(--red); font-size: 14px; line-height: 1; }
+
+  .input-wrap { position: relative; }
+  .input-wrap input {
+    width: 100%; padding: 13px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit; font-size: 15px;
+    color: var(--text-primary);
+    background: var(--surface);
+    transition: border-color .18s, box-shadow .18s;
+  }
+  .input-wrap input::placeholder { color: var(--text-muted); }
+  .input-wrap input:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(26,26,26,0.08);
+  }
+  .input-wrap input[type="tel"] { letter-spacing: 0.8px; }
+
+  /* ─── STAY TYPE ROW ─── */
+  .stay-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .stay-btn {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 11px 6px;
+    text-align: center; cursor: pointer;
+    background: var(--surface);
+    transition: all .18s;
+  }
+  .stay-btn:active { transform: scale(0.96); }
+  .stay-btn.active {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+  }
+  .stay-btn-name { font-size: 13px; font-weight: 600; }
+  .stay-btn-time { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+  .stay-btn.active .stay-btn-time { color: rgba(255,255,255,0.6); }
+
+  /* ─── ROOM SELECTOR ─── */
+  .room-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .room-btn {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 10px;
+    cursor: pointer;
+    background: var(--surface);
+    transition: all .18s;
+    position: relative;
+  }
+  .room-btn:active { transform: scale(0.97); }
+  .room-btn.active {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+  }
+  .room-btn.disabled {
+    opacity: 0.35; pointer-events: none;
+  }
+  .room-btn-header { display: flex; align-items: center; justify-content: space-between; }
+  .room-btn-name { font-size: 13px; font-weight: 600; }
+  .room-btn-avail {
+    font-size: 10px; font-weight: 600;
+    color: var(--green); background: var(--green-bg);
+    padding: 2px 7px; border-radius: 8px;
+  }
+  .room-btn.active .room-btn-avail {
+    color: var(--green); background: rgba(255,255,255,0.18);
+  }
+  .room-btn.disabled .room-btn-avail {
+    color: var(--red); background: var(--red-bg);
+  }
+  .room-btn-number {
+    font-size: 11px; color: var(--text-muted); margin-top: 4px;
+  }
+  .room-btn.active .room-btn-number { color: rgba(255,255,255,0.55); }
+
+  /* ─── PAYMENT ─── */
+  .pay-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .pay-box {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    background: var(--surface);
+  }
+  .pay-box-label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .pay-box-label svg { width: 14px; height: 14px; }
+  .pay-box input {
+    width: 100%; border: none; outline: none;
+    font-family: inherit; font-size: 20px; font-weight: 600;
+    color: var(--text-primary); background: transparent;
+  }
+  .pay-box input::placeholder { color: var(--border); }
+  .pay-total {
+    background: var(--accent-light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .pay-total-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+  .pay-total-value { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+
+  /* ─── DOC UPLOAD ─── */
+  .upload-zone {
+    border: 1.8px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+    background: var(--bg);
+    position: relative;
+  }
+  .upload-zone:hover { border-color: var(--text-secondary); background: var(--surface); }
+  .upload-zone.has-file {
+    border-style: solid; border-color: var(--green);
+    background: var(--green-bg); padding: 14px;
+  }
+  .upload-icon {
+    width: 40px; height: 40px;
+    margin: 0 auto 10px;
+    background: var(--surface); border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .upload-icon svg { width: 20px; height: 20px; color: var(--text-secondary); }
+  .upload-text { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+  .upload-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .upload-zone input[type="file"] { display: none; }
+
+  .upload-preview {
+    display: none; width: 100%; height: 100%;
+    border-radius: 8px; object-fit: cover;
+  }
+  .upload-preview.show { display: block; }
+
+  .upload-change {
+    display: none; position: absolute; bottom: 10px; right: 12px;
+    font-size: 11px; font-weight: 600; color: var(--green);
+    background: #fff; border: 1px solid #c6f0dc;
+    padding: 3px 10px; border-radius: 8px;
+  }
+  .upload-zone.has-file .upload-change { display: block; }
+
+  /* ─── ERROR ─── */
+  .error-bar {
+    display: none;
+    background: var(--red-bg); border: 1px solid #f5ccc7;
+    border-radius: var(--radius-sm); padding: 10px 14px;
+    font-size: 13px; color: var(--red); font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .error-bar.show { display: flex; align-items: center; gap: 8px; }
+  .error-bar svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* ─── BOTTOM ACTION ─── */
+  .action-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 12px 24px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    z-index: 50;
+  }
+  .action-inner { max-width: 440px; margin: 0 auto; }
+
+  .btn-submit {
+    width: 100%; padding: 15px;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: var(--radius-sm);
+    font-family: inherit; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: opacity .18s, transform .1s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    letter-spacing: 0.2px;
+  }
+  .btn-submit:active { transform: scale(0.97); }
+  .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .btn-submit svg { width: 18px; height: 18px; }
+
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .5s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ─── SUCCESS ─── */
+  .success-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 200;
+    background: var(--surface);
+    overflow-y: auto;
+    animation: fadeUp .3s cubic-bezier(.22,.61,.36,1);
+  }
+  .success-overlay.show { display: block; }
+  @keyframes fadeUp { from { transform: translateY(40px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+
+  .success-inner {
+    max-width: 440px; margin: 0 auto;
+    padding: 60px 24px 40px;
+    text-align: center;
+  }
+  .success-check {
+    width: 72px; height: 72px; margin: 0 auto 20px;
+    background: var(--green); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(34,166,103,0.3);
+  }
+  .success-check svg { width: 36px; height: 36px; color: #fff; }
+  .success-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+  .success-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 28px; }
+
+  .success-room-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent-light); border: 1px solid var(--border);
+    border-radius: 12px; padding: 8px 18px;
+    margin-bottom: 24px;
+  }
+  .success-room-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; }
+  .success-room-num { font-size: 28px; font-weight: 700; color: var(--text-primary); }
+
+  .success-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px;
+    text-align: left; margin-bottom: 24px;
+  }
+  .success-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 9px 0; border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .success-row:last-child { border-bottom: none; }
+  .success-row-label { color: var(--text-muted); }
+  .success-row-value { font-weight: 600; color: var(--text-primary); }
+
+  .btn-new {
+    width: 100%; padding: 14px;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: var(--radius-sm);
+    font-family: inherit; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: opacity .18s;
+  }
+  .btn-new:active { opacity: 0.8; }
+
+  /* ─── SECTION LABEL ─── */
+  .section-label {
+    font-size: 11px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.7px;
+    margin-bottom: 10px; margin-top: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .section-label svg { width: 13px; height: 13px; }
+</style>
 </head>
 <body>
 
-<div class="app-container">
-  <div id="toast" class="toast"></div>
+<div class="app" id="app">
 
-  <header>
-    <div class="brand">
-      <h1>Divine <span>Guest House</span></h1>
-      <p>Luxury Self Check-In</p>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="brand">Divine <span>Guest House</span></div>
+      <div class="header-badge">Reception</div>
     </div>
-    <div class="admin-controls" id="admin-toggle">
-      <div class="dt-display">
-        <span id="label-date">--</span>
-        <span class="dot"></span>
-        <span id="label-time">--</span>
+    <div class="header-sub">New guest check-in</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content" id="formContent">
+     <!-- STAY TYPE -->
+    <div class="section-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+      Stay Type
+    </div>
+    <div class="stay-row" id="stayRow">
+      <div class="stay-btn active" data-type="Daycation" onclick="selectStay(this)">
+        <div class="stay-btn-name">Day</div>
+        <div class="stay-btn-time">12 PM – 5 PM</div>
       </div>
-      <small><svg style="width:10px;height:10px" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg> Employee Lock</small>
-      <div id="admin-panel" class="admin-edit-panel">
-        <input type="date" id="admin-date">
-        <input type="time" id="admin-time">
-        <button id="admin-save">Unlock & Update</button>
+      <div class="stay-btn" data-type="Staycation" onclick="selectStay(this)">
+        <div class="stay-btn-name">Night</div>
+        <div class="stay-btn-time">6 PM – 11 AM</div>
+      </div>
+      <div class="stay-btn " data-type="Full Stay" onclick="selectStay(this)">
+        <div class="stay-btn-name">Full Day</div>
+        <div class="stay-btn-time">12 PM – 11 AM</div>
       </div>
     </div>
-  </header>
 
-  <main>
-    <!-- Step 1 -->
-    <section>
-      <h2>1. Stay Selection</h2>
-      <div class="stay-grid">
-        <div class="stay-card active" data-type="Daycation">
-          <b>Day</b>
-          <span>12 PM - 5 PM</span>
-        </div>
-        <div class="stay-card" data-type="Staycation">
-          <b>Night</b>
-          <span>6 PM - 11 AM</span>
-        </div>
-        <div class="stay-card" data-type="Full Stay">
-          <b>Full</b>
-          <span>24 Hours</span>
-        </div>
-      </div>
-    </section>
+    <div class="divider"></div>
 
-    <!-- Step 2 -->
-    <section>
-      <h2>2. Guest Information</h2>
-      <div class="input-group">
-        <label>Full Legal Name</label>
-        <input type="text" id="field-name" placeholder="E.g. Johnathan Smith">
-      </div>
-      <div class="input-group">
-        <label>Primary Contact Number</label>
-        <input type="tel" id="field-phone" placeholder="10 Digit Mobile" maxlength="10">
-      </div>
-    </section>
-
-    <!-- Step 3 -->
-    <section>
-      <h2>3. Identity Upload</h2>
-      <input type="file" id="field-id-file" accept="image/*" capture="environment" class="hidden">
-      <label for="field-id-file" class="upload-box" id="id-upload-area">
-        <div id="upload-pre-view">
-          <div class="icon-wrap">
-            <svg style="width:30px;height:30px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg>
-          </div>
-          <span>Take Photo of ID</span>
-          <small>Aadhaar, Passport or License</small>
+    <!-- AUTO STRIP: Date / Room / Time -->
+    <div class="auto-strip">
+      <div class="auto-chip" onclick="document.getElementById('datePicker').click()">
+        <div class="auto-chip-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Date
         </div>
-        <img src="" id="id-image-preview" class="hidden">
+        <div class="auto-chip-value" id="chipDateDisp">—</div>
+        <input type="date" id="datePicker" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;" />
+        <div class="auto-chip-badge">Auto</div>
+      </div>
+
+      <div class="auto-chip" id="chipRoom" onclick="openRoomModal()">
+        <div class="auto-chip-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+          Room
+        </div>
+        <div class="auto-chip-value" id="chipRoomDisp">—</div>
+        <div class="auto-chip-badge">Auto</div>
+      </div>
+
+      <div class="auto-chip" onclick="document.getElementById('timePicker').click()">
+        <div class="auto-chip-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+          Time
+        </div>
+        <div class="auto-chip-value" id="chipTimeDisp">—</div>
+        <input type="time" id="timePicker" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;" />
+        <div class="auto-chip-badge">Auto</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    
+
+    <!-- GUEST NAME -->
+    <div class="field">
+      <label class="field-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="8" r="4"/></svg>
+        Guest Name <span class="req">*</span>
       </label>
-    </section>
-
-    <!-- Step 4 -->
-    <section>
-      <h2>4. Payment Confirmation</h2>
-      <div class="payment-area">
-        <div class="pay-header">
-          <div>
-            <small>Stay Amount</small>
-            <div class="total">₹<span id="final-total">0</span></div>
-          </div>
-          <div style="text-align:right">
-            <small>Method</small>
-            <div id="method-tag" style="font-size: 10px; font-weight: 900; border: 1.5px solid rgba(255,255,255,0.3); padding: 5px 12px; border-radius: 50px;">Pending</div>
-          </div>
-        </div>
-        
-        <div class="pay-methods">
-          <div class="pay-method-item">
-            <label>Online</label>
-            <div class="input-flex">
-              <span>₹</span>
-              <input type="number" id="pay-online-val" placeholder="0">
-            </div>
-          </div>
-          <div class="pay-method-item">
-            <label>Cash</label>
-            <div class="input-flex">
-              <span>₹</span>
-              <input type="number" id="pay-cash-val" placeholder="0">
-            </div>
-          </div>
-        </div>
-
-        <button class="scan-trigger" id="scan-payment-qr">
-          <svg style="width:22px;height:22px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-          Scan & Pay
-        </button>
+      <div class="input-wrap">
+        <input type="text" id="guestName" placeholder="Full name" autocomplete="off" spellcheck="false">
       </div>
-    </section>
-  </main>
-
-  <footer>
-    <button class="main-submit" id="form-submit-btn">
-      Confirm Stay
-      <svg style="width:24px;height:24px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
-    </button>
-  </footer>
-</div>
-
-<!-- QR Overlay -->
-<div id="qr-scanner-overlay">
-  <div class="scanner-exit" id="exit-scanner">✕</div>
-  <video id="scanner-stream" playsinline></video>
-  <div class="scanner-target"></div>
-  <p style="color:#fff; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; position: absolute; bottom: 120px; background: rgba(0,0,0,0.4); padding: 8px 16px; border-radius: 12px;">Center the QR in the box</p>
-</div>
-
-<!-- Success Screen -->
-<div class="success-screen" id="final-success-screen">
-  <div class="success-badge">
-    <svg style="width:45px;height:45px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
-  </div>
-  <h1>Registration Success</h1>
-  <p style="color:var(--brand-300); font-weight: 700; font-size: 1.1rem;">Your Divine stay starts now</p>
-
-  <div class="success-room-card">
-    <small>Room Assigned</small>
-    <div class="number" id="final-room-num">--</div>
-    <div class="type" id="final-room-type">--</div>
-  </div>
-
-  <div style="width: 100%; max-width: 340px; border-top: 1.5px solid var(--brand-100); padding-top: 2rem; text-align: left;">
-    <div style="display:flex; justify-content:space-between; margin-bottom: 15px;">
-      <span style="font-size:11px; color:var(--brand-300); font-weight: 900; text-transform: uppercase;">Guest</span>
-      <b id="final-name" style="font-size:15px; font-weight: 900;">--</b>
     </div>
-    <div style="display:flex; justify-content:space-between;">
-      <span style="font-size:11px; color:var(--brand-300); font-weight: 900; text-transform: uppercase;">Stay Ref</span>
-      <b id="final-ref" style="font-size:15px; font-family: monospace; font-weight: 900; color: var(--brand-400);">--</b>
+
+    <!-- PHONE -->
+    <div class="field">
+      <label class="field-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        Phone Number <span class="req">*</span>
+      </label>
+      <div class="input-wrap">
+        <input type="tel" id="guestPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+   
+
+    <!-- PAYMENT -->
+    <div class="section-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Payment
+    </div>
+    <div class="pay-row">
+      <div class="pay-box">
+        <div class="pay-box-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Online
+        </div>
+        <input type="number" id="payOnline" placeholder="0" min="0" oninput="updateTotal()">
+      </div>
+      <div class="pay-box">
+        <div class="pay-box-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          Cash
+        </div>
+        <input type="number" id="payCash" placeholder="0" min="0" oninput="updateTotal()">
+      </div>
+    </div>
+    <div class="pay-total">
+      <span class="pay-total-label">Total</span>
+      <span class="pay-total-value" id="payTotal">Rs 0</span>
+    </div>
+
+    <div class="divider" style="margin-top:18px;"></div>
+
+    <!-- ID / DOC UPLOAD -->
+    <div class="section-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
+      ID / Document <span class="req" style="color:var(--red);font-size:14px;">*</span>
+    </div>
+    <label class="upload-zone" id="uploadZone" for="docInput">
+      <div id="uploadPlaceholder">
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <div class="upload-text">Tap to upload or take photo</div>
+        <div class="upload-sub">Aadhaar, PAN, Passport, Driving Licence</div>
+      </div>
+      <img id="docPreview" class="upload-preview" alt="ID document">
+      <span class="upload-change">Change</span>
+      <input type="file" id="docInput" accept="image/*" capture="environment" onchange="handleDocUpload(event)">
+    </label>
+
+  </div>
+
+  <!-- BOTTOM ACTION -->
+  <div class="action-bar">
+    <div class="action-inner">
+      <div class="error-bar" id="errorBar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="errorText"></span>
+      </div>
+      <button class="btn-submit" id="btnSubmit" onclick="handleCheckin()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+        <span id="btnText">Complete Check-in</span>
+      </button>
     </div>
   </div>
 
-  <button class="main-submit" style="margin-top: 3.5rem; box-shadow: none;" onclick="location.reload()">New Check-in</button>
+</div><!-- /app -->
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-inner">
+    <div class="success-check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+    </div>
+    <h2 class="success-title">Check-in Complete</h2>
+    <p class="success-sub">Guest has been checked in successfully</p>
+    <div class="success-room-badge">
+      <span class="success-room-label">Room</span>
+      <span class="success-room-num" id="succRoom">—</span>
+    </div>
+    <div class="success-card" id="succCard"></div>
+    <button class="btn-new" onclick="location.reload()">New Check-in</button>
+  </div>
 </div>
 
-<canvas id="qr-processing-canvas" class="hidden"></canvas>
-
+<!-- ─── SCRIPT ─── -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // -- CONFIG --
-  const SUPABASE_URL = 'https://fzwnglhxtmtltpysdzma.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6d25nbGh4dG10bHRweXNkem1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODE0MzAsImV4cCI6MjA4NDE1NzQzMH0.PuES2nphqkKU-FqzBge6LlptVibSfeTQcUExEdfTleg';
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// ── CONFIG ──
+const SUPABASE_URL = 'https://fzwnglhxtmtltpysdzma.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6d25nbGh4dG10bHRweXNkem1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODE0MzAsImV4cCI6MjA4NDE1NzQzMH0.PuES2nphqkKU-FqzBge6LlptVibSfeTQcUExEdfTleg';
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const ROOMS = {
-    'Cozy Mini': ['102','201','202','301','302'],
-    'Compact Twin': ['203','303'],
-    'Convenient Queen': ['101']
+const ROOM_MAP = {
+  'Cozy Mini':         ['102','201','202','301','302'],
+  'Compact Twin':      ['203','303'],
+  'Convenient Queen':  ['101']
+};
+const ROOM_TYPES = Object.keys(ROOM_MAP);
+
+// ── STATE ──
+let state = {
+  date:        new Date().toISOString().split('T')[0],
+  time:        nowHHMM(),
+  stayType:    'Full Stay',
+  roomType:    null,
+  roomNumber:  null,
+  docFile:     null,
+  availability: {}
+};
+
+// ── INIT ──
+(function init() {
+  updateChipDate();
+  updateChipTime();
+  document.getElementById('datePicker').value = state.date;
+  document.getElementById('datePicker').min   = state.date;
+  document.getElementById('timePicker').value = state.time;
+
+  document.getElementById('datePicker').onchange = e => {
+    state.date = e.target.value;
+    updateChipDate();
+    loadAvail();
+  };
+  document.getElementById('timePicker').onchange = e => {
+    state.time = e.target.value;
+    updateChipTime();
   };
 
-  // -- STATE --
-  let app = {
-    date: new Date().toISOString().split('T')[0],
-    time: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }),
-    stay: 'Daycation',
-    room: { num: null, type: null },
-    doc: null,
-    scanning: false
-  };
+  loadAvail();
+})();
 
-  const get = (id) => document.getElementById(id);
+// ── HELPERS ──
+function nowHHMM() {
+  const n = new Date();
+  return String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
+}
 
-  // -- INITIALIZATION --
-  function start() {
-    updateDT();
-    get('admin-date').value = app.date;
-    get('admin-time').value = app.time;
-    findRoom();
+function fmtDate(iso) {
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString('en-IN', { day:'numeric', month:'short' });
+}
 
-    // Interaction logic
-    get('admin-toggle').onclick = (e) => {
-      if(e.target.closest('#admin-panel')) return;
-      get('admin-panel').style.display = get('admin-panel').style.display === 'block' ? 'none' : 'block';
-    };
+function fmtTime(hhmm) {
+  const [h,m] = hhmm.split(':').map(Number);
+  const ap = h >= 12 ? 'PM' : 'AM';
+  return (h % 12 || 12) + ':' + String(m).padStart(2,'0') + ' ' + ap;
+}
 
-    get('admin-save').onclick = () => {
-      app.date = get('admin-date').value;
-      app.time = get('admin-time').value;
-      updateDT();
-      get('admin-panel').style.display = 'none';
-      findRoom();
-    };
+function updateChipDate() {
+  document.getElementById('chipDateDisp').textContent = fmtDate(state.date);
+}
+function updateChipTime() {
+  document.getElementById('chipTimeDisp').textContent = fmtTime(state.time);
+}
 
-    document.querySelectorAll('.stay-card').forEach(btn => {
-      btn.onclick = () => {
-        document.querySelectorAll('.stay-card').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        app.stay = btn.dataset.type;
-        findRoom();
-      };
+// ── STAY SELECT ──
+function selectStay(el) {
+  document.querySelectorAll('.stay-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  state.stayType = el.dataset.type;
+  state.roomType  = null;
+  state.roomNumber = null;
+  document.getElementById('chipRoomDisp').textContent = '—';
+  loadAvail();
+}
+
+// ── LOAD AVAILABILITY & AUTO-ASSIGN ──
+async function loadAvail() {
+  try {
+    const { data } = await db
+      .from('bookings')
+      .select('room_number')
+      .eq('check_in_date', state.date)
+      .eq('stay_type', state.stayType);
+
+    const occupied = (data || []).map(b => b.room_number);
+    const avail = {};
+    ROOM_TYPES.forEach(t => {
+      avail[t] = (ROOM_MAP[t] || []).filter(r => !occupied.includes(r));
     });
+    state.availability = avail;
 
-    get('field-id-file').onchange = (e) => {
-      const f = e.target.files[0];
-      if(!f) return;
-      app.doc = f;
-      const reader = new FileReader();
-      reader.onload = (v) => {
-        get('id-image-preview').src = v.target.result;
-        get('id-image-preview').classList.remove('hidden');
-        get('upload-pre-view').classList.add('hidden');
-        get('id-upload-area').classList.add('has-file');
-      };
-      reader.readAsDataURL(f);
+    // Auto-assign first available Full Stay → else first available of any
+    autoAssignRoom();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function autoAssignRoom() {
+  // pick first type that has rooms
+  for (const t of ROOM_TYPES) {
+    if (state.availability[t] && state.availability[t].length > 0) {
+      state.roomType   = t;
+      state.roomNumber = state.availability[t][0];
+      document.getElementById('chipRoomDisp').textContent = state.roomNumber;
+      return;
+    }
+  }
+  state.roomType   = null;
+  state.roomNumber = null;
+  document.getElementById('chipRoomDisp').textContent = 'None';
+}
+
+// ── ROOM CHIP CLICK → open inline room picker ──
+let roomPickerOpen = false;
+function openRoomModal() {
+  if (roomPickerOpen) { closeRoomPicker(); return; }
+  roomPickerOpen = true;
+
+  // build picker below auto-strip inside content
+  const strip = document.querySelector('.auto-strip');
+  let picker = document.getElementById('roomPicker');
+  if (!picker) {
+    picker = document.createElement('div');
+    picker.id = 'roomPicker';
+    picker.style.cssText = 'margin-bottom:18px;';
+    strip.after(picker);
+  }
+
+  let html = '<div class="room-row">';
+  ROOM_TYPES.forEach(t => {
+    const av = state.availability[t] || [];
+    const isActive = state.roomType === t;
+    const isDis = av.length === 0;
+    html += `<div class="room-btn ${isActive?'active':''} ${isDis?'disabled':''}" onclick="pickRoom('${t}')">
+      <div class="room-btn-header">
+        <span class="room-btn-name">${t}</span>
+        <span class="room-btn-avail">${isDis ? 'Full' : av.length + ' left'}</span>
+      </div>
+      <div class="room-btn-number">${isDis ? '—' : '→ ' + av[0]}</div>
+    </div>`;
+  });
+  html += '</div>';
+  picker.innerHTML = html;
+  picker.style.display = 'block';
+}
+
+function pickRoom(type) {
+  const av = state.availability[type];
+  if (!av || av.length === 0) return;
+  state.roomType   = type;
+  state.roomNumber = av[0];
+  document.getElementById('chipRoomDisp').textContent = state.roomNumber;
+  closeRoomPicker();
+}
+
+function closeRoomPicker() {
+  roomPickerOpen = false;
+  const p = document.getElementById('roomPicker');
+  if (p) p.style.display = 'none';
+}
+
+// ── PAYMENT ──
+function updateTotal() {
+  const o = parseInt(document.getElementById('payOnline').value) || 0;
+  const c = parseInt(document.getElementById('payCash').value)   || 0;
+  document.getElementById('payTotal').textContent = 'Rs ' + (o + c);
+}
+
+// ── DOC UPLOAD ──
+function handleDocUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  state.docFile = file;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('uploadPlaceholder').style.display = 'none';
+    const img = document.getElementById('docPreview');
+    img.src = ev.target.result;
+    img.classList.add('show');
+    document.getElementById('uploadZone').classList.add('has-file');
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── ERROR ──
+function showError(msg) {
+  document.getElementById('errorText').textContent = msg;
+  document.getElementById('errorBar').classList.add('show');
+  setTimeout(() => document.getElementById('errorBar').classList.remove('show'), 3200);
+}
+
+// ── CHECK-IN ──
+async function handleCheckin() {
+  const name  = document.getElementById('guestName').value.trim();
+  const phone = document.getElementById('guestPhone').value.trim();
+  const online = parseInt(document.getElementById('payOnline').value) || 0;
+  const cash   = parseInt(document.getElementById('payCash').value)   || 0;
+  const total  = online + cash;
+
+  if (!name)                       return showError('Enter guest name');
+  if (!phone || phone.length < 10) return showError('Enter a valid 10-digit phone number');
+  if (!state.roomNumber)           return showError('No room available — change stay type or date');
+  if (total === 0)                 return showError('Enter payment amount');
+  if (!state.docFile)              return showError('Upload an ID document');
+
+  // loading
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div><span>Processing…</span>';
+
+  try {
+    // upload doc
+    let docUrl = null;
+    if (state.docFile) {
+      const ext  = state.docFile.name.split('.').pop();
+      const path = `guest-photos/${Date.now()}_${Math.random().toString(36).slice(2,8)}.${ext}`;
+      const { error: ue } = await db.storage.from('guest-photos').upload(path, state.docFile);
+      if (!ue) {
+        docUrl = db.storage.from('guest-photos').getPublicUrl(path).data.publicUrl;
+      }
+    }
+
+    const booking = {
+      full_name:        name,
+      phone_number:     phone,
+      check_in_date:    state.date,
+      arrival_time:     state.time,
+      stay_type:        state.stayType,
+      room_type:        state.roomType,
+      room_number:      state.roomNumber,
+      total_amount:     total,
+      base_amount:      total,
+      discount_percent: 0,
+      payment_online:   online,
+      payment_cash:     cash,
+      status:           'confirmed',
+      payment_status:   'paid',
+      guest_photo_url:  docUrl,
+      qr_token:         'DGH-' + Math.random().toString(36).substr(2,6).toUpperCase()
     };
 
-    const updatePay = () => {
-      const on = parseFloat(get('pay-online-val').value) || 0;
-      const ca = parseFloat(get('pay-cash-val').value) || 0;
-      const total = on + ca;
-      get('final-total').textContent = total;
-      get('method-tag').textContent = (on && ca) ? 'Split' : on ? 'Online' : ca ? 'Cash' : 'Pending';
-      get('method-tag').style.background = total > 0 ? 'var(--success)' : 'transparent';
-      get('scan-payment-qr').style.display = on > 0 ? 'flex' : 'none';
-    };
-    get('pay-online-val').oninput = updatePay;
-    get('pay-cash-val').oninput = updatePay;
+    const { data, error } = await db.from('bookings').insert([booking]).select();
+    if (error) throw error;
 
-    get('scan-payment-qr').onclick = openScanner;
-    get('exit-scanner').onclick = closeScanner;
-    get('form-submit-btn').onclick = submitForm;
+    showSuccess(data[0]);
+  } catch (err) {
+    console.error(err);
+    showError('Check-in failed — please try again');
+    btn.disabled = false;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg><span>Complete Check-in</span>`;
   }
+}
 
-  function updateDT() {
-    get('label-date').textContent = new Date(app.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
-    get('label-time').textContent = app.time;
-  }
-
-  async function findRoom() {
-    try {
-      const { data } = await db.from('bookings').select('room_number').eq('check_in_date', app.date).eq('stay_type', app.stay);
-      const busy = (data || []).map(b => b.room_number);
-      
-      let res = null;
-      let typ = null;
-
-      for (const t of Object.keys(ROOMS)) {
-        const free = ROOMS[t].filter(r => !busy.includes(r));
-        if(free.length > 0) {
-          res = free[0];
-          typ = t;
-          break;
-        }
-      }
-      app.room.num = res;
-      app.room.type = typ;
-    } catch(err) { console.error(err); }
-  }
-
-  function alertBox(txt) {
-    const box = get('toast');
-    box.textContent = txt;
-    box.style.display = 'block';
-    setTimeout(() => box.style.display = 'none', 3500);
-  }
-
-  // -- QR SCANNER ENGINE --
-  let stream;
-  async function openScanner() {
-    app.scanning = true;
-    get('qr-scanner-overlay').style.display = 'flex';
-    try {
-      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-      const vid = get('scanner-stream');
-      vid.srcObject = stream;
-      vid.play();
-      requestAnimationFrame(processScan);
-    } catch(e) {
-      alertBox("Camera blocked. Enable permissions.");
-      closeScanner();
-    }
-  }
-
-  function closeScanner() {
-    app.scanning = false;
-    get('qr-scanner-overlay').style.display = 'none';
-    if(stream) stream.getTracks().forEach(t => t.stop());
-  }
-
-  function processScan() {
-    if(!app.scanning) return;
-    const vid = get('scanner-stream');
-    const can = get('qr-processing-canvas');
-    if(vid.readyState === vid.HAVE_ENOUGH_DATA) {
-      can.width = vid.videoWidth;
-      can.height = vid.videoHeight;
-      const ctx = can.getContext('2d');
-      ctx.drawImage(vid, 0, 0, can.width, can.height);
-      const dat = ctx.getImageData(0, 0, can.width, can.height);
-      const code = jsQR(dat.data, dat.width, dat.height);
-      if(code) {
-        closeScanner();
-        // Intent redirect for UPI or Links
-        window.location.href = code.data;
-        return;
-      }
-    }
-    requestAnimationFrame(processScan);
-  }
-
-  // -- SUBMISSION HANDLER --
-  async function submitForm() {
-    const name = get('field-name').value.trim();
-    const phone = get('field-phone').value.trim();
-    const on = parseFloat(get('pay-online-val').value) || 0;
-    const ca = parseFloat(get('pay-cash-val').value) || 0;
-    const total = on + ca;
-
-    if(!name) return alertBox("Guest Name required");
-    if(phone.length < 10) return alertBox("Valid Phone required");
-    if(!app.room.num) return alertBox("Full House! No rooms free.");
-    if(total <= 0) return alertBox("Enter payment received");
-    if(!app.doc) return alertBox("Upload Guest ID photo");
-
-    get('form-submit-btn').disabled = true;
-    get('form-submit-btn').textContent = "Finalizing Stay...";
-
-    try {
-      // 1. Storage Upload
-      const ext = app.doc.name.split('.').pop();
-      // Clean path: use just the filename inside the bucket
-      const filename = `${Date.now()}_${Math.random().toString(36).substr(2,6)}.${ext}`;
-      
-      const { error: upErr } = await db.storage.from('guest-photos').upload(filename, app.doc);
-      if(upErr) {
-        // Discretely log the error for developers, show a general message to customers
-        console.error("Storage Error:", upErr);
-        throw new Error("Check-in service temporarily unavailable. Please ask reception for assistance.");
-      }
-      
-      const { data: urlDat } = db.storage.from('guest-photos').getPublicUrl(filename);
-
-      // 2. Database Insert
-      const payload = {
-        full_name: name,
-        phone_number: phone,
-        check_in_date: app.date,
-        arrival_time: app.time,
-        stay_type: app.stay,
-        room_type: app.room.type,
-        room_number: app.room.num,
-        total_amount: total,
-        payment_online: on,
-        payment_cash: ca,
-        status: 'confirmed',
-        payment_status: 'paid',
-        guest_photo_url: urlDat.publicUrl,
-        qr_token: 'DGH-' + Math.random().toString(36).substr(2,6).toUpperCase()
-      };
-
-      const { data, error } = await db.from('bookings').insert([payload]).select();
-      if(error) throw error;
-
-      // 3. Victory Screen
-      get('final-room-num').textContent = data[0].room_number;
-      get('final-room-type').textContent = data[0].room_type;
-      get('final-name').textContent = data[0].full_name;
-      get('final-ref').textContent = data[0].qr_token;
-      get('final-success-screen').style.display = 'flex';
-      
-    } catch(err) {
-      console.error("Submit Error:", err);
-      // Hide technical details like "Bucket not found" from the customer
-      const customerMsg = err.message.includes("Bucket not found") 
-        ? "Check-in service temporarily unavailable. Please see reception." 
-        : (err.message || "Something went wrong. Please try again.");
-      alertBox(customerMsg);
-      get('form-submit-btn').disabled = false;
-      get('form-submit-btn').textContent = "Confirm Stay";
-    }
-  }
-
-  start();
+// ── SUCCESS ──
+function showSuccess(b) {
+  document.getElementById('succRoom').textContent = b.room_number;
+  document.getElementById('succCard').innerHTML = `
+    <div class="success-row"><span class="success-row-label">Guest</span><span class="success-row-value">${b.full_name}</span></div>
+    <div class="success-row"><span class="success-row-label">Phone</span><span class="success-row-value">${b.phone_number}</span></div>
+    <div class="success-row"><span class="success-row-label">Date</span><span class="success-row-value">${fmtDate(b.check_in_date)}</span></div>
+    <div class="success-row"><span class="success-row-label">Arrival</span><span class="success-row-value">${fmtTime(b.arrival_time)}</span></div>
+    <div class="success-row"><span class="success-row-label">Stay</span><span class="success-row-value">${b.stay_type}</span></div>
+    <div class="success-row"><span class="success-row-label">Room Type</span><span class="success-row-value">${b.room_type}</span></div>
+    <div class="success-row"><span class="success-row-label">Paid</span><span class="success-row-value">Rs ${b.total_amount}</span></div>
+    ${b.payment_online>0 ? `<div class="success-row"><span class="success-row-label">— Online</span><span class="success-row-value">Rs ${b.payment_online}</span></div>` : ''}
+    ${b.payment_cash>0   ? `<div class="success-row"><span class="success-row-label">— Cash</span><span class="success-row-value">Rs ${b.payment_cash}</span></div>` : ''}
+    <div class="success-row"><span class="success-row-label">Ref</span><span class="success-row-value">${b.qr_token}</span></div>
+  `;
+  document.getElementById('successOverlay').classList.add('show');
+}
 </script>
 </body>
 </html>
