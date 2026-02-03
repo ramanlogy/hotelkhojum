@@ -5,6 +5,8 @@
     { "source": "/dlogin", "destination": "/dlogin.html" },
     { "source": "/lulogin", "destination": "/lulogin.html" },
     { "source": "/khojum", "destination": "/khojum.html" },
-    { "source": "/lumanti", "destination": "/lumanti.html" }
+    { "source": "/lumanti", "destination": "/lumanti.html" },
+    {"source": "/checkin", "destination": "/checkin.html" }
+  
   ]
 }
