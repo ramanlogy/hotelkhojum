@@ -125,6 +125,11 @@
     background: var(--green-bg); border: 1px solid #c6f0dc;
     padding: 1px 5px; border-radius: 8px; letter-spacing: 0.2px;
   }
+  .auto-chip-badge.manual {
+    color: #9b7c2e;
+    background: #fef9ec;
+    border-color: #f5e6b8;
+  }
 
   /* ─── DIVIDER ─── */
   .divider { height: 1px; background: var(--border); margin: 0 0 24px; }
@@ -225,6 +230,40 @@
     font-size: 11px; color: var(--text-muted); margin-top: 4px;
   }
   .room-btn.active .room-btn-number { color: rgba(255,255,255,0.55); }
+
+  /* ─── ROOM NUMBER PICKER ─── */
+  .room-numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-top: 10px;
+    padding: 10px;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+  }
+  .room-num-btn {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 6px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--surface);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all .15s;
+  }
+  .room-num-btn:active { transform: scale(0.94); }
+  .room-num-btn.selected {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+  }
+  .room-num-btn.occupied {
+    opacity: 0.3;
+    pointer-events: none;
+    background: var(--red-bg);
+    border-color: #f5ccc7;
+  }
 
   /* ─── PAYMENT ─── */
   .pay-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
@@ -457,7 +496,7 @@
         </div>
         <div class="auto-chip-value" id="chipDateDisp">—</div>
         <input type="date" id="datePicker" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;" />
-        <div class="auto-chip-badge">Auto</div>
+        <div class="auto-chip-badge manual" id="dateBadge">Manual</div>
       </div>
 
       <div class="auto-chip" id="chipRoom" onclick="openRoomModal()">
@@ -466,7 +505,7 @@
           Room
         </div>
         <div class="auto-chip-value" id="chipRoomDisp">—</div>
-        <div class="auto-chip-badge">Auto</div>
+        <div class="auto-chip-badge manual" id="roomBadge">Manual</div>
       </div>
 
       <div class="auto-chip" onclick="document.getElementById('timePicker').click()">
@@ -476,7 +515,7 @@
         </div>
         <div class="auto-chip-value" id="chipTimeDisp">—</div>
         <input type="time" id="timePicker" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;" />
-        <div class="auto-chip-badge">Auto</div>
+        <div class="auto-chip-badge manual" id="timeBadge">Manual</div>
       </div>
     </div>
 
@@ -498,10 +537,10 @@
     <div class="field">
       <label class="field-label">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-        Phone Number <span class="req">*</span>
+        Phone Number
       </label>
       <div class="input-wrap">
-        <input type="tel" id="guestPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric">
+        <input type="tel" id="guestPhone" placeholder="10-digit number (optional)" maxlength="10" inputmode="numeric">
       </div>
     </div>
 
@@ -548,7 +587,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </div>
         <div class="upload-text">Tap to upload or take photo</div>
-        <div class="upload-sub">Aadhaar, PAN, Passport, Driving Licence</div>
+        <div class="upload-sub">Citizenship, PAN, Passport, Driving Licence</div>
       </div>
       <img id="docPreview" class="upload-preview" alt="ID document">
       <span class="upload-change">Change</span>
@@ -604,6 +643,7 @@ const ROOM_MAP = {
   'Convenient Queen':  ['101']
 };
 const ROOM_TYPES = Object.keys(ROOM_MAP);
+const ALL_ROOMS = Object.values(ROOM_MAP).flat();
 
 // ── STATE ──
 let state = {
@@ -613,7 +653,8 @@ let state = {
   roomType:    null,
   roomNumber:  null,
   docFile:     null,
-  availability: {}
+  availability: {},
+  occupiedRooms: []
 };
 
 // ── INIT ──
@@ -672,23 +713,27 @@ function selectStay(el) {
   loadAvail();
 }
 
-// ── LOAD AVAILABILITY & AUTO-ASSIGN ──
+// ── LOAD AVAILABILITY ──
 async function loadAvail() {
   try {
+    // Get all active bookings for selected date and stay type
     const { data } = await db
       .from('bookings')
       .select('room_number')
       .eq('check_in_date', state.date)
-      .eq('stay_type', state.stayType);
+      .eq('stay_type', state.stayType)
+      .neq('status', 'checked_out'); // Exclude checked out rooms
 
     const occupied = (data || []).map(b => b.room_number);
+    state.occupiedRooms = occupied;
+    
     const avail = {};
     ROOM_TYPES.forEach(t => {
       avail[t] = (ROOM_MAP[t] || []).filter(r => !occupied.includes(r));
     });
     state.availability = avail;
 
-    // Auto-assign first available Full Stay → else first available of any
+    // Auto-assign first available room
     autoAssignRoom();
   } catch (e) {
     console.error(e);
@@ -696,7 +741,7 @@ async function loadAvail() {
 }
 
 function autoAssignRoom() {
-  // pick first type that has rooms
+  // Pick first type that has rooms available
   for (const t of ROOM_TYPES) {
     if (state.availability[t] && state.availability[t].length > 0) {
       state.roomType   = t;
@@ -710,13 +755,12 @@ function autoAssignRoom() {
   document.getElementById('chipRoomDisp').textContent = 'None';
 }
 
-// ── ROOM CHIP CLICK → open inline room picker ──
+// ── ROOM MODAL ──
 let roomPickerOpen = false;
 function openRoomModal() {
   if (roomPickerOpen) { closeRoomPicker(); return; }
   roomPickerOpen = true;
 
-  // build picker below auto-strip inside content
   const strip = document.querySelector('.auto-strip');
   let picker = document.getElementById('roomPicker');
   if (!picker) {
@@ -731,26 +775,77 @@ function openRoomModal() {
     const av = state.availability[t] || [];
     const isActive = state.roomType === t;
     const isDis = av.length === 0;
-    html += `<div class="room-btn ${isActive?'active':''} ${isDis?'disabled':''}" onclick="pickRoom('${t}')">
+    html += `<div class="room-btn ${isActive?'active':''} ${isDis?'disabled':''}" onclick="pickRoomType('${t}')">
       <div class="room-btn-header">
         <span class="room-btn-name">${t}</span>
         <span class="room-btn-avail">${isDis ? 'Full' : av.length + ' left'}</span>
       </div>
-      <div class="room-btn-number">${isDis ? '—' : '→ ' + av[0]}</div>
+      <div class="room-btn-number">${state.roomType === t && state.roomNumber ? '→ ' + state.roomNumber : (isDis ? '—' : 'Tap to select')}</div>
     </div>`;
   });
   html += '</div>';
+  
+  // Add room number grid
+  html += '<div class="room-numbers-grid" id="roomNumberGrid">';
+  html += '</div>';
+  
   picker.innerHTML = html;
   picker.style.display = 'block';
+  
+  // Show room numbers if a type is selected
+  if (state.roomType) {
+    showRoomNumbers(state.roomType);
+  }
 }
 
-function pickRoom(type) {
+function pickRoomType(type) {
   const av = state.availability[type];
   if (!av || av.length === 0) return;
-  state.roomType   = type;
-  state.roomNumber = av[0];
-  document.getElementById('chipRoomDisp').textContent = state.roomNumber;
-  closeRoomPicker();
+  
+  state.roomType = type;
+  showRoomNumbers(type);
+  
+  // Update the room type buttons
+  document.querySelectorAll('.room-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  event.currentTarget.classList.add('active');
+}
+
+function showRoomNumbers(roomType) {
+  const grid = document.getElementById('roomNumberGrid');
+  if (!grid) return;
+  
+  const allRoomsForType = ROOM_MAP[roomType] || [];
+  
+  let html = '';
+  allRoomsForType.forEach(roomNum => {
+    const isOccupied = state.occupiedRooms.includes(roomNum);
+    const isSelected = state.roomNumber === roomNum;
+    
+    html += `<div class="room-num-btn ${isSelected?'selected':''} ${isOccupied?'occupied':''}" 
+                  onclick="selectRoomNumber('${roomNum}', ${isOccupied})">
+              ${roomNum}
+            </div>`;
+  });
+  
+  grid.innerHTML = html;
+}
+
+function selectRoomNumber(roomNum, isOccupied) {
+  if (isOccupied) return;
+  
+  state.roomNumber = roomNum;
+  document.getElementById('chipRoomDisp').textContent = roomNum;
+  
+  // Update selected state
+  document.querySelectorAll('.room-num-btn').forEach(btn => {
+    btn.classList.remove('selected');
+  });
+  event.currentTarget.classList.add('selected');
+  
+  // Close picker after selection
+  setTimeout(() => closeRoomPicker(), 300);
 }
 
 function closeRoomPicker() {
@@ -798,10 +893,25 @@ async function handleCheckin() {
   const total  = online + cash;
 
   if (!name)                       return showError('Enter guest name');
-  if (!phone || phone.length < 10) return showError('Enter a valid 10-digit phone number');
+  if (phone && phone.length < 10)  return showError('Phone number must be 10 digits if provided');
   if (!state.roomNumber)           return showError('No room available — change stay type or date');
   if (total === 0)                 return showError('Enter payment amount');
   if (!state.docFile)              return showError('Upload an ID document');
+
+  // Check if room is still available (prevent double booking)
+  const { data: existingBooking } = await db
+    .from('bookings')
+    .select('id')
+    .eq('check_in_date', state.date)
+    .eq('stay_type', state.stayType)
+    .eq('room_number', state.roomNumber)
+    .neq('status', 'checked_out')
+    .maybeSingle();
+
+  if (existingBooking) {
+    await loadAvail(); // Refresh availability
+    return showError('Room ' + state.roomNumber + ' is no longer available. Please select another room.');
+  }
 
   // loading
   const btn = document.getElementById('btnSubmit');
@@ -813,10 +923,24 @@ async function handleCheckin() {
     let docUrl = null;
     if (state.docFile) {
       const ext  = state.docFile.name.split('.').pop();
-      const path = `guest-photos/${Date.now()}_${Math.random().toString(36).slice(2,8)}.${ext}`;
-      const { error: ue } = await db.storage.from('guest-photos').upload(path, state.docFile);
-      if (!ue) {
-        docUrl = db.storage.from('guest-photos').getPublicUrl(path).data.publicUrl;
+      const path = `${Date.now()}_${Math.random().toString(36).slice(2,8)}.${ext}`;
+      
+      const { data: uploadData, error: ue } = await db.storage
+        .from('guest_photos')
+        .upload(path, state.docFile, {
+          contentType: state.docFile.type,
+          cacheControl: '3600',
+          upsert: false
+        });
+        
+      if (ue) {
+        console.error('Upload error:', ue);
+        throw new Error('Document upload failed: ' + ue.message);
+      }
+      
+      if (uploadData) {
+        const { data: urlData } = db.storage.from('guest_photos').getPublicUrl(path);
+        docUrl = urlData.publicUrl;
       }
     }
 
