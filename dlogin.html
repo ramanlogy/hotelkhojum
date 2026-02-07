@@ -666,7 +666,7 @@ body{background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;min-he
       <form id="editForm">
         <div class="form-row">
           <div class="form-group"><label>Name</label><input type="text" id="eName" required></div>
-          <div class="form-group"><label>Phone</label><input type="tel" id="ePhone" required></div>
+         <div class="form-group"><label>Phone</label><input type="tel" id="ePhone"></div>
         </div>
         <div class="form-row">
           <div class="form-group"><label>Room</label>
@@ -1340,9 +1340,11 @@ async function saveEdit(e){
       }
     }
 
+    const phoneValue = document.getElementById('ePhone').value.trim();
+    
     const data={
       full_name:document.getElementById('eName').value,
-      phone_number:document.getElementById('ePhone').value,
+      phone_number: phoneValue || null,  // ← Changed: allow null if empty
       room_type:document.getElementById('eRoom').value,
       stay_type:document.getElementById('eType').value,
       check_in_date:document.getElementById('eDate').value,
